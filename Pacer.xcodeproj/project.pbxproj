@@ -13,6 +13,8 @@
 		FA5638371A96FE4400E9BB0A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA5638361A96FE4400E9BB0A /* Images.xcassets */; };
 		FA56383A1A96FE4400E9BB0A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA5638381A96FE4400E9BB0A /* LaunchScreen.xib */; };
 		FA5638461A96FE4400E9BB0A /* PacerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5638451A96FE4400E9BB0A /* PacerTests.swift */; };
+		FA5638501A97010400E9BB0A /* PacingCalculations.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA56384F1A97010400E9BB0A /* PacingCalculations.swift */; };
+		FA79DC021A99A8580038EA8E /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA79DC011A99A8580038EA8E /* Enums.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +38,8 @@
 		FA56383F1A96FE4400E9BB0A /* PacerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PacerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA5638441A96FE4400E9BB0A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FA5638451A96FE4400E9BB0A /* PacerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PacerTests.swift; sourceTree = "<group>"; };
+		FA56384F1A97010400E9BB0A /* PacingCalculations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PacingCalculations.swift; sourceTree = "<group>"; };
+		FA79DC011A99A8580038EA8E /* Enums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,12 +81,11 @@
 		FA56382C1A96FE4400E9BB0A /* Pacer */ = {
 			isa = PBXGroup;
 			children = (
-				FA56382F1A96FE4400E9BB0A /* AppDelegate.swift */,
 				FA5638311A96FE4400E9BB0A /* ViewController.swift */,
 				FA5638331A96FE4400E9BB0A /* Main.storyboard */,
-				FA5638361A96FE4400E9BB0A /* Images.xcassets */,
-				FA5638381A96FE4400E9BB0A /* LaunchScreen.xib */,
 				FA56382D1A96FE4400E9BB0A /* Supporting Files */,
+				FA56384F1A97010400E9BB0A /* PacingCalculations.swift */,
+				FA79DC011A99A8580038EA8E /* Enums.swift */,
 			);
 			path = Pacer;
 			sourceTree = "<group>";
@@ -90,6 +93,9 @@
 		FA56382D1A96FE4400E9BB0A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				FA5638361A96FE4400E9BB0A /* Images.xcassets */,
+				FA5638381A96FE4400E9BB0A /* LaunchScreen.xib */,
+				FA56382F1A96FE4400E9BB0A /* AppDelegate.swift */,
 				FA56382E1A96FE4400E9BB0A /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -214,6 +220,8 @@
 			files = (
 				FA5638321A96FE4400E9BB0A /* ViewController.swift in Sources */,
 				FA5638301A96FE4400E9BB0A /* AppDelegate.swift in Sources */,
+				FA79DC021A99A8580038EA8E /* Enums.swift in Sources */,
+				FA5638501A97010400E9BB0A /* PacingCalculations.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -405,6 +413,7 @@
 				FA56384B1A96FE4400E9BB0A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		FA56384C1A96FE4400E9BB0A /* Build configuration list for PBXNativeTarget "PacerTests" */ = {
 			isa = XCConfigurationList;
@@ -413,6 +422,7 @@
 				FA56384E1A96FE4400E9BB0A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
