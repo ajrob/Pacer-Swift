@@ -17,7 +17,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Hr" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="eYv-EV-cnI">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Hr" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="eYv-EV-cnI" customClass="InputUITextField" customModule="Pacer" customModuleProvider="target">
                                 <rect key="frame" x="16" y="101" width="97" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="97" id="4y8-t7-OhW"/>
@@ -26,8 +26,11 @@
                                 <color key="textColor" red="0.58240043080000004" green="0.84138257579999998" blue="0.48311155010000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="timeEditingChanged:" destination="vXZ-lx-hvc" eventType="editingChanged" id="GWJ-50-eB1"/>
+                                </connections>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Min" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9T3-BA-v2e">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Min" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="9T3-BA-v2e" customClass="InputUITextField" customModule="Pacer" customModuleProvider="target">
                                 <rect key="frame" x="121" y="101" width="97" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="97" id="6d3-dm-0eN"/>
@@ -35,8 +38,11 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="timeEditingChanged:" destination="vXZ-lx-hvc" eventType="editingChanged" id="qW0-3l-SZN"/>
+                                </connections>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Sec" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="UMq-oF-XRD">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Sec" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="UMq-oF-XRD" customClass="InputUITextField" customModule="Pacer" customModuleProvider="target">
                                 <rect key="frame" x="226" y="101" width="97" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="8Cs-3l-SXA"/>
@@ -44,6 +50,9 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="timeEditingChanged:" destination="vXZ-lx-hvc" eventType="editingChanged" id="O01-hU-EMp"/>
+                                </connections>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total Time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="13t-bJ-Xk4">
                                 <rect key="frame" x="16" y="72" width="568" height="21"/>
@@ -51,7 +60,7 @@
                                 <color key="textColor" red="1" green="0.91487435582752419" blue="0.15893174326867876" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Min" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ixg-Fv-WM0">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Min" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="ixg-Fv-WM0" customClass="InputUITextField" customModule="Pacer" customModuleProvider="target">
                                 <rect key="frame" x="16" y="168" width="97" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="4jt-Xy-u1p"/>
@@ -67,8 +76,11 @@
                                         <exclude reference="Kyu-QH-8pc"/>
                                     </mask>
                                 </variation>
+                                <connections>
+                                    <action selector="paceEditingChanged:" destination="vXZ-lx-hvc" eventType="editingChanged" id="7EY-He-HxL"/>
+                                </connections>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Sec" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="58D-F8-mJN">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Sec" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="58D-F8-mJN" customClass="InputUITextField" customModule="Pacer" customModuleProvider="target">
                                 <rect key="frame" x="121" y="168" width="97" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="97" id="LPq-yO-KuE"/>
@@ -84,6 +96,9 @@
                                         <exclude reference="Y8w-i8-9ng"/>
                                     </mask>
                                 </variation>
+                                <connections>
+                                    <action selector="paceEditingChanged:" destination="vXZ-lx-hvc" eventType="editingChanged" id="Dan-HQ-RxH"/>
+                                </connections>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pace" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jFn-4n-CdZ">
                                 <rect key="frame" x="16" y="139" width="568" height="21"/>
@@ -97,7 +112,7 @@
                                 <color key="textColor" red="1" green="0.91487435582752419" blue="0.15893174326867876" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Sec" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QG4-Wu-z53">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Mi" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="QG4-Wu-z53" customClass="InputUITextField" customModule="Pacer" customModuleProvider="target">
                                 <rect key="frame" x="16" y="235" width="97" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="97" id="0ud-2w-xQR"/>
@@ -113,6 +128,9 @@
                                         <exclude reference="MTo-c9-aaH"/>
                                     </mask>
                                 </variation>
+                                <connections>
+                                    <action selector="distanceEditingChanged:" destination="vXZ-lx-hvc" eventType="editingChanged" id="h4K-E0-6lc"/>
+                                </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TOe-P0-0w7">
                                 <rect key="frame" x="16" y="273" width="568" height="30"/>
@@ -171,6 +189,12 @@
                     </view>
                     <navigationItem key="navigationItem" id="mcW-ZL-Zv8"/>
                     <connections>
+                        <outlet property="distanceTextField" destination="QG4-Wu-z53" id="ZjM-1U-cAO"/>
+                        <outlet property="paceMinuteTextField" destination="ixg-Fv-WM0" id="G58-4u-rE0"/>
+                        <outlet property="paceSecondTextField" destination="58D-F8-mJN" id="wqp-AF-wGC"/>
+                        <outlet property="timeHourTextField" destination="eYv-EV-cnI" id="8Yn-bb-FLp"/>
+                        <outlet property="timeMinuteTextField" destination="9T3-BA-v2e" id="qyq-xc-FwP"/>
+                        <outlet property="timeSecondTextField" destination="UMq-oF-XRD" id="Y7q-Ti-dqJ"/>
                         <outlet property="totalSeconds" destination="ryb-Om-cyW" id="XI6-gp-flj"/>
                     </connections>
                 </viewController>
