@@ -10,9 +10,12 @@ import UIKit
 
 class MainTableViewController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource {
 
-    enum Time {
-        case Pace
-        case Duration
+    
+    @IBOutlet weak var pacePicker: UIPickerView!
+    @IBOutlet weak var durationPicker: UIPickerView!
+    
+    enum TimePickerComponent: Int {
+        case Pace = 0, Duration
     }
     
     let kPickerTag = 9 // View tag identifying the picker view
@@ -20,29 +23,32 @@ class MainTableViewController: UITableViewController, UIPickerViewDelegate, UIPi
     let kAttributePickerCellID = "attributePicker" // the cell containing the picker
     let kOtherCellID = "otherCell"
     
-    var arrayBaseSixty = [Int]()
-    
     let testArray = ["ksljd", "sldkjf", "jajaja", "bwoeklw"]
     
     var pickerIndexPath: NSIndexPath?
     
-    var dataArray = [[String:String]]()
+    var arrayBaseSixty = [Int]()
     
     var pickerCellRowHeight: CGFloat = 216
+    
+    var pacePickerData = [[Int]]()
+    var durationPickerData = [[Int]]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        for (var i = 0; i < 59; i++) { arrayBaseSixty.append(i) }
+//        for (var i = 0; i < 59; i++) { arrayBaseSixty.append(i) }
+        pacePicker.delegate = self
+        pacePicker.dataSource = self
+        durationPicker.delegate = self
+        durationPicker.dataSource = self
         
-        let titleStructure = ["paceKey": "This is the title"]
-        let paceStructure = ["paceKey": "Pace", "paceValueKey": "This is the pace"]
-        let distanceStructure = ["distanceKey": "Distance", "distanceValueKey": "This is the distance"]
-        let durationStructure = ["durationKey": "Duration", "durationValueKey": "This is the duration"]
-        dataArray = [paceStructure, distanceStructure, durationStructure]
-        
+        arrayBaseSixty = createArray(60)
+        pacePickerData = [arrayBaseSixty, arrayBaseSixty]
+        durationPickerData = [createArray(80), arrayBaseSixty, arrayBaseSixty]
+
         // Obtain the picker view cell's height
-        let pickerViewCellToCheck = self.tableView.dequeueReusableCellWithIdentifier(Storyboard.AttributePickerCellReuseIdentifier) as UITableViewCell
+//        let pickerViewCellToCheck = self.tableView.dequeueReusableCellWithIdentifier(Storyboard.AttributePickerCellReuseIdentifier) as UITableViewCell
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -51,24 +57,45 @@ class MainTableViewController: UITableViewController, UIPickerViewDelegate, UIPi
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    private func createArray(numberOfElements: Int) -> [Int] {
+        var array = [Int]()
+        for (var i = 0; i < numberOfElements; i++) {
+            array.append(i)
+        }
+        return array
     }
     
-    // MARK: - Picker view data source
+    // MARK: - UIPickerViewDataSource
     // returns the number of 'columns' to display.
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
-        return 1
+        if pickerView.tag == 1 {
+            return pacePickerData.count
+        } else if pickerView.tag == 2 {
+            return durationPickerData.count
+        } else {
+            return 1
+        }
     }
     
     // returns the # of rows in each component..
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return testArray.count
+        if pickerView.tag == 1 {
+            return pacePickerData[component].count
+        } else if pickerView.tag == 2 {
+            return durationPickerData[component].count
+        } else {
+            return 1
+        }
     }
     
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
-        return testArray[row]
+        if pickerView.tag == 1 {
+            return pacePickerData[component][row].description
+        } else if pickerView.tag == 2 {
+            return durationPickerData[component][row].description
+        } else {
+            return ""
+        }
     }
 
     // MARK: - UITableViewDataSource
@@ -88,7 +115,7 @@ class MainTableViewController: UITableViewController, UIPickerViewDelegate, UIPi
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
         
-        return dataArray.count
+        return 4
     }
     
     /*
