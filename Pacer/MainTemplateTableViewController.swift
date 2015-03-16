@@ -10,18 +10,18 @@ import UIKit
 
 class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSource, UIPickerViewDelegate {
     
-    let kTitleKey = "title"     // key for obtaining the data source item's title
-    let kPacePickerKey = "pace"   // key for obtaining the data source item's pace picker value
-    let kDurationPickerKey = "duration"   // key for obtaining the data source item's duration picker value
+    let kTitleKey          = "title"    // key for obtaining the data source item's title
+    let kPacePickerKey     = "pace"     // key for obtaining the data source item's pace picker value
+    let kDurationPickerKey = "duration" // key for obtaining the data source item's duration picker value
     
-    let kPacePickerTag = 20     // Tag identifying the pace picker view
+    let kPacePickerTag     = 20 // Tag identifying the pace picker view
     let kDurationPickerTag = 30 // Tag identifying the duration picker view
     
-    let kPaceCellID = "paceCell" // Will hold the pace information
-    let kPacePickerCellID = "pacePickerCell" // Will contain the pace picker values
-    let kDurationCellID = "durationCell" // Will hold the duraiton information
+    let kPaceCellID           = "paceCell"           // Will hold the pace information
+    let kPacePickerCellID     = "pacePickerCell"     // Will contain the pace picker values
+    let kDurationCellID       = "durationCell"       // Will hold the duraiton information
     let kDurationPickerCellID = "durationPickerCell" // Will contain the duration picker values
-    let kDistanceCellID = "distanceCell" // Will hold the distance information
+    let kDistanceCellID       = "distanceCell"       // Will hold the distance information
     
     private struct Storyboard {
         static let AttributeCellResuseIdentifier = "attributeCell"
@@ -48,12 +48,45 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         
     }
     
+    struct DurationTimeFormat {
+        var Hours:   Int = 0
+        var Minutes: Int = 0
+        var Seconds: Int = 0
+        
+        func description() -> String {
+            var minFormatted = Minutes.description
+            var secFormatted = Seconds.description
+            
+            // Apply zero padding if needed
+            if Minutes < 10 { minFormatted = "0\(minFormatted)" }
+            if Seconds < 10 { secFormatted = "0\(secFormatted)" }
+            return "\(Hours):\(minFormatted):\(secFormatted)"
+        }
+    }
+    
+    struct PaceTimeFormat {
+        var Minutes: Int = 0
+        var Seconds: Int = 0
+        
+        func description() -> String {
+            var secFormatted = Seconds.description
+            
+            // Apply zero padding if needed
+            if Seconds < 10 { secFormatted = "0\(secFormatted)" }
+            return "\(Minutes):\(secFormatted)"
+        }
+    }
+    
     var arrayBaseSixty = [Int]()
     let pickerCellRowHeight: CGFloat = 216
     
     var pacePickerData = [[Int]]()
     var durationPickerData = [[Int]]()
-
+    
+    // Variables to hold pace, duration, and distance data
+    var paceValue =     PaceTimeFormat()
+    var durationValue = DurationTimeFormat()
+    var distance =      0.0
     
     // Order of the rows:
     //  - Pace
@@ -68,15 +101,13 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
     var willShowPacePicker = false
     var willShowDurationPicker = false
     
-//    var pacePickerIndexPath: NSIndexPath?
-//    var durationPickerIndexPath: NSIndexPath?
     var pickerIndexPath: NSIndexPath?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let rowOne = [kTitleKey: "Pace", kPacePickerKey: ""]
-        let rowTwo = [kTitleKey: "Duration", kDurationPickerKey: ""]
+        let rowOne = [kTitleKey: "Pace", kPacePickerKey: " "]
+        let rowTwo = [kTitleKey: "Duration", kDurationPickerKey: " "]
         let rowThree = [kTitleKey: "Distance"]
         
         mainTableData = [rowOne, rowTwo, rowThree]
@@ -85,7 +116,6 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         arrayBaseSixty = createArray(60)
         pacePickerData = [arrayBaseSixty, arrayBaseSixty]
         durationPickerData = [createArray(80), arrayBaseSixty, arrayBaseSixty]
-
     }
     
     private func createArray(numberOfElements: Int) -> [Int] {
@@ -137,7 +167,6 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
             tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .Fade)
         }
         tableView.endUpdates()
-
     }
     
     // Reveals the inline picker below the row. Called by didSelectRowAtIndexPath()
@@ -171,10 +200,6 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         tableView.deselectRowAtIndexPath(indexPath, animated:true)
         
         tableView.endUpdates()
-        
-        // inform our date picker of the current date to match the current cell
-// TODO:        updateDatePicker()
-
     }
     
     /*! Determines if the given indexPath points to a cell that contains a UIPickerView.
@@ -246,7 +271,42 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         }
     }
     
+    // MARK: - UIPickerViewDelegate
     
+    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        if pickerView.tag == Storyboard.Pace.Picker.Tag {
+            switch component {
+            case Storyboard.Pace.Picker.MinuteComponent:
+                paceValue.Minutes = row
+                println("Pace Minute: \(row.description)")
+            case Storyboard.Pace.Picker.SecondComponent:
+                paceValue.Seconds = row
+                println("Pace Second \(row.description)")
+            default:
+                break
+            }
+            mainTableData[self.pickerIndexPath!.row - 1][kPacePickerKey] = paceValue.description()
+            var cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: pickerIndexPath!.row - 1, inSection: 0))
+            cell?.detailTextLabel?.text = paceValue.description()
+        } else if pickerView.tag == Storyboard.Duration.Picker.Tag {
+            switch component {
+            case Storyboard.Duration.Picker.HourComponent:
+                durationValue.Hours = row
+                println("Pace Hour: \(row.description)")
+            case Storyboard.Duration.Picker.MinuteComponent:
+                durationValue.Minutes = row
+                println("Pace Minute: \(row.description)")
+            case Storyboard.Duration.Picker.SecondComponent:
+                durationValue.Seconds = row
+                println("Pace Second \(row.description)")
+            default:
+                break
+            }
+            mainTableData[self.pickerIndexPath!.row - 1][kDurationPickerKey] = durationValue.description()
+            var cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: pickerIndexPath!.row - 1, inSection: 0))
+            cell?.detailTextLabel?.text = durationValue.description()
+        }
+    }
     
 
     // MARK: - UITableViewDataSource
@@ -264,7 +324,6 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath) as UITableViewCell
         var cell: UITableViewCell?
         
         var cellID = kDistanceCellID
@@ -284,72 +343,41 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
             // the indexPath is one that contains the pace information
             cellID = kPaceCellID
         } else if indexPathIsDuration(indexPath) {
-            // the indexPath is one that contains the pace information
+            // the indexPath is one that contains the duration information
             cellID = kDurationCellID
         }
         
         cell = tableView.dequeueReusableCellWithIdentifier(cellID) as? UITableViewCell
         
-//        // if we have a date picker open whose cell is above the cell we want to update,
-//        // then we have one more cell than the model allows
-//        //
-//        var modelRow = indexPath.row
-//        if (datePickerIndexPath != nil && datePickerIndexPath?.row <= indexPath.row) {
-//            modelRow--
-//        }
-//        
-//        let itemData = dataArray[modelRow]
-//        
-//        if cellID == kDateCellID {
-//            // we have either start or end date cells, populate their date field
-//            //
-//            cell?.textLabel?.text = itemData[kTitleKey] as? String
-//            cell?.detailTextLabel?.text = self.dateFormatter.stringFromDate(itemData[kDateKey] as NSDate)
-//        } else if cellID == kOtherCellID {
-//            // this cell is a non-date cell, just assign it's text label
-//            //
-//            cell?.textLabel?.text = itemData[kTitleKey] as? String
-//        }
+        // If we have a picker open whose cell is above the cell we want to update,
+        // then we have one more cell than the model allows
+        //
+        var modelRow = indexPath.row
+        if (pickerIndexPath != nil && pickerIndexPath?.row <= indexPath.row) {
+            modelRow--
+        }
+        
+        let itemData = mainTableData[modelRow]
+        
+        if cellID == kPaceCellID {
+            // Populate pace field
+            cell?.textLabel?.text = itemData[kTitleKey] as? String
+            cell?.detailTextLabel?.text = itemData[kPacePickerKey] as? String
+        } else if cellID == kDurationCellID  {
+            // Populate duration field
+            cell?.textLabel?.text = itemData[kTitleKey] as? String
+            cell?.detailTextLabel?.text = itemData[kDurationPickerKey] as? String
+        } else if cellID == kDistanceCellID {
+            // this cell is a non-date cell, just assign it's text label
+            //
+            cell?.textLabel?.text = itemData[kTitleKey] as? String
+        }
         
         return cell!
     }
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the item to be re-orderable.
-        return true
-    }
-    */
     
     // MARK: - UITableViewDelegate
+    
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return (indexPathHasPicker(indexPath) ? pickerCellRowHeight : tableView.rowHeight)
     }
@@ -363,11 +391,6 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         } else {
             tableView.deselectRowAtIndexPath(indexPath, animated: true)
         }
-//        if cell?.reuseIdentifier == kPaceCellID || cell?.reuseIdentifier == kDurationCellID {
-//            displayInlinePickerForRowAtPath(indexPath, reuseId: cell?.reuseIdentifier!)
-//        } else {
-//            tableView.deselectRowAtIndexPath(indexPath, animated: true)
-//        }
     }
 
     /*
