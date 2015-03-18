@@ -51,22 +51,27 @@ struct PacingCalculations
     
     struct Conversion {
         struct Time {
+            // Converts the given amount of seconds to minutes
             func secondsToMinutes(seconds: Double) -> Double {
                 return seconds / 60
             }
             
+            // Converts the given amount of seconds to hours
             func secondsToHours(seconds: Double) -> Double {
                 return seconds / 3600
             }
             
+            // Converts the given amount of hours to seconds
             func hoursToSeconds(hours: Double) -> Double {
                 return hours * 3600
             }
             
+            // Converts the given amount of minutes to seconds
             func minutesToSeconds(minutes: Double) -> Double {
                 return minutes * 60
             }
             
+            // Converts the given amount of seconds to a tuple containing hours, minutes, and seconds
             func secondsInHoursMinutesSeconds(var seconds: Int) -> (hours: Int, minutes: Int, seconds: Int) {
                 return (seconds / 3600, (seconds / 60) % 60, seconds % 60)
             }

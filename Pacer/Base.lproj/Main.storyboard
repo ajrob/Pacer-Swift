@@ -423,6 +423,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="quC-SP-pxo"/>
+                    <connections>
+                        <outlet property="navTitleBar" destination="quC-SP-pxo" id="c8P-eU-CT8"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6gh-po-KqL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

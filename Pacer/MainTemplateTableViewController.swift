@@ -10,48 +10,55 @@ import UIKit
 
 class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSource, UIPickerViewDelegate {
     
-    let kTitleKey          = "title"    // key for obtaining the data source item's title
-    let kPacePickerKey     = "pace"     // key for obtaining the data source item's pace picker value
-    let kDurationPickerKey = "duration" // key for obtaining the data source item's duration picker value
-    
-    let kPacePickerTag     = 20 // Tag identifying the pace picker view
-    let kDurationPickerTag = 30 // Tag identifying the duration picker view
-    
-    let kPaceCellID           = "paceCell"           // Will hold the pace information
-    let kPacePickerCellID     = "pacePickerCell"     // Will contain the pace picker values
-    let kDurationCellID       = "durationCell"       // Will hold the duraiton information
-    let kDurationPickerCellID = "durationPickerCell" // Will contain the duration picker values
-    let kDistanceCellID       = "distanceCell"       // Will hold the distance information
-    
+    let kTitleKey = "title" // key for obtaining the data source item's title
     private struct Storyboard {
-        static let AttributeCellResuseIdentifier = "attributeCell"
-        static let AttributePickerCellReuseIdentifier = "attributePicker"
+        // Order of the rows:
+        //  - Pace
+        //  - Pace Picker
+        //  - Duration
+        //  - Duration Picker
+        //  - Distance
         struct Pace {
-            static let Row = 0
+            static let Row    = 0          // Row position of the pace
+            static let CellID = "paceCell" // Will hold the pace information
             struct Picker {
-                static let Tag = 20
-                static let Row = 1
+                static let CellID          = "pacePickerCell" // Will contain the pace picker values
+                static let Key             = "pace"           // Key for obtaining the data source item's pace picker value
+                static let Tag             = 20               // Tag identifying the pace picker view
                 static let MinuteComponent = 0
                 static let SecondComponent = 1
             }
         }
         struct Duration {
-            static let Row = 2
+            static let Row    = 1              // Row position of the duration
+            static let CellID = "durationCell" // Will hold the duration information
             struct Picker {
-                static let Tag = 30
-                static let Row = 3
-                static let HourComponent = 0
+                static let CellID          = "durationPickerCell" // Will contain the duration picker values
+                static let Key             = "duration"           // Key for obtaining the data source item's duration picker value
+                static let Tag             = 30                   // Tag identifying the duration picker view
+                static let HourComponent   = 0
                 static let MinuteComponent = 1
                 static let SecondComponent = 2
             }
         }
-        
+        struct Distance {
+            static let Row    = 2              // Row position of the distance
+            static let CellID = "distanceCell" // Will hold the distance information
+        }
     }
     
     struct DurationTimeFormat {
-        var Hours:   Int = 0
-        var Minutes: Int = 0
-        var Seconds: Int = 0
+        var Hours:   Int = 0 {
+            didSet { TotalSeconds = (Hours * 3600) + (Minutes * 60) + Seconds }
+        }
+        var Minutes: Int = 0 {
+            didSet { TotalSeconds = (Hours * 3600) + (Minutes * 60) + Seconds }
+        }
+        var Seconds: Int = 0 {
+            didSet { TotalSeconds = (Hours * 3600) + (Minutes * 60) + Seconds }
+        }
+        
+        var TotalSeconds: Int = 0
         
         func description() -> String {
             var minFormatted = Minutes.description
@@ -65,8 +72,14 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
     }
     
     struct PaceTimeFormat {
-        var Minutes: Int = 0
-        var Seconds: Int = 0
+        var Minutes: Int = 0 {
+            didSet { TotalSeconds = (Minutes * 60) + Seconds }
+        }
+        var Seconds: Int = 0 {
+            didSet { TotalSeconds = (Minutes * 60) + Seconds }
+        }
+        
+        var TotalSeconds: Int = 0
         
         func description() -> String {
             var secFormatted = Seconds.description
@@ -84,30 +97,30 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
     var durationPickerData = [[Int]]()
     
     // Variables to hold pace, duration, and distance data
-    var paceValue =     PaceTimeFormat()
+    var paceValue     = PaceTimeFormat()
     var durationValue = DurationTimeFormat()
-    var distance =      0.0
-    
-    // Order of the rows:
-    //  - Pace
-    //  - Pace Picker
-    //  - Duration
-    //  - Duration Picker
-    //  - Distance
-    let kPaceRow = 0
-    let kDurationRow = 1
+    var distance      = 0.0
     
     var mainTableData: [[String: AnyObject]] = []
     var willShowPacePicker = false
     var willShowDurationPicker = false
     
     var pickerIndexPath: NSIndexPath?
+    
+    // Flags indicating whether there is a new variable to be calculated
+    var newPaceValue     = false
+    var newDurationValue = false
+    var newDistanceValue = false
+    
+    var result: Int = 0
 
+    @IBOutlet weak var navTitleBar: UINavigationItem!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let rowOne = [kTitleKey: "Pace", kPacePickerKey: " "]
-        let rowTwo = [kTitleKey: "Duration", kDurationPickerKey: " "]
+        let rowOne = [kTitleKey: "Pace", Storyboard.Pace.Picker.Key: " "]
+        let rowTwo = [kTitleKey: "Duration", Storyboard.Duration.Picker.Key: " "]
         let rowThree = [kTitleKey: "Distance"]
         
         mainTableData = [rowOne, rowTwo, rowThree]
@@ -126,6 +139,26 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         return array
     }
     
+    private func resetNewVariables() {
+        // Reset the new variable flags
+        newPaceValue = false
+        newDurationValue = false
+        newDistanceValue = false
+    }
+    
+    private func calculate() {
+        // Do calculations
+        if newPaceValue {
+            if newDurationValue {
+                result = Int(PacingCalculations().distanceFormula(Double(paceValue.TotalSeconds), time: Double(durationValue.TotalSeconds)))
+                navTitleBar.title = result.description
+                resetNewVariables()
+            } else if newDistanceValue {
+//                PacingCalculations().timeFormula(Double(paceValue.TotalSeconds), distance: Double(distanceValue.TotalSeconds))
+            }
+        }
+    }
+    
     // MARK: - Utilities
     private func hasInlinePicker() -> Bool {
         return pickerIndexPath? != nil
@@ -141,14 +174,14 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         let targetedRow = indexPath.row + 1
         
         let checkPickerCell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: targetedRow, inSection: 0))
-        var checkPicker = checkPickerCell?.viewWithTag(kPacePickerTag)
-        checkPicker = checkPickerCell?.viewWithTag(kDurationPickerTag)
+        var checkPicker = checkPickerCell?.viewWithTag(Storyboard.Pace.Picker.Tag)
+        checkPicker = checkPickerCell?.viewWithTag(Storyboard.Duration.Picker.Tag)
         
         hasPicker = checkPicker != nil
         return hasPicker
     }
     
-    private func toggleDatePickerForSelectedIndexPath(indexPath: NSIndexPath, reuseIdentifier: String) {
+    private func togglePickerForSelectedIndexPath(indexPath: NSIndexPath, reuseIdentifier: String) {
         tableView.beginUpdates()
         
         let indexPaths = [NSIndexPath(forRow: indexPath.row + 1, inSection: 0)]
@@ -159,9 +192,9 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
             tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: .Fade)
         } else {
             // Didn't find a picker below it, so we should insert it
-            if reuseIdentifier == kPaceCellID {
+            if reuseIdentifier == Storyboard.Pace.CellID {
                 willShowPacePicker = true
-            } else if reuseIdentifier == kDurationCellID {
+            } else if reuseIdentifier == Storyboard.Duration.CellID {
                 willShowDurationPicker = true
             }
             tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .Fade)
@@ -192,11 +225,11 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
             let rowToReveal = (before ? indexPath.row - 1 : indexPath.row)
             let indexPathToReveal = NSIndexPath(forRow: rowToReveal, inSection: 0)
             
-            toggleDatePickerForSelectedIndexPath(indexPathToReveal, reuseIdentifier: reuseId)
+            togglePickerForSelectedIndexPath(indexPathToReveal, reuseIdentifier: reuseId)
             pickerIndexPath = NSIndexPath(forRow: indexPathToReveal.row + 1, inSection: 0)
         }
         
-        // always deselect the row containing the start or end date
+        // Always deselect the row
         tableView.deselectRowAtIndexPath(indexPath, animated:true)
         
         tableView.endUpdates()
@@ -212,13 +245,12 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
     
     /*! Determines if the given indexPath points to the cell that contains the pace
     
-    @param indexPath The indexPath to check if it represents start/end date cell.
+    @param indexPath The indexPath to check if it represents the pace cell.
     */
     func indexPathIsPace(indexPath: NSIndexPath) -> Bool {
         var isPace = false
         
-//        if (indexPath.row == kPaceRow) || (indexPath.row == kDurationRow || (hasInlinePicker() && (indexPath.row == kDurationRow + 1))) {
-        if (indexPath.row == kPaceRow) {
+        if (indexPath.row == Storyboard.Pace.Row) {
             isPace = true
         }
         return isPace
@@ -226,13 +258,12 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
     
     /*! Determines if the given indexPath points to the cell that contains the duration
     
-    @param indexPath The indexPath to check if it represents start/end date cell.
+    @param indexPath The indexPath to check if it represents the duration cell.
     */
     func indexPathIsDuration(indexPath: NSIndexPath) -> Bool {
         var isDuration = false
         
-//        if (indexPath.row == kDurationRow) || (indexPath.row == kDateEndRow || (hasInlineDatePicker() && (indexPath.row == kDateEndRow + 1))) {
-        if (indexPath.row == kDurationRow) {
+        if (indexPath.row == Storyboard.Duration.Row) {
             isDuration = true
         }
         return isDuration
@@ -285,9 +316,15 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
             default:
                 break
             }
-            mainTableData[self.pickerIndexPath!.row - 1][kPacePickerKey] = paceValue.description()
+            mainTableData[self.pickerIndexPath!.row - 1][Storyboard.Pace.Picker.Key] = paceValue.description()
             var cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: pickerIndexPath!.row - 1, inSection: 0))
             cell?.detailTextLabel?.text = paceValue.description()
+            
+            // New value, so set pace flag
+            newPaceValue = true
+            
+            // Calculate with new pace value
+            calculate()
         } else if pickerView.tag == Storyboard.Duration.Picker.Tag {
             switch component {
             case Storyboard.Duration.Picker.HourComponent:
@@ -302,9 +339,15 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
             default:
                 break
             }
-            mainTableData[self.pickerIndexPath!.row - 1][kDurationPickerKey] = durationValue.description()
+            mainTableData[self.pickerIndexPath!.row - 1][Storyboard.Duration.Picker.Key] = durationValue.description()
             var cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: pickerIndexPath!.row - 1, inSection: 0))
             cell?.detailTextLabel?.text = durationValue.description()
+            
+            // New value, so set duration flag
+            newDurationValue = true
+            
+            // Calculate with new duration value
+            calculate()
         }
     }
     
@@ -326,25 +369,25 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell: UITableViewCell?
         
-        var cellID = kDistanceCellID
+        var cellID = Storyboard.Distance.CellID
         
         if indexPathHasPicker(indexPath) {
             // The indexPath is the one containing the inline picker
             if willShowPacePicker {
-                cellID = kPacePickerCellID
-                // Reset flag
+                cellID = Storyboard.Pace.Picker.CellID
+                // Reset pace flag
                 willShowPacePicker = false
             } else if willShowDurationPicker {
-                cellID = kDurationPickerCellID
-                // Reset flag
+                cellID = Storyboard.Duration.Picker.CellID
+                // Reset duration flag
                 willShowDurationPicker = false
             }
         } else if indexPathIsPace(indexPath) {
-            // the indexPath is one that contains the pace information
-            cellID = kPaceCellID
+            // The indexPath is one that contains the pace information
+            cellID = Storyboard.Pace.CellID
         } else if indexPathIsDuration(indexPath) {
-            // the indexPath is one that contains the duration information
-            cellID = kDurationCellID
+            // The indexPath is one that contains the duration information
+            cellID = Storyboard.Duration.CellID
         }
         
         cell = tableView.dequeueReusableCellWithIdentifier(cellID) as? UITableViewCell
@@ -359,17 +402,15 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         
         let itemData = mainTableData[modelRow]
         
-        if cellID == kPaceCellID {
+        if cellID == Storyboard.Pace.CellID {
             // Populate pace field
             cell?.textLabel?.text = itemData[kTitleKey] as? String
-            cell?.detailTextLabel?.text = itemData[kPacePickerKey] as? String
-        } else if cellID == kDurationCellID  {
+            cell?.detailTextLabel?.text = itemData[Storyboard.Pace.Picker.Key] as? String
+        } else if cellID == Storyboard.Duration.CellID {
             // Populate duration field
             cell?.textLabel?.text = itemData[kTitleKey] as? String
-            cell?.detailTextLabel?.text = itemData[kDurationPickerKey] as? String
-        } else if cellID == kDistanceCellID {
-            // this cell is a non-date cell, just assign it's text label
-            //
+            cell?.detailTextLabel?.text = itemData[Storyboard.Duration.Picker.Key] as? String
+        } else if cellID == Storyboard.Distance.CellID {
             cell?.textLabel?.text = itemData[kTitleKey] as? String
         }
         
@@ -385,7 +426,7 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let cell = tableView.cellForRowAtIndexPath(indexPath)
         if let reuseID = cell?.reuseIdentifier {
-            if reuseID == kPaceCellID || reuseID == kDurationCellID {
+            if reuseID == Storyboard.Pace.CellID || reuseID == Storyboard.Duration.CellID {
                 displayInlinePickerForRowAtPath(indexPath, reuseId: reuseID)
             }
         } else {
