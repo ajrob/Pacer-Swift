@@ -16,7 +16,6 @@
 		FA5638461A96FE4400E9BB0A /* PacerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5638451A96FE4400E9BB0A /* PacerTests.swift */; };
 		FA5638501A97010400E9BB0A /* PacingCalculations.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA56384F1A97010400E9BB0A /* PacingCalculations.swift */; };
 		FA79DC021A99A8580038EA8E /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA79DC011A99A8580038EA8E /* Enums.swift */; };
-		FAFCAA921AA17A5D0045D138 /* MainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFCAA911AA17A5D0045D138 /* MainTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,7 +42,6 @@
 		FA5638451A96FE4400E9BB0A /* PacerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PacerTests.swift; sourceTree = "<group>"; };
 		FA56384F1A97010400E9BB0A /* PacingCalculations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PacingCalculations.swift; sourceTree = "<group>"; };
 		FA79DC011A99A8580038EA8E /* Enums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
-		FAFCAA911AA17A5D0045D138 /* MainTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,7 +88,6 @@
 				FA56382D1A96FE4400E9BB0A /* Supporting Files */,
 				FA56384F1A97010400E9BB0A /* PacingCalculations.swift */,
 				FA79DC011A99A8580038EA8E /* Enums.swift */,
-				FAFCAA911AA17A5D0045D138 /* MainTableViewController.swift */,
 				FA5367F61AB29A5D000C5E0E /* MainTemplateTableViewController.swift */,
 			);
 			path = Pacer;
@@ -228,7 +225,6 @@
 				FA5638301A96FE4400E9BB0A /* AppDelegate.swift in Sources */,
 				FA5367F71AB29A5D000C5E0E /* MainTemplateTableViewController.swift in Sources */,
 				FA79DC021A99A8580038EA8E /* Enums.swift in Sources */,
-				FAFCAA921AA17A5D0045D138 /* MainTableViewController.swift in Sources */,
 				FA5638501A97010400E9BB0A /* PacingCalculations.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

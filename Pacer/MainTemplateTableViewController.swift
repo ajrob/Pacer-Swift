@@ -112,8 +112,6 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
     var newDurationValue = false
     var newDistanceValue = false
     
-    var result: Int = 0
-
     @IBOutlet weak var navTitleBar: UINavigationItem!
     
     override func viewDidLoad() {
@@ -150,8 +148,17 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         // Do calculations
         if newPaceValue {
             if newDurationValue {
-                result = Int(PacingCalculations().distanceFormula(Double(paceValue.TotalSeconds), time: Double(durationValue.TotalSeconds)))
-                navTitleBar.title = result.description
+                // Pace is in minutes per mile, so enter the inverse into the formula
+                var result = PacingCalculations().distanceFormula(1/Double(paceValue.TotalSeconds), time: Double(durationValue.TotalSeconds))
+                navTitleBar.title = "\(result)"
+                // Update distance row
+                var distanceRow = Storyboard.Distance.Row
+                if pickerIndexPath != nil {
+                    distanceRow += 1
+                }
+                var cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: distanceRow, inSection: 0))
+                cell?.detailTextLabel?.text = "\(result)"
+                // Reset new variable flags
                 resetNewVariables()
             } else if newDistanceValue {
 //                PacingCalculations().timeFormula(Double(paceValue.TotalSeconds), distance: Double(distanceValue.TotalSeconds))
@@ -162,6 +169,15 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
     // MARK: - Utilities
     private func hasInlinePicker() -> Bool {
         return pickerIndexPath? != nil
+    }
+    
+    private func removePickerRow() {
+        if self.hasInlinePicker() {
+            tableView.beginUpdates()
+            tableView.deleteRowsAtIndexPaths([NSIndexPath(forRow: pickerIndexPath!.row, inSection: 0)], withRowAnimation: .Fade)
+            pickerIndexPath = nil
+            tableView.endUpdates()
+        }
     }
     
     /*! Determines if the given indexPath has a cell below it with a UIPickerView.
