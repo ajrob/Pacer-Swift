@@ -122,14 +122,21 @@
                             <outlet property="delegate" destination="0fp-Os-3Z4" id="fXi-nU-mnN"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="quC-SP-pxo"/>
+                    <navigationItem key="navigationItem" id="quC-SP-pxo">
+                        <barButtonItem key="rightBarButtonItem" title="Calculate" id="lBp-AE-vgv">
+                            <connections>
+                                <action selector="recalculate:" destination="0fp-Os-3Z4" id="IQ1-nw-Lb3"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
+                        <outlet property="calculateBarButton" destination="lBp-AE-vgv" id="Spn-od-LF1"/>
                         <outlet property="navTitleBar" destination="quC-SP-pxo" id="c8P-eU-CT8"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6gh-po-KqL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1726" y="948"/>
+            <point key="canvasLocation" x="1678" y="1442"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="FSI-ZF-VPd">
@@ -147,7 +154,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GxT-F9-7l6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="914" y="952"/>
+            <point key="canvasLocation" x="864" y="1442"/>
         </scene>
     </scenes>
 </document>

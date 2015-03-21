@@ -10,6 +10,8 @@ import UIKit
 
 class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSource, UIPickerViewDelegate {
     
+    @IBOutlet weak var calculateBarButton: UIBarButtonItem!
+    
     let kTitleKey = "title" // key for obtaining the data source item's title
     private struct Storyboard {
         // Order of the rows:
@@ -108,7 +110,14 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
     var pickerIndexPath: NSIndexPath?
     
     // Flags indicating whether there is a new variable to be calculated
-    var newPaceValue     = false
+    var newPaceValue: Bool = false {
+        willSet {
+            if newValue == true {
+                // Set the row to a different color to indicate it's currently 1 of the 2 used variables
+                tableView.reloadData()
+            }
+        }
+    }
     var newDurationValue = false
     var newDistanceValue = false
     
@@ -338,9 +347,6 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
             
             // New value, so set pace flag
             newPaceValue = true
-            
-            // Calculate with new pace value
-            calculate()
         } else if pickerView.tag == Storyboard.Duration.Picker.Tag {
             switch component {
             case Storyboard.Duration.Picker.HourComponent:
@@ -361,9 +367,6 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
             
             // New value, so set duration flag
             newDurationValue = true
-            
-            // Calculate with new duration value
-            calculate()
         }
     }
     
@@ -449,7 +452,19 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
             tableView.deselectRowAtIndexPath(indexPath, animated: true)
         }
     }
+    
+    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        if (indexPath.row == Storyboard.Pace.Row && newPaceValue) {
+            cell.backgroundColor = UIColor.greenColor()
+        }
+    }
 
+    // MARK: - Calculate
+    @IBAction func recalculate(sender: UIBarButtonItem) {
+        calculateBarButton.title = "Recalculate"
+        calculate()
+    }
+    
     /*
     // MARK: - Navigation
 
