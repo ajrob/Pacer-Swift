@@ -109,17 +109,27 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
     
     var pickerIndexPath: NSIndexPath?
     
-    // Flags indicating whether there is a new variable to be calculated
-    var newPaceValue: Bool = false {
-        willSet {
-            if newValue == true {
-                // Set the row to a different color to indicate it's currently 1 of the 2 used variables
-                tableView.reloadData()
+    struct VariableFlag {
+        var Name: String = ""
+        var IsModified: Bool = false {
+            didSet {
+                if IsModified == true {
+                    TableView.beginUpdates()
+                    TableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: Row, inSection: 0)], withRowAnimation: .Fade)
+                    TableView.endUpdates()
+                }
             }
         }
+        
+        var TableView: UITableView = UITableView()
+        var Row: Int = 0
     }
-    var newDurationValue = false
-    var newDistanceValue = false
+    
+    var newPace     = VariableFlag(Name: "pace", IsModified: false, TableView: UITableView(), Row: Storyboard.Pace.Row)
+    var newDuration = VariableFlag(Name: "duration", IsModified: false, TableView: UITableView(), Row: Storyboard.Duration.Row)
+    var newDistance = VariableFlag(Name: "distance", IsModified: false, TableView: UITableView(), Row: Storyboard.Distance.Row)
+    
+    private var modifiedVariables: [VariableFlag] = []
     
     @IBOutlet weak var navTitleBar: UINavigationItem!
     
@@ -136,6 +146,11 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         arrayBaseSixty = createArray(60)
         pacePickerData = [arrayBaseSixty, arrayBaseSixty]
         durationPickerData = [createArray(80), arrayBaseSixty, arrayBaseSixty]
+        
+        // Flags indicating whether there is a new variable to be calculated
+        newPace.TableView = tableView
+        newDuration.TableView = tableView
+        newDistance.TableView = tableView
     }
     
     private func createArray(numberOfElements: Int) -> [Int] {
@@ -148,15 +163,15 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
     
     private func resetNewVariables() {
         // Reset the new variable flags
-        newPaceValue = false
-        newDurationValue = false
-        newDistanceValue = false
+        newPace.IsModified = false
+        newDuration.IsModified = false
+        newDistance.IsModified = false
     }
     
     private func calculate() {
         // Do calculations
-        if newPaceValue {
-            if newDurationValue {
+        if newPace.IsModified {
+            if newDuration.IsModified {
                 // Pace is in minutes per mile, so enter the inverse into the formula
                 var result = PacingCalculations().distanceFormula(1/Double(paceValue.TotalSeconds), time: Double(durationValue.TotalSeconds))
                 navTitleBar.title = "\(result)"
@@ -169,9 +184,50 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
                 cell?.detailTextLabel?.text = "\(result)"
                 // Reset new variable flags
                 resetNewVariables()
-            } else if newDistanceValue {
+            } else if newDistance.IsModified {
 //                PacingCalculations().timeFormula(Double(paceValue.TotalSeconds), distance: Double(distanceValue.TotalSeconds))
             }
+        }
+    }
+    
+    // Adds a newly modified variable onto a stack. Keeps the 2 most recent variables and discards the oldest.
+    // Only 2 variables are needed in order to perform a calculation
+    private func addModifiedVariable(newVar: VariableFlag) {
+        // Add most recent to the top, move the previous top to the second, discard the last.
+        switch (modifiedVariables.count) {
+        case 0:
+            // Just add the newest modified variable
+            modifiedVariables.append(newVar)
+            // Set the new value to true
+            modifiedVariables[0].IsModified = true
+            break
+        case 1:
+            // Check to see if it's the same variable
+            if (modifiedVariables[0].Name != newVar.Name) {
+                // Insert the newer variable into first element
+                modifiedVariables.insert(newVar, atIndex: 0)
+                // Set the new value to true
+                modifiedVariables[0].IsModified = true
+            }
+            break
+        case 2:
+            // Check to see if it's the same variable
+            if (modifiedVariables[0].Name != newVar.Name && modifiedVariables[1].Name != newVar.Name) {
+                // Insert the newer variable into first element
+                modifiedVariables.insert(newVar, atIndex: 0)
+                // Set the new value to true
+                modifiedVariables[0].IsModified = true
+                
+                // Reset the old value back to false
+                modifiedVariables[2].IsModified = false
+                // Remove the oldest variable
+                modifiedVariables.removeLast()
+            }
+            break
+        default:
+            // If there's more than 2, clear the whole array
+            modifiedVariables = []
+            break
         }
     }
     
@@ -334,10 +390,10 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
             switch component {
             case Storyboard.Pace.Picker.MinuteComponent:
                 paceValue.Minutes = row
-                println("Pace Minute: \(row.description)")
+//                println("Pace Minute: \(row.description)")
             case Storyboard.Pace.Picker.SecondComponent:
                 paceValue.Seconds = row
-                println("Pace Second \(row.description)")
+//                println("Pace Second \(row.description)")
             default:
                 break
             }
@@ -345,19 +401,19 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
             var cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: pickerIndexPath!.row - 1, inSection: 0))
             cell?.detailTextLabel?.text = paceValue.description()
             
-            // New value, so set pace flag
-            newPaceValue = true
+            // New value, so add the pace to the stack
+            addModifiedVariable(newPace)
         } else if pickerView.tag == Storyboard.Duration.Picker.Tag {
             switch component {
             case Storyboard.Duration.Picker.HourComponent:
                 durationValue.Hours = row
-                println("Pace Hour: \(row.description)")
+//                println("Pace Hour: \(row.description)")
             case Storyboard.Duration.Picker.MinuteComponent:
                 durationValue.Minutes = row
-                println("Pace Minute: \(row.description)")
+//                println("Pace Minute: \(row.description)")
             case Storyboard.Duration.Picker.SecondComponent:
                 durationValue.Seconds = row
-                println("Pace Second \(row.description)")
+//                println("Pace Second \(row.description)")
             default:
                 break
             }
@@ -366,7 +422,7 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
             cell?.detailTextLabel?.text = durationValue.description()
             
             // New value, so set duration flag
-            newDurationValue = true
+            addModifiedVariable(newDuration)
         }
     }
     
@@ -454,9 +510,14 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
     }
     
     override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        if (indexPath.row == Storyboard.Pace.Row && newPaceValue) {
-            cell.backgroundColor = UIColor.greenColor()
+        let paceResult = modifiedVariables.filter {$0.Name == "pace"}
+        if let pace = paceResult.first { // Pace is on the stack, therefore is true
+            if ((indexPath.row == Storyboard.Pace.Row)) {
+                cell.backgroundColor = UIColor.greenColor()
+            }
         }
+        
+        
     }
 
     // MARK: - Calculate
