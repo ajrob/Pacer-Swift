@@ -8,11 +8,18 @@
 
 import UIKit
 
-class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSource, UIPickerViewDelegate {
+class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate {
     
     @IBOutlet weak var calculateBarButton: UIBarButtonItem!
+    func dismissKeyboard() {
+        if textField.editing {
+            textField.resignFirstResponder()
+        }
+    }
     
     let kTitleKey = "title" // key for obtaining the data source item's title
+    
+    // Layout structure for the 3 main variables
     private struct Storyboard {
         // Order of the rows:
         //  - Pace
@@ -23,6 +30,7 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         struct Pace {
             static let Row    = 0          // Row position of the pace
             static let CellID = "paceCell" // Will hold the pace information
+
             struct Picker {
                 static let CellID          = "pacePickerCell" // Will contain the pace picker values
                 static let Key             = "pace"           // Key for obtaining the data source item's pace picker value
@@ -46,6 +54,8 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         struct Distance {
             static let Row    = 2              // Row position of the distance
             static let CellID = "distanceCell" // Will hold the distance information
+            static let Tag = 10                // Tag identifying the distance UITextField
+            static let Key = "distance"        // Key for obtaining the data source item's distance value
         }
     }
     
@@ -101,7 +111,7 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
     // Variables to hold pace, duration, and distance data
     var paceValue     = PaceTimeFormat()
     var durationValue = DurationTimeFormat()
-    var distance      = 0.0
+    var distanceValue = 0.0
     
     var mainTableData: [[String: AnyObject]] = []
     var willShowPacePicker = false
@@ -109,27 +119,19 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
     
     var pickerIndexPath: NSIndexPath?
     
-    struct VariableFlag {
-        var Name: String = ""
-        var IsModified: Bool = false {
-            didSet {
-                if IsModified == true {
-                    TableView.beginUpdates()
-                    TableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: Row, inSection: 0)], withRowAnimation: .Fade)
-                    TableView.endUpdates()
-                }
-            }
-        }
-        
-        var TableView: UITableView = UITableView()
-        var Row: Int = 0
+    private struct VariablesTracker {
+        var Pace = Variable()
+        var Distance = Variable()
+        var Duration = Variable()
     }
     
-    var newPace     = VariableFlag(Name: "pace", IsModified: false, TableView: UITableView(), Row: Storyboard.Pace.Row)
-    var newDuration = VariableFlag(Name: "duration", IsModified: false, TableView: UITableView(), Row: Storyboard.Duration.Row)
-    var newDistance = VariableFlag(Name: "distance", IsModified: false, TableView: UITableView(), Row: Storyboard.Distance.Row)
+    // Container to hold the IsModified flag of each variable
+    private var modifiedVariables = VariablesTracker()
     
-    private var modifiedVariables: [VariableFlag] = []
+    // Array to keep track of the 2 most recently modified variables
+    private var modifiedList: [Variable] = []
+    
+    var textField = UITextField()
     
     @IBOutlet weak var navTitleBar: UINavigationItem!
     
@@ -138,7 +140,7 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         
         let rowOne = [kTitleKey: "Pace", Storyboard.Pace.Picker.Key: " "]
         let rowTwo = [kTitleKey: "Duration", Storyboard.Duration.Picker.Key: " "]
-        let rowThree = [kTitleKey: "Distance"]
+        let rowThree = [kTitleKey: "Distance", Storyboard.Distance.Key: " "]
         
         mainTableData = [rowOne, rowTwo, rowThree]
         
@@ -147,10 +149,21 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         pacePickerData = [arrayBaseSixty, arrayBaseSixty]
         durationPickerData = [createArray(80), arrayBaseSixty, arrayBaseSixty]
         
-        // Flags indicating whether there is a new variable to be calculated
-        newPace.TableView = tableView
-        newDuration.TableView = tableView
-        newDistance.TableView = tableView
+        // Initialize flags indicating whether there is a new variable to be calculated
+        modifiedVariables.Pace.TableViewController = self
+        modifiedVariables.Pace.Row = Storyboard.Pace.Row
+        modifiedVariables.Pace.IsModified = false
+        modifiedVariables.Duration.TableViewController = self
+        modifiedVariables.Duration.Row = Storyboard.Duration.Row
+        modifiedVariables.Duration.IsModified = false
+        modifiedVariables.Distance.TableViewController = self
+        modifiedVariables.Distance.Row = Storyboard.Distance.Row
+        modifiedVariables.Distance.IsModified = false
+        
+        var tap = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
+
+        tableView.addGestureRecognizer(tap)
+        tap.cancelsTouchesInView = false
     }
     
     private func createArray(numberOfElements: Int) -> [Int] {
@@ -162,71 +175,117 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
     }
     
     private func resetNewVariables() {
+        // Remove any picker cell if it exists
+//        tableView.beginUpdates()
+//        if self.hasInlinePicker() {
+//            tableView.deleteRowsAtIndexPaths([NSIndexPath(forRow: pickerIndexPath!.row, inSection: 0)], withRowAnimation: .Fade)
+//            pickerIndexPath = nil
+//        }
+//        tableView.endUpdates()
+        removePickerRow()
+        
+        // Clear variable values
+        paceValue.Minutes = 0
+        paceValue.Seconds = 0
+        durationValue.Hours = 0
+        durationValue.Minutes = 0
+        durationValue.Seconds = 0
+        
+        mainTableData[0][Storyboard.Pace.Picker.Key] = " "
+        mainTableData[1][Storyboard.Duration.Picker.Key] = " "
+        mainTableData[2][Storyboard.Distance.Key] = " "
+        
+        // Reset variable array
+        modifiedList = []
+        
         // Reset the new variable flags
-        newPace.IsModified = false
-        newDuration.IsModified = false
-        newDistance.IsModified = false
+        modifiedVariables.Pace.IsModified = false
+        modifiedVariables.Distance.IsModified = false
+        modifiedVariables.Duration.IsModified = false
     }
     
     private func calculate() {
         // Do calculations
-        if newPace.IsModified {
-            if newDuration.IsModified {
+        if modifiedVariables.Pace.IsModified {
+            if modifiedVariables.Duration.IsModified {
                 // Pace is in minutes per mile, so enter the inverse into the formula
-                var result = PacingCalculations().distanceFormula(1/Double(paceValue.TotalSeconds), time: Double(durationValue.TotalSeconds))
+                let result = PacingCalculations().distanceFormula(1/Double(paceValue.TotalSeconds), time: Double(durationValue.TotalSeconds))
                 navTitleBar.title = "\(result)"
                 // Update distance row
                 var distanceRow = Storyboard.Distance.Row
                 if pickerIndexPath != nil {
                     distanceRow += 1
                 }
-                var cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: distanceRow, inSection: 0))
-                cell?.detailTextLabel?.text = "\(result)"
-                // Reset new variable flags
-                resetNewVariables()
-            } else if newDistance.IsModified {
-//                PacingCalculations().timeFormula(Double(paceValue.TotalSeconds), distance: Double(distanceValue.TotalSeconds))
+                let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: distanceRow, inSection: 0))
+//                cell?.detailTextLabel?.text = "\(result)"
+                (cell?.viewWithTag(Storyboard.Distance.Tag) as UITextField).text = "\(result)"
+//                // Reset new variable flags
+//                resetNewVariables()
+            } else if modifiedVariables.Distance.IsModified {
+                // Pace is in minutes per mile, so enter the inverse into the formula
+                let result = PacingCalculations().timeFormula(1/Double(paceValue.TotalSeconds), distance: Double(distanceValue))
+                let formattedResult = PacingCalculations.Conversion.Time().secondsInHoursMinutesSeconds(Int(result))
+                durationValue.Hours = formattedResult.hours
+                durationValue.Minutes = formattedResult.minutes
+                durationValue.Seconds = formattedResult.seconds
+                
+                //Update duration row
+                var durationRow = Storyboard.Duration.Row
+                if pickerIndexPath != nil {
+                    durationRow += 1
+                }
+                let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: durationRow, inSection: 0))
+                cell?.detailTextLabel?.text = "\(durationValue.description())"
             }
+        } else if modifiedVariables.Duration.IsModified && modifiedVariables.Distance.IsModified {
+            let result = PacingCalculations().rateFormula(distanceValue, time: Double(durationValue.TotalSeconds))
+            let formattedResult = PacingCalculations.Conversion.Time().secondsInHoursMinutesSeconds(Int(1/result))
+            paceValue.Minutes = formattedResult.minutes
+            paceValue.Seconds = formattedResult.seconds
+            
+            // Update pace row
+            let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: Storyboard.Pace.Row, inSection: 0))
+            cell?.detailTextLabel?.text = "\(paceValue.description())"
         }
     }
     
     // Adds a newly modified variable onto a stack. Keeps the 2 most recent variables and discards the oldest.
     // Only 2 variables are needed in order to perform a calculation
-    private func addModifiedVariable(newVar: VariableFlag) {
+    private func addModifiedVariable(newVar: Variable) {
         // Add most recent to the top, move the previous top to the second, discard the last.
-        switch (modifiedVariables.count) {
+        switch (modifiedList.count) {
         case 0:
             // Just add the newest modified variable
-            modifiedVariables.append(newVar)
+            modifiedList.append(newVar)
             // Set the new value to true
-            modifiedVariables[0].IsModified = true
+            modifiedList[0].IsModified = true
             break
         case 1:
             // Check to see if it's the same variable
-            if (modifiedVariables[0].Name != newVar.Name) {
+            if (modifiedList[0] !== newVar) {
                 // Insert the newer variable into first element
-                modifiedVariables.insert(newVar, atIndex: 0)
+                modifiedList.insert(newVar, atIndex: 0)
                 // Set the new value to true
-                modifiedVariables[0].IsModified = true
+                modifiedList[0].IsModified = true
             }
             break
         case 2:
             // Check to see if it's the same variable
-            if (modifiedVariables[0].Name != newVar.Name && modifiedVariables[1].Name != newVar.Name) {
+            if (modifiedList[0] !== newVar && modifiedList[1] !== newVar) {
                 // Insert the newer variable into first element
-                modifiedVariables.insert(newVar, atIndex: 0)
+                modifiedList.insert(newVar, atIndex: 0)
                 // Set the new value to true
-                modifiedVariables[0].IsModified = true
+                modifiedList[0].IsModified = true
                 
                 // Reset the old value back to false
-                modifiedVariables[2].IsModified = false
+                modifiedList[2].IsModified = false
                 // Remove the oldest variable
-                modifiedVariables.removeLast()
+                modifiedList.removeLast()
             }
             break
         default:
             // If there's more than 2, clear the whole array
-            modifiedVariables = []
+            modifiedList = []
             break
         }
     }
@@ -390,10 +449,8 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
             switch component {
             case Storyboard.Pace.Picker.MinuteComponent:
                 paceValue.Minutes = row
-//                println("Pace Minute: \(row.description)")
             case Storyboard.Pace.Picker.SecondComponent:
                 paceValue.Seconds = row
-//                println("Pace Second \(row.description)")
             default:
                 break
             }
@@ -402,18 +459,17 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
             cell?.detailTextLabel?.text = paceValue.description()
             
             // New value, so add the pace to the stack
-            addModifiedVariable(newPace)
+            addModifiedVariable(modifiedVariables.Pace)
+//            cell?.imageView?.image = UIImage(named: "arrow_right.png")
+            
         } else if pickerView.tag == Storyboard.Duration.Picker.Tag {
             switch component {
             case Storyboard.Duration.Picker.HourComponent:
                 durationValue.Hours = row
-//                println("Pace Hour: \(row.description)")
             case Storyboard.Duration.Picker.MinuteComponent:
                 durationValue.Minutes = row
-//                println("Pace Minute: \(row.description)")
             case Storyboard.Duration.Picker.SecondComponent:
                 durationValue.Seconds = row
-//                println("Pace Second \(row.description)")
             default:
                 break
             }
@@ -421,8 +477,8 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
             var cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: pickerIndexPath!.row - 1, inSection: 0))
             cell?.detailTextLabel?.text = durationValue.description()
             
-            // New value, so set duration flag
-            addModifiedVariable(newDuration)
+            // New value, so add the duration to the stack
+            addModifiedVariable(modifiedVariables.Duration)
         }
     }
     
@@ -487,10 +543,104 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
             cell?.detailTextLabel?.text = itemData[Storyboard.Duration.Picker.Key] as? String
         } else if cellID == Storyboard.Distance.CellID {
             cell?.textLabel?.text = itemData[kTitleKey] as? String
+            cell?.detailTextLabel?.hidden = true
+            cell?.viewWithTag(Storyboard.Distance.Tag)?.removeFromSuperview()
+            textField = UITextField()
+            textField.clearButtonMode = UITextFieldViewMode.WhileEditing
+            textField.tag = Storyboard.Distance.Tag
+            textField.setTranslatesAutoresizingMaskIntoConstraints(false)
+            textField.keyboardType = UIKeyboardType.DecimalPad
+            
+            textField.addTarget(self, action: Selector("textFieldChanged"), forControlEvents: UIControlEvents.EditingChanged)
+            
+            cell?.contentView.addSubview(textField)
+            cell?.addConstraint(NSLayoutConstraint(
+                item: textField,
+                attribute: NSLayoutAttribute.Leading,
+                relatedBy: NSLayoutRelation.Equal,
+                toItem: cell?.textLabel,
+                attribute: NSLayoutAttribute.Trailing,
+                multiplier: 1,
+                constant: 8))
+            cell?.addConstraint(NSLayoutConstraint(
+                item: textField,
+                attribute: NSLayoutAttribute.Top,
+                relatedBy: NSLayoutRelation.Equal,
+                toItem: cell?.contentView,
+                attribute: NSLayoutAttribute.Top,
+                multiplier: 1,
+                constant: 8))
+            cell?.addConstraint(NSLayoutConstraint(
+                item: textField,
+                attribute: NSLayoutAttribute.Bottom,
+                relatedBy: NSLayoutRelation.Equal,
+                toItem: cell?.contentView,
+                attribute: NSLayoutAttribute.Bottom,
+                multiplier: 1,
+                constant: -8))
+            cell?.addConstraint(NSLayoutConstraint(
+                item: textField,
+                attribute: NSLayoutAttribute.Trailing,
+                relatedBy: NSLayoutRelation.Equal,
+                toItem: cell?.contentView,
+                attribute: NSLayoutAttribute.Trailing,
+                multiplier: 1,
+                constant: -16))
+            textField.textAlignment = .Right
+            textField.delegate = self
+            
+            textField.text = itemData[Storyboard.Distance.Key] as? String
         }
         
         return cell!
     }
+    
+    // MARK: - UITextFieldDelegate
+    func endEditingNow() {
+        addModifiedVariable(modifiedVariables.Distance)
+        self.view.endEditing(true)
+    }
+    func textFieldChanged() {
+        distanceValue = (textField.text as NSString).doubleValue
+        mainTableData[2][Storyboard.Distance.Key] = textField.text
+        println("Text field edited")
+    }
+    
+    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+        // Collapse any pickers
+        if pickerIndexPath != nil {
+            removePickerRow()
+        }
+        
+        // Create button bar for the keyboard
+        let keyboardDoneButtonBar = UIToolbar()
+        keyboardDoneButtonBar.sizeToFit()
+        
+        let doneButton = UIBarButtonItem(
+            title: "Done",
+            style: UIBarButtonItemStyle.Plain,
+            target: self,
+            action: Selector("endEditingNow"))
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: self, action: nil)
+        var toolbarButtons = [flexibleSpace, doneButton]
+        keyboardDoneButtonBar.setItems(toolbarButtons, animated: false)
+        
+        textField.inputAccessoryView = keyboardDoneButtonBar
+        
+        return true
+    }
+    
+    func textFieldDidEndEditing(textField: UITextField) {
+        self.resignFirstResponder()
+    }
+    
+    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+        println("touchesBegan")
+    }
+    
+//    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+//        
+//    }
     
     // MARK: - UITableViewDelegate
     
@@ -510,20 +660,30 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
     }
     
     override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        let paceResult = modifiedVariables.filter {$0.Name == "pace"}
-        if let pace = paceResult.first { // Pace is on the stack, therefore is true
-            if ((indexPath.row == Storyboard.Pace.Row)) {
-                cell.backgroundColor = UIColor.greenColor()
-            }
-        }
-        
+//        if ((indexPath.row == modifiedVariables.Pace.Row && modifiedVariables.Pace.IsModified && indexPath.row != pickerIndexPath?.row) ||
+//            (indexPath.row == modifiedVariables.Duration.Row && modifiedVariables.Duration.IsModified && indexPath.row != pickerIndexPath?.row) ||
+//            (indexPath.row == modifiedVariables.Distance.Row && modifiedVariables.Distance.IsModified && indexPath.row != pickerIndexPath?.row)) {
+////            cell.backgroundColor = UIColor.greenColor()
+//                cell.imageView?.image = UIImage(named: "arrow_right.png")
+//        } else if ((indexPath.row == modifiedVariables.Pace.Row && !modifiedVariables.Pace.IsModified) ||
+//            (indexPath.row == modifiedVariables.Duration.Row && !modifiedVariables.Duration.IsModified) ||
+//            (indexPath.row == modifiedVariables.Distance.Row && !modifiedVariables.Distance.IsModified)) {
+////            cell.backgroundColor = UIColor.clearColor()
+//                cell.imageView?.image = nil
+//        }
         
     }
 
     // MARK: - Calculate
     @IBAction func recalculate(sender: UIBarButtonItem) {
         calculateBarButton.title = "Recalculate"
+        removePickerRow()
+        dismissKeyboard()
         calculate()
+    }
+    
+    @IBAction func resetVariabes(sender: UIBarButtonItem) {
+        resetNewVariables()
     }
     
     /*
@@ -535,4 +695,32 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         // Pass the selected object to the new view controller.
     }
     */
+}
+
+// Class which represents the 3 main variables: Pace, Duration, and Distance
+class Variable {
+    var Row: Int = 0
+    var TableViewController: MainTemplateTableViewController? = nil
+    var IsModified: Bool = false {
+        didSet {
+            if let cell = TableViewController?.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: self.Row, inSection: 0)) {
+                if self.IsModified {
+                    cell.imageView?.image = UIImage(named: "arrow_right.png")
+                } else {
+                    cell.imageView?.image = nil
+                    reloadRow(self.Row)
+                }
+            }
+        }
+    }
+    
+    private func reloadRow(row: Int) {
+        var selectedRow = row
+        if self.TableViewController?.pickerIndexPath != nil {
+            selectedRow++
+        }
+        self.TableViewController?.tableView.beginUpdates()
+        self.TableViewController?.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: selectedRow, inSection: 0)], withRowAnimation: .None)
+        self.TableViewController?.tableView.endUpdates()
+    }
 }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FA08A99A1AD461E60054039C /* arrow_right.png in Resources */ = {isa = PBXBuildFile; fileRef = FA08A9991AD461E60054039C /* arrow_right.png */; };
 		FA5367F71AB29A5D000C5E0E /* MainTemplateTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5367F61AB29A5D000C5E0E /* MainTemplateTableViewController.swift */; };
 		FA5638301A96FE4400E9BB0A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA56382F1A96FE4400E9BB0A /* AppDelegate.swift */; };
 		FA5638321A96FE4400E9BB0A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5638311A96FE4400E9BB0A /* ViewController.swift */; };
@@ -29,6 +30,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		FA08A9991AD461E60054039C /* arrow_right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow_right.png; sourceTree = "<group>"; };
 		FA5367F61AB29A5D000C5E0E /* MainTemplateTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTemplateTableViewController.swift; sourceTree = "<group>"; };
 		FA56382A1A96FE4400E9BB0A /* Pacer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pacer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA56382E1A96FE4400E9BB0A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 		FA56382D1A96FE4400E9BB0A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				FA08A9991AD461E60054039C /* arrow_right.png */,
 				FA5638361A96FE4400E9BB0A /* Images.xcassets */,
 				FA5638381A96FE4400E9BB0A /* LaunchScreen.xib */,
 				FA56382F1A96FE4400E9BB0A /* AppDelegate.swift */,
@@ -203,6 +206,7 @@
 			files = (
 				FA5638351A96FE4400E9BB0A /* Main.storyboard in Resources */,
 				FA56383A1A96FE4400E9BB0A /* LaunchScreen.xib in Resources */,
+				FA08A99A1AD461E60054039C /* arrow_right.png in Resources */,
 				FA5638371A96FE4400E9BB0A /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
