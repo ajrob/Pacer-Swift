@@ -357,6 +357,20 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         tableView.endUpdates()
     }
     
+    private func updatePicker() {
+        if let indexPath = pickerIndexPath {
+            let associatedPickerCell = tableView.cellForRowAtIndexPath(indexPath)
+            if let targetedPicker = associatedPickerCell?.viewWithTag(Storyboard.Pace.Picker.Tag) as UIPickerView? {
+                targetedPicker.selectRow(paceValue.Minutes, inComponent: 0, animated: false)
+                targetedPicker.selectRow(paceValue.Seconds, inComponent: 1, animated: false)
+            } else if let targetedPicker = associatedPickerCell?.viewWithTag(Storyboard.Duration.Picker.Tag) as UIPickerView? {
+                targetedPicker.selectRow(durationValue.Hours, inComponent: 0, animated: false)
+                targetedPicker.selectRow(durationValue.Minutes, inComponent: 1, animated: false)
+                targetedPicker.selectRow(durationValue.Seconds, inComponent: 2, animated: false)
+            }
+        }
+    }
+    
     // Reveals the inline picker below the row. Called by didSelectRowAtIndexPath()
     private func displayInlinePickerForRowAtPath(indexPath: NSIndexPath, reuseId: String) {
         // Display the picker inline with the table content
@@ -388,6 +402,8 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         tableView.deselectRowAtIndexPath(indexPath, animated:true)
         
         tableView.endUpdates()
+        
+        updatePicker()
     }
     
     /*! Determines if the given indexPath points to a cell that contains a UIPickerView.
@@ -405,8 +421,14 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
     func indexPathIsPace(indexPath: NSIndexPath) -> Bool {
         var isPace = false
         
-        if (indexPath.row == Storyboard.Pace.Row) {
-            isPace = true
+        if pickerIndexPath == nil {
+            if indexPath.row == Storyboard.Pace.Row {
+                isPace = true
+            }
+        } else {
+            if (indexPath.row - 1) == Storyboard.Pace.Row {
+                isPace = true
+            }
         }
         return isPace
     }
@@ -418,9 +440,16 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
     func indexPathIsDuration(indexPath: NSIndexPath) -> Bool {
         var isDuration = false
         
-        if (indexPath.row == Storyboard.Duration.Row) {
-            isDuration = true
+        if pickerIndexPath == nil {
+            if indexPath.row == Storyboard.Duration.Row {
+                isDuration = true
+            }
+        } else {
+            if (indexPath.row - 1) == Storyboard.Duration.Row {
+                isDuration = true
+            }
         }
+        
         return isDuration
     }
     
