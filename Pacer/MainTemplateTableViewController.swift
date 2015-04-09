@@ -703,24 +703,24 @@ class Variable {
     var TableViewController: MainTemplateTableViewController? = nil
     var IsModified: Bool = false {
         didSet {
-            if let cell = TableViewController?.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: self.Row, inSection: 0)) {
-                if self.IsModified {
-                    cell.imageView?.image = UIImage(named: "arrow_right.png")
-                } else {
-                    cell.imageView?.image = nil
-                    reloadRow(self.Row)
+            var selectedRow = self.Row
+            if self.IsModified {
+                let cell = TableViewController?.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: selectedRow, inSection: 0))
+                cell?.imageView?.image = UIImage(named: "arrow_right.png")
+            } else {
+                if self.TableViewController?.pickerIndexPath != nil {
+                    selectedRow++
                 }
+                let cell = TableViewController?.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: selectedRow, inSection: 0))
+                cell?.imageView?.image = nil
+                reloadRow(selectedRow)
             }
         }
     }
     
     private func reloadRow(row: Int) {
-        var selectedRow = row
-        if self.TableViewController?.pickerIndexPath != nil {
-            selectedRow++
-        }
         self.TableViewController?.tableView.beginUpdates()
-        self.TableViewController?.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: selectedRow, inSection: 0)], withRowAnimation: .None)
+        self.TableViewController?.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: row, inSection: 0)], withRowAnimation: .None)
         self.TableViewController?.tableView.endUpdates()
     }
 }
