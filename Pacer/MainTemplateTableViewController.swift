@@ -209,7 +209,12 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         if modifiedVariables.Pace.IsModified {
             if modifiedVariables.Duration.IsModified {
                 // Pace is in minutes per mile, so enter the inverse into the formula
-                let result = PacingCalculations().distanceFormula(1/Double(paceValue.TotalSeconds), time: Double(durationValue.TotalSeconds))
+                var result = 0.0
+                if paceValue.TotalSeconds == 0 {
+                    result = PacingCalculations().distanceFormula(Double(paceValue.TotalSeconds), time: Double(durationValue.TotalSeconds))
+                } else {
+                    result = PacingCalculations().distanceFormula(1/Double(paceValue.TotalSeconds), time: Double(durationValue.TotalSeconds))
+                }
                 navTitleBar.title = "\(result)"
                 // Update distance row
                 var distanceRow = Storyboard.Distance.Row
@@ -223,7 +228,12 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
 //                resetNewVariables()
             } else if modifiedVariables.Distance.IsModified {
                 // Pace is in minutes per mile, so enter the inverse into the formula
-                let result = PacingCalculations().timeFormula(1/Double(paceValue.TotalSeconds), distance: Double(distanceValue))
+                var result = 0.0
+                if paceValue.TotalSeconds == 0 {
+                    result = PacingCalculations().timeFormula(Double(paceValue.TotalSeconds), distance: Double(distanceValue))
+                } else {
+                    result = PacingCalculations().timeFormula(1/Double(paceValue.TotalSeconds), distance: Double(distanceValue))
+                }
                 let formattedResult = PacingCalculations.Conversion.Time().secondsInHoursMinutesSeconds(Int(result))
                 durationValue.Hours = formattedResult.hours
                 durationValue.Minutes = formattedResult.minutes
@@ -239,7 +249,12 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
             }
         } else if modifiedVariables.Duration.IsModified && modifiedVariables.Distance.IsModified {
             let result = PacingCalculations().rateFormula(distanceValue, time: Double(durationValue.TotalSeconds))
-            let formattedResult = PacingCalculations.Conversion.Time().secondsInHoursMinutesSeconds(Int(1/result))
+            var formattedResult: (hours: Int, minutes: Int, seconds: Int)
+            if result == 0 {
+                formattedResult = PacingCalculations.Conversion.Time().secondsInHoursMinutesSeconds(Int(result))
+            } else {
+                formattedResult = PacingCalculations.Conversion.Time().secondsInHoursMinutesSeconds(Int(1/result))
+            }
             paceValue.Minutes = formattedResult.minutes
             paceValue.Seconds = formattedResult.seconds
             
@@ -597,12 +612,12 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
     
     // MARK: - UITextFieldDelegate
     func endEditingNow() {
-        addModifiedVariable(modifiedVariables.Distance)
         self.view.endEditing(true)
     }
     func textFieldChanged() {
         distanceValue = (textField.text as NSString).doubleValue
         mainTableData[2][Storyboard.Distance.Key] = textField.text
+        addModifiedVariable(modifiedVariables.Distance)
         println("Text field edited")
     }
     
