@@ -57,6 +57,9 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
             static let Tag = 10                // Tag identifying the distance UITextField
             static let Key = "distance"        // Key for obtaining the data source item's distance value
         }
+        static let PickerComponentWidth = CGFloat(100.0)              // General width of all components in every picker
+        static let PickerStaticLabelPadding = CGFloat(30.0)           // Padding of the labels
+        static let PickerDefaultSpaceBetweenComponents = CGFloat(4.0) // Approximate default spacing between components
     }
     
     struct DurationTimeFormat {
@@ -504,8 +507,6 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
             
             // New value, so add the pace to the stack
             addModifiedVariable(modifiedVariables.Pace)
-//            cell?.imageView?.image = UIImage(named: "arrow_right.png")
-            
         } else if pickerView.tag == Storyboard.Duration.Picker.Tag {
             switch component {
             case Storyboard.Duration.Picker.HourComponent:
@@ -524,6 +525,54 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
             // New value, so add the duration to the stack
             addModifiedVariable(modifiedVariables.Duration)
         }
+    }
+    
+    func pickerView(pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusingView view: UIView!) -> UIView {
+        var containerView = view
+        var pickerLabel = UILabel()
+        if view == nil {
+            containerView = UIView()
+            containerView.addSubview(pickerLabel)
+            pickerLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+            let constraints = [
+                NSLayoutConstraint(
+                    item: pickerLabel,
+                    attribute: NSLayoutAttribute.Leading,
+                    relatedBy: NSLayoutRelation.Equal,
+                    toItem: containerView,
+                    attribute: NSLayoutAttribute.Leading,
+                    multiplier: 1,
+                    constant: 0),
+                NSLayoutConstraint(
+                    item: pickerLabel,
+                    attribute: NSLayoutAttribute.CenterY,
+                    relatedBy: NSLayoutRelation.Equal,
+                    toItem: containerView,
+                    attribute: NSLayoutAttribute.CenterY,
+                    multiplier: 1,
+                    constant: 0),
+            ]
+            containerView.addConstraints(constraints)
+        }
+        var titleData = " "
+        if pickerView.tag == Storyboard.Pace.Picker.Tag {
+            titleData = pacePickerData[component][row].description
+        } else if pickerView.tag == Storyboard.Duration.Picker.Tag {
+            titleData = durationPickerData[component][row].description
+        } else {
+            titleData = " "
+        }
+        let title = NSAttributedString(string: titleData, attributes:
+            [
+                NSFontAttributeName:UIFont.systemFontOfSize(CGFloat(17.0)),
+                NSForegroundColorAttributeName:UIColor.blackColor()
+            ])
+        pickerLabel.attributedText = title
+        return containerView
+    }
+    
+    func pickerView(pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
+        return Storyboard.PickerComponentWidth
     }
     
 
@@ -566,6 +615,202 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         }
         
         cell = tableView.dequeueReusableCellWithIdentifier(cellID) as? UITableViewCell
+        
+        //Add labels to pickers if needed
+        if cellID == Storyboard.Pace.Picker.CellID {
+            let minuteLabel = UILabel()
+            let secondLabel = UILabel()
+            
+            let minuteLabelText = NSAttributedString(string: "min", attributes:
+                [
+                    NSFontAttributeName: UIFont.systemFontOfSize(CGFloat(15.0)),
+                    NSForegroundColorAttributeName: UIColor.darkGrayColor()
+                ]
+            )
+            let secondLabelText = NSAttributedString(string: "sec", attributes:
+                [
+                    NSFontAttributeName: UIFont.systemFontOfSize(CGFloat(15.0)),
+                    NSForegroundColorAttributeName: UIColor.darkGrayColor()
+                ]
+            )
+            
+            minuteLabel.attributedText = minuteLabelText
+            secondLabel.attributedText = secondLabelText
+            
+            minuteLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+            secondLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+            
+            cell?.contentView.addSubview(minuteLabel)
+            cell?.contentView.addSubview(secondLabel)
+            
+            let constraints = [
+                NSLayoutConstraint(
+                    item: minuteLabel,
+                    attribute: NSLayoutAttribute.Width,
+                    relatedBy: NSLayoutRelation.Equal,
+                    toItem: nil,
+                    attribute: NSLayoutAttribute.NotAnAttribute,
+                    multiplier: 1,
+                    constant: Storyboard.PickerComponentWidth
+                ),
+                NSLayoutConstraint(
+                    item: secondLabel,
+                    attribute: NSLayoutAttribute.Width,
+                    relatedBy: NSLayoutRelation.Equal,
+                    toItem: nil,
+                    attribute: NSLayoutAttribute.NotAnAttribute,
+                    multiplier: 1,
+                    constant: Storyboard.PickerComponentWidth
+                ),
+                NSLayoutConstraint(
+                    item: minuteLabel,
+                    attribute: NSLayoutAttribute.CenterY,
+                    relatedBy: NSLayoutRelation.Equal,
+                    toItem: cell?.contentView,
+                    attribute: NSLayoutAttribute.CenterY,
+                    multiplier: 1,
+                    constant: 0),
+                NSLayoutConstraint(
+                    item: minuteLabel,
+                    attribute: NSLayoutAttribute.Leading,
+                    relatedBy: NSLayoutRelation.Equal,
+                    toItem: cell?.contentView,
+                    attribute: NSLayoutAttribute.CenterX,
+                    multiplier: 1,
+                    constant: -(Storyboard.PickerComponentWidth - Storyboard.PickerStaticLabelPadding + Storyboard.PickerDefaultSpaceBetweenComponents)),
+                NSLayoutConstraint(
+                    item: secondLabel,
+                    attribute: NSLayoutAttribute.CenterY,
+                    relatedBy: NSLayoutRelation.Equal,
+                    toItem: cell?.contentView,
+                    attribute: NSLayoutAttribute.CenterY,
+                    multiplier: 1,
+                    constant: 0),
+                NSLayoutConstraint(
+                    item: secondLabel,
+                    attribute: NSLayoutAttribute.Leading,
+                    relatedBy: NSLayoutRelation.Equal,
+                    toItem: cell?.contentView,
+                    attribute: NSLayoutAttribute.CenterX,
+                    multiplier: 1,
+                    constant: Storyboard.PickerStaticLabelPadding + Storyboard.PickerDefaultSpaceBetweenComponents)
+            ]
+            cell?.contentView.addConstraints(constraints)
+        } else if cellID == Storyboard.Duration.Picker.CellID {
+            let hourLabel   = UILabel()
+            let minuteLabel = UILabel()
+            let secondLabel = UILabel()
+            
+            let hourLabelText = NSAttributedString(string: "hr", attributes:
+                [
+                    NSFontAttributeName: UIFont.systemFontOfSize(CGFloat(15.0)),
+                    NSForegroundColorAttributeName: UIColor.darkGrayColor()
+                ]
+            )
+            let minuteLabelText = NSAttributedString(string: "min", attributes:
+                [
+                    NSFontAttributeName: UIFont.systemFontOfSize(CGFloat(15.0)),
+                    NSForegroundColorAttributeName: UIColor.darkGrayColor()
+                ]
+            )
+            let secondLabelText = NSAttributedString(string: "sec", attributes:
+                [
+                    NSFontAttributeName: UIFont.systemFontOfSize(CGFloat(15.0)),
+                    NSForegroundColorAttributeName: UIColor.darkGrayColor()
+                ]
+            )
+            
+            hourLabel.attributedText = hourLabelText
+            minuteLabel.attributedText = minuteLabelText
+            secondLabel.attributedText = secondLabelText
+            
+            hourLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+            minuteLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+            secondLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+            
+            cell?.contentView.addSubview(hourLabel)
+            cell?.contentView.addSubview(minuteLabel)
+            cell?.contentView.addSubview(secondLabel)
+            
+            let constraints = [
+                NSLayoutConstraint(
+                    item: hourLabel,
+                    attribute: NSLayoutAttribute.Width,
+                    relatedBy: NSLayoutRelation.Equal,
+                    toItem: nil,
+                    attribute: NSLayoutAttribute.NotAnAttribute,
+                    multiplier: 1,
+                    constant: Storyboard.PickerComponentWidth
+                ),
+                NSLayoutConstraint(
+                    item: minuteLabel,
+                    attribute: NSLayoutAttribute.Width,
+                    relatedBy: NSLayoutRelation.Equal,
+                    toItem: nil,
+                    attribute: NSLayoutAttribute.NotAnAttribute,
+                    multiplier: 1,
+                    constant: Storyboard.PickerComponentWidth
+                ),
+                NSLayoutConstraint(
+                    item: secondLabel,
+                    attribute: NSLayoutAttribute.Width,
+                    relatedBy: NSLayoutRelation.Equal,
+                    toItem: nil,
+                    attribute: NSLayoutAttribute.NotAnAttribute,
+                    multiplier: 1,
+                    constant: Storyboard.PickerComponentWidth
+                ),
+                NSLayoutConstraint(
+                    item: hourLabel,
+                    attribute: NSLayoutAttribute.CenterY,
+                    relatedBy: NSLayoutRelation.Equal,
+                    toItem: cell?.contentView,
+                    attribute: NSLayoutAttribute.CenterY,
+                    multiplier: 1,
+                    constant: 0),
+                NSLayoutConstraint(
+                    item: hourLabel,
+                    attribute: NSLayoutAttribute.Leading,
+                    relatedBy: NSLayoutRelation.Equal,
+                    toItem: cell?.contentView,
+                    attribute: NSLayoutAttribute.CenterX,
+                    multiplier: 1,
+                    constant: -(Storyboard.PickerComponentWidth * 1.5 - Storyboard.PickerStaticLabelPadding + Storyboard.PickerDefaultSpaceBetweenComponents)),
+                NSLayoutConstraint(
+                    item: minuteLabel,
+                    attribute: NSLayoutAttribute.CenterY,
+                    relatedBy: NSLayoutRelation.Equal,
+                    toItem: cell?.contentView,
+                    attribute: NSLayoutAttribute.CenterY,
+                    multiplier: 1,
+                    constant: 0),
+                NSLayoutConstraint(
+                    item: minuteLabel,
+                    attribute: NSLayoutAttribute.Leading,
+                    relatedBy: NSLayoutRelation.Equal,
+                    toItem: cell?.contentView,
+                    attribute: NSLayoutAttribute.CenterX,
+                    multiplier: 1,
+                    constant: -(Storyboard.PickerComponentWidth / 2 - Storyboard.PickerStaticLabelPadding - Storyboard.PickerDefaultSpaceBetweenComponents)),
+                NSLayoutConstraint(
+                    item: secondLabel,
+                    attribute: NSLayoutAttribute.CenterY,
+                    relatedBy: NSLayoutRelation.Equal,
+                    toItem: cell?.contentView,
+                    attribute: NSLayoutAttribute.CenterY,
+                    multiplier: 1,
+                    constant: 0),
+                NSLayoutConstraint(
+                    item: secondLabel,
+                    attribute: NSLayoutAttribute.Leading,
+                    relatedBy: NSLayoutRelation.Equal,
+                    toItem: cell?.contentView,
+                    attribute: NSLayoutAttribute.CenterX,
+                    multiplier: 1,
+                    constant: Storyboard.PickerComponentWidth / 2 + Storyboard.PickerStaticLabelPadding + Storyboard.PickerDefaultSpaceBetweenComponents*3)
+            ]
+            cell?.contentView.addConstraints(constraints)
+        }
         
         // If we have a picker open whose cell is above the cell we want to update,
         // then we have one more cell than the model allows
