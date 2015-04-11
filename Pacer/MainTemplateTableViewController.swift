@@ -422,18 +422,7 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
     @param indexPath The indexPath to check if it represents the pace cell.
     */
     func indexPathIsPace(indexPath: NSIndexPath) -> Bool {
-        var isPace = false
-        
-        if pickerIndexPath == nil {
-            if indexPath.row == Storyboard.Pace.Row {
-                isPace = true
-            }
-        } else {
-            if (indexPath.row - 1) == Storyboard.Pace.Row {
-                isPace = true
-            }
-        }
-        return isPace
+        return indexPath.row == Storyboard.Pace.Row ? true : false
     }
     
     /*! Determines if the given indexPath points to the cell that contains the duration
@@ -479,15 +468,15 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         }
     }
     
-    func pickerView(pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
-        if pickerView.tag == Storyboard.Pace.Picker.Tag {
-            return NSAttributedString(string: pacePickerData[component][row].description)
-        } else if pickerView.tag == Storyboard.Duration.Picker.Tag {
-            return NSAttributedString(string: durationPickerData[component][row].description)
-        } else {
-            return NSAttributedString(string: "")
-        }
-    }
+//    func pickerView(pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
+//        if pickerView.tag == Storyboard.Pace.Picker.Tag {
+//            return NSAttributedString(string: pacePickerData[component][row].description)
+//        } else if pickerView.tag == Storyboard.Duration.Picker.Tag {
+//            return NSAttributedString(string: durationPickerData[component][row].description)
+//        } else {
+//            return NSAttributedString(string: "")
+//        }
+//    }
     
     // MARK: - UIPickerViewDelegate
     
@@ -995,13 +984,14 @@ class Variable {
             var selectedRow = self.Row
             if self.IsModified {
                 let cell = TableViewController?.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: selectedRow, inSection: 0))
-                cell?.imageView?.image = UIImage(named: "arrow_right.png")
+                cell?.imageView?.frame = CGRectMake(0, 0, 24, 24)
+                cell?.imageView?.image = UIImage(named: "iconmonstr-arrow-3-icon-256.png")
             } else {
-                if self.TableViewController?.pickerIndexPath != nil {
+                if self.TableViewController?.pickerIndexPath != nil && self.Row >= self.TableViewController?.pickerIndexPath?.row {
                     selectedRow++
                 }
                 let cell = TableViewController?.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: selectedRow, inSection: 0))
-                cell?.imageView?.image = nil
+                cell?.imageView?.image = UIImage(named: "iconmonstr-arrow-4-icon-256.png")
                 reloadRow(selectedRow)
             }
         }

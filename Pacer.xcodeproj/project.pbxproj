@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		FA08A99A1AD461E60054039C /* arrow_right.png in Resources */ = {isa = PBXBuildFile; fileRef = FA08A9991AD461E60054039C /* arrow_right.png */; };
+		FA24B7191AD8DA320035114A /* iconmonstr-edit-3-icon-48.png in Resources */ = {isa = PBXBuildFile; fileRef = FA24B7171AD8DA320035114A /* iconmonstr-edit-3-icon-48.png */; };
+		FA24B71A1AD8DA320035114A /* iconmonstr-edit-4-icon-48.png in Resources */ = {isa = PBXBuildFile; fileRef = FA24B7181AD8DA320035114A /* iconmonstr-edit-4-icon-48.png */; };
 		FA5367F71AB29A5D000C5E0E /* MainTemplateTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5367F61AB29A5D000C5E0E /* MainTemplateTableViewController.swift */; };
 		FA5638301A96FE4400E9BB0A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA56382F1A96FE4400E9BB0A /* AppDelegate.swift */; };
 		FA5638321A96FE4400E9BB0A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5638311A96FE4400E9BB0A /* ViewController.swift */; };
@@ -17,6 +19,9 @@
 		FA5638461A96FE4400E9BB0A /* PacerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5638451A96FE4400E9BB0A /* PacerTests.swift */; };
 		FA5638501A97010400E9BB0A /* PacingCalculations.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA56384F1A97010400E9BB0A /* PacingCalculations.swift */; };
 		FA79DC021A99A8580038EA8E /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA79DC011A99A8580038EA8E /* Enums.swift */; };
+		FAB780F81AD967A200715BC3 /* iconmonstr-edit-3-icon-24.png in Resources */ = {isa = PBXBuildFile; fileRef = FAB780F71AD967A200715BC3 /* iconmonstr-edit-3-icon-24.png */; };
+		FAB780FB1AD969CB00715BC3 /* iconmonstr-arrow-3-icon-256.png in Resources */ = {isa = PBXBuildFile; fileRef = FAB780F91AD969CB00715BC3 /* iconmonstr-arrow-3-icon-256.png */; };
+		FAB780FC1AD969CB00715BC3 /* iconmonstr-arrow-4-icon-256.png in Resources */ = {isa = PBXBuildFile; fileRef = FAB780FA1AD969CB00715BC3 /* iconmonstr-arrow-4-icon-256.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,6 +36,8 @@
 
 /* Begin PBXFileReference section */
 		FA08A9991AD461E60054039C /* arrow_right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow_right.png; sourceTree = "<group>"; };
+		FA24B7171AD8DA320035114A /* iconmonstr-edit-3-icon-48.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconmonstr-edit-3-icon-48.png"; sourceTree = "<group>"; };
+		FA24B7181AD8DA320035114A /* iconmonstr-edit-4-icon-48.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconmonstr-edit-4-icon-48.png"; sourceTree = "<group>"; };
 		FA5367F61AB29A5D000C5E0E /* MainTemplateTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTemplateTableViewController.swift; sourceTree = "<group>"; };
 		FA56382A1A96FE4400E9BB0A /* Pacer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pacer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA56382E1A96FE4400E9BB0A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -44,6 +51,9 @@
 		FA5638451A96FE4400E9BB0A /* PacerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PacerTests.swift; sourceTree = "<group>"; };
 		FA56384F1A97010400E9BB0A /* PacingCalculations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PacingCalculations.swift; sourceTree = "<group>"; };
 		FA79DC011A99A8580038EA8E /* Enums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
+		FAB780F71AD967A200715BC3 /* iconmonstr-edit-3-icon-24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconmonstr-edit-3-icon-24.png"; sourceTree = "<group>"; };
+		FAB780F91AD969CB00715BC3 /* iconmonstr-arrow-3-icon-256.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconmonstr-arrow-3-icon-256.png"; sourceTree = "<group>"; };
+		FAB780FA1AD969CB00715BC3 /* iconmonstr-arrow-4-icon-256.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconmonstr-arrow-4-icon-256.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +108,11 @@
 		FA56382D1A96FE4400E9BB0A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				FAB780F91AD969CB00715BC3 /* iconmonstr-arrow-3-icon-256.png */,
+				FAB780FA1AD969CB00715BC3 /* iconmonstr-arrow-4-icon-256.png */,
+				FA24B7171AD8DA320035114A /* iconmonstr-edit-3-icon-48.png */,
+				FAB780F71AD967A200715BC3 /* iconmonstr-edit-3-icon-24.png */,
+				FA24B7181AD8DA320035114A /* iconmonstr-edit-4-icon-48.png */,
 				FA08A9991AD461E60054039C /* arrow_right.png */,
 				FA5638361A96FE4400E9BB0A /* Images.xcassets */,
 				FA5638381A96FE4400E9BB0A /* LaunchScreen.xib */,
@@ -205,9 +220,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA5638351A96FE4400E9BB0A /* Main.storyboard in Resources */,
+				FAB780F81AD967A200715BC3 /* iconmonstr-edit-3-icon-24.png in Resources */,
 				FA56383A1A96FE4400E9BB0A /* LaunchScreen.xib in Resources */,
 				FA08A99A1AD461E60054039C /* arrow_right.png in Resources */,
+				FA24B71A1AD8DA320035114A /* iconmonstr-edit-4-icon-48.png in Resources */,
 				FA5638371A96FE4400E9BB0A /* Images.xcassets in Resources */,
+				FAB780FB1AD969CB00715BC3 /* iconmonstr-arrow-3-icon-256.png in Resources */,
+				FA24B7191AD8DA320035114A /* iconmonstr-edit-3-icon-48.png in Resources */,
+				FAB780FC1AD969CB00715BC3 /* iconmonstr-arrow-4-icon-256.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
