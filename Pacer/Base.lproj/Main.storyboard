@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1514" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="NpA-GY-CKm">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1514" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Yx9-jw-lJd">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -9,7 +9,7 @@
         <scene sceneID="amx-6Q-G3l">
             <objects>
                 <tableViewController id="0fp-Os-3Z4" customClass="MainTemplateTableViewController" customModule="Pacer" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="vXo-0j-m8R">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="vXo-0j-m8R">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -133,47 +133,44 @@
                             <outlet property="delegate" destination="0fp-Os-3Z4" id="fXi-nU-mnN"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="quC-SP-pxo">
-                        <barButtonItem key="leftBarButtonItem" title="Reset" id="uvK-Ze-a68">
+                    <navigationItem key="navigationItem" id="4bP-Ij-jl1">
+                        <barButtonItem key="leftBarButtonItem" title="Clear" id="NKO-gm-6YH">
                             <connections>
-                                <action selector="resetVariabes:" destination="0fp-Os-3Z4" id="sEg-Z9-zaI"/>
+                                <action selector="resetVariables:" destination="0fp-Os-3Z4" id="rzm-ij-Uic"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Calculate" id="lBp-AE-vgv">
+                        <barButtonItem key="rightBarButtonItem" image="Calculate" id="E1I-u6-rIW">
                             <connections>
-                                <action selector="recalculate:" destination="0fp-Os-3Z4" id="IQ1-nw-Lb3"/>
+                                <action selector="calculate:" destination="0fp-Os-3Z4" id="86c-nJ-VSR"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <connections>
-                        <outlet property="calculateBarButton" destination="lBp-AE-vgv" id="Spn-od-LF1"/>
-                        <outlet property="navTitleBar" destination="quC-SP-pxo" id="c8P-eU-CT8"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6gh-po-KqL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1342" y="1545"/>
+            <point key="canvasLocation" x="1930" y="2375"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="FSI-ZF-VPd">
+        <scene sceneID="Mfe-sH-BLJ">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="NpA-GY-CKm" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Yx9-jw-lJd" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="wrT-Vo-Wbj">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="JIg-Ef-e8L">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="0fp-Os-3Z4" kind="relationship" relationship="rootViewController" id="zna-90-qkp"/>
+                        <segue destination="0fp-Os-3Z4" kind="relationship" relationship="rootViewController" id="kU9-Dm-tB8"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="GxT-F9-7l6" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2r2-4U-ely" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="528" y="1548"/>
+            <point key="canvasLocation" x="1118" y="2375"/>
         </scene>
     </scenes>
     <resources>
+        <image name="Calculate" width="26" height="26"/>
         <image name="iconmonstr-arrow-4-icon-256.png" width="24" height="24"/>
     </resources>
 </document>

@@ -10,7 +10,6 @@ import UIKit
 
 class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate {
     
-    @IBOutlet weak var calculateBarButton: UIBarButtonItem!
     func dismissKeyboard() {
         if textField.editing {
             textField.resignFirstResponder()
@@ -135,9 +134,7 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
     private var modifiedList: [Variable] = []
     
     var textField = UITextField()
-    
-    @IBOutlet weak var navTitleBar: UINavigationItem!
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -167,6 +164,8 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
 
         tableView.addGestureRecognizer(tap)
         tap.cancelsTouchesInView = false
+        
+        self.tableView.tableFooterView = UIView(frame: CGRectZero)
     }
     
     private func createArray(numberOfElements: Int) -> [Int] {
@@ -207,7 +206,7 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         modifiedVariables.Duration.IsModified = false
     }
     
-    private func calculate() {
+    private func calculateValues() {
         // Do calculations
         if modifiedVariables.Pace.IsModified {
             if modifiedVariables.Duration.IsModified {
@@ -218,7 +217,7 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
                 } else {
                     result = PacingCalculations().distanceFormula(1/Double(paceValue.TotalSeconds), time: Double(durationValue.TotalSeconds))
                 }
-                navTitleBar.title = "\(result)"
+                
                 // Update distance row
                 var distanceRow = Storyboard.Distance.Row
                 if pickerIndexPath != nil {
@@ -508,6 +507,8 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
                 break
             }
             mainTableData[self.pickerIndexPath!.row - 1][Storyboard.Duration.Picker.Key] = durationValue.description()
+            var pickerCell = tableView.cellForRowAtIndexPath(NSIndexPath(forItem: pickerIndexPath!.row, inSection: 0))
+            println("\(pickerCell?.frame.size)")
             var cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: pickerIndexPath!.row - 1, inSection: 0))
             cell?.detailTextLabel?.text = durationValue.description()
             
@@ -916,12 +917,9 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         println("touchesBegan")
     }
     
-//    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-//        
-//    }
     
     // MARK: - UITableViewDelegate
-    
+        
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return (indexPathHasPicker(indexPath) ? pickerCellRowHeight : tableView.rowHeight)
     }
@@ -952,17 +950,18 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         
     }
 
+    
     // MARK: - Calculate
-    @IBAction func recalculate(sender: UIBarButtonItem) {
-        calculateBarButton.title = "Recalculate"
+    @IBAction func calculate(sender: UIBarButtonItem) {
         removePickerRow()
         dismissKeyboard()
-        calculate()
+        calculateValues()
     }
     
-    @IBAction func resetVariabes(sender: UIBarButtonItem) {
+    @IBAction func resetVariables(sender: UIBarButtonItem) {
         resetNewVariables()
     }
+    
     
     /*
     // MARK: - Navigation
@@ -984,7 +983,6 @@ class Variable {
             var selectedRow = self.Row
             if self.IsModified {
                 let cell = TableViewController?.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: selectedRow, inSection: 0))
-                cell?.imageView?.frame = CGRectMake(0, 0, 24, 24)
                 cell?.imageView?.image = UIImage(named: "iconmonstr-arrow-3-icon-256.png")
             } else {
                 if self.TableViewController?.pickerIndexPath != nil && self.Row >= self.TableViewController?.pickerIndexPath?.row {
