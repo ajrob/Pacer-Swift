@@ -185,7 +185,7 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         // Adding a zero-sized footer prevents additional blank rows from being displayed.
 //        self.tableView.tableFooterView = UIView(frame: CGRectZero)
         // Header/Footer color
-        self.tableView.tableFooterView?.backgroundColor = Storyboard.Colors.DarkTint
+        self.tableView.tableFooterView?.backgroundColor = Storyboard.Colors.Tint
         
         // Set bar button color scheme
         calculateBarButton.tintColor = Storyboard.Colors.Tint
