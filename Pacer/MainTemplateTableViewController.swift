@@ -255,7 +255,7 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
                 }
                 let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: distanceRow, inSection: 0))
 //                cell?.detailTextLabel?.text = "\(result)"
-                (cell?.viewWithTag(Storyboard.Distance.Tag) as UITextField).text = "\(round(Storyboard.Distance.Rounding * result) / Storyboard.Distance.Rounding)"
+                (cell?.viewWithTag(Storyboard.Distance.Tag) as! UITextField).text = "\(round(Storyboard.Distance.Rounding * result) / Storyboard.Distance.Rounding)"
                 cell?.imageView?.image = UIImage(named: "arrowAnswer")
 //                // Reset new variable flags
 //                resetNewVariables()
@@ -342,7 +342,7 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
     
     // MARK: - Utilities
     private func hasInlinePicker() -> Bool {
-        return pickerIndexPath? != nil
+        return pickerIndexPath != nil
     }
     
     private func removePickerRow() {
@@ -395,10 +395,10 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
     private func updatePicker() {
         if let indexPath = pickerIndexPath {
             let associatedPickerCell = tableView.cellForRowAtIndexPath(indexPath)
-            if let targetedPicker = associatedPickerCell?.viewWithTag(Storyboard.Pace.Picker.Tag) as UIPickerView? {
+            if let targetedPicker = associatedPickerCell?.viewWithTag(Storyboard.Pace.Picker.Tag) as! UIPickerView? {
                 targetedPicker.selectRow(paceValue.Minutes, inComponent: 0, animated: false)
                 targetedPicker.selectRow(paceValue.Seconds, inComponent: 1, animated: false)
-            } else if let targetedPicker = associatedPickerCell?.viewWithTag(Storyboard.Duration.Picker.Tag) as UIPickerView? {
+            } else if let targetedPicker = associatedPickerCell?.viewWithTag(Storyboard.Duration.Picker.Tag) as! UIPickerView? {
                 targetedPicker.selectRow(durationValue.Hours, inComponent: 0, animated: false)
                 targetedPicker.selectRow(durationValue.Minutes, inComponent: 1, animated: false)
                 targetedPicker.selectRow(durationValue.Seconds, inComponent: 2, animated: false)
@@ -956,11 +956,7 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
     func textFieldDidEndEditing(textField: UITextField) {
         self.resignFirstResponder()
     }
-    
-    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
-        println("touchesBegan")
-    }
-    
+        
     
     // MARK: - UITableViewDelegate
         
