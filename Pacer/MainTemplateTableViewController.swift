@@ -186,13 +186,16 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
 //        self.tableView.tableFooterView = UIView(frame: CGRectZero)
         // Header/Footer color
         self.tableView.tableFooterView?.backgroundColor = Storyboard.Colors.Tint
+        self.tableView.tableHeaderView?.backgroundColor = Storyboard.Colors.Tint
         
         // Set bar button color scheme
         calculateBarButton.tintColor = Storyboard.Colors.Tint
         clearBarButton.tintColor = Storyboard.Colors.Tint
         tableView.separatorColor = Storyboard.Colors.Tint
         
-        self.navigationItem.titleView = UIImageView(image: UIImage(named: "Calculate"))
+        // Set the rendering mode to AlwaysTemplate in order to ignore the image's color and change it's tint
+        self.navigationItem.titleView = UIImageView(image: (UIImage(named: "shoeLogo"))?.imageWithRenderingMode(.AlwaysTemplate))
+        self.navigationItem.titleView?.tintColor = Storyboard.Colors.DarkTint
     }
     
     private func createArray(numberOfElements: Int) -> [Int] {
