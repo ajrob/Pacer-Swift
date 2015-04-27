@@ -50,14 +50,27 @@
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lc5-ik-nFp">
+                                    <rect key="frame" x="550" y="5" width="30" height="44"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="26"/>
+                                    <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="0.20999999999999999" colorSpace="calibratedRGB"/>
+                                    <state key="normal" title="⚙">
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <segue destination="aU7-sX-TiP" kind="presentation" modalPresentationStyle="overCurrentContext" id="vVk-Na-1lA"/>
+                                    </connections>
+                                </button>
                             </subviews>
                             <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstItem="2sk-sD-qxy" firstAttribute="top" secondItem="8HR-ci-XBT" secondAttribute="top" id="23P-gx-Lsh"/>
+                                <constraint firstAttribute="centerY" secondItem="Lc5-ik-nFp" secondAttribute="centerY" id="8VC-BE-n80"/>
                                 <constraint firstItem="2sk-sD-qxy" firstAttribute="leading" secondItem="8HR-ci-XBT" secondAttribute="leading" id="Y1w-rc-C49"/>
+                                <constraint firstAttribute="trailing" secondItem="2sk-sD-qxy" secondAttribute="trailing" id="coN-j3-vGI"/>
                                 <constraint firstAttribute="centerX" secondItem="2sk-sD-qxy" secondAttribute="centerX" constant="84" id="j72-E7-GSY"/>
+                                <constraint firstAttribute="trailing" secondItem="Lc5-ik-nFp" secondAttribute="trailing" constant="20" symbolic="YES" id="leb-ux-uIQ"/>
                                 <constraint firstAttribute="bottom" secondItem="2sk-sD-qxy" secondAttribute="bottom" id="o9B-DL-ay7"/>
-                                <constraint firstAttribute="trailing" secondItem="2sk-sD-qxy" secondAttribute="trailing" id="xwN-B3-gO6"/>
                             </constraints>
                             <variation key="default">
                                 <mask key="constraints">
@@ -207,7 +220,65 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6gh-po-KqL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1880" y="2475"/>
+            <point key="canvasLocation" x="1526" y="2483"/>
+        </scene>
+        <!--Settings-->
+        <scene sceneID="O6T-Wn-TJI">
+            <objects>
+                <tableViewController id="Hka-P4-93W" customClass="SettingsTableViewController" customModule="Pacer" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" dataMode="static" style="plain" separatorStyle="default" allowsSelection="NO" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="C3H-9a-yX4">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <sections>
+                            <tableViewSection id="fRx-Uf-gmw">
+                                <cells>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="eog-2z-efF">
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eog-2z-efF" id="gMC-pg-VhY">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Units" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rS3-TS-5Jk">
+                                                    <rect key="frame" x="8" y="11" width="40" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="d0T-1J-HsF">
+                                                    <rect key="frame" x="435" y="8" width="157" height="29"/>
+                                                    <segments>
+                                                        <segment title="Miles"/>
+                                                        <segment title="Kilometers"/>
+                                                    </segments>
+                                                </segmentedControl>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="d0T-1J-HsF" firstAttribute="trailing" secondItem="gMC-pg-VhY" secondAttribute="trailingMargin" id="017-Px-DK6"/>
+                                                <constraint firstItem="rS3-TS-5Jk" firstAttribute="leading" secondItem="gMC-pg-VhY" secondAttribute="leadingMargin" id="FdS-co-9Tc"/>
+                                                <constraint firstAttribute="centerY" secondItem="rS3-TS-5Jk" secondAttribute="centerY" id="hUn-Jv-Txb"/>
+                                                <constraint firstAttribute="centerY" secondItem="d0T-1J-HsF" secondAttribute="centerY" constant="-0.5" id="wey-7l-477"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                        </sections>
+                        <connections>
+                            <outlet property="dataSource" destination="Hka-P4-93W" id="blc-xg-ZSm"/>
+                            <outlet property="delegate" destination="Hka-P4-93W" id="EGc-Ff-raK"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Settings" id="ngu-sv-dAd">
+                        <barButtonItem key="rightBarButtonItem" title="Done" id="TM8-mL-KwS">
+                            <connections>
+                                <action selector="done:" destination="Hka-P4-93W" id="asG-5G-OBa"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MFO-Vu-slA" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3080" y="2383"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Mfe-sH-BLJ">
@@ -225,7 +296,25 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2r2-4U-ely" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1118" y="2375"/>
+            <point key="canvasLocation" x="764" y="2383"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="OIq-Xb-npx">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="aU7-sX-TiP" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="cgu-iK-dks">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Hka-P4-93W" kind="relationship" relationship="rootViewController" id="abg-Fx-RpG"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lTn-v7-cpF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2268" y="2383"/>
         </scene>
     </scenes>
     <resources>

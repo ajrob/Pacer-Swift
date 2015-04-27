@@ -118,10 +118,46 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
     var pacePickerData = [[Int]]()
     var durationPickerData = [[Int]]()
     
+    // Labels
+    let paceUnitsLabel = UILabel()
+    let paceUnitsText = NSAttributedString(string: "min/mi", attributes:
+        [
+//            NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleCaption2),
+            NSFontAttributeName: UIFont.systemFontOfSize(CGFloat(8.0)),
+            NSForegroundColorAttributeName: UIColor.lightGrayColor()
+        ]
+    )
+    let distanceUnitsLabel = UILabel()
+    let distanceUnitsText = NSAttributedString(string: "mi", attributes:
+        [
+            NSFontAttributeName: UIFont.systemFontOfSize(CGFloat(8.0)),
+            NSForegroundColorAttributeName: UIColor.lightGrayColor()
+        ]
+    )
+
+    
     // Variables to hold pace, duration, and distance data
-    var paceValue     = PaceTimeFormat()
+    var paceValue = PaceTimeFormat() {
+        didSet {
+            let value = paceValue.description().stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+            if !value.isEmpty && paceValue.TotalSeconds > 0 {
+                paceUnitsLabel.hidden = false
+            } else {
+                paceUnitsLabel.hidden = true
+            }
+        }
+    }
     var durationValue = DurationTimeFormat()
-    var distanceValue = 0.0
+    var distanceValue = 0.0 {
+        didSet {
+            let value = distanceValue.description.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+            if !value.isEmpty && distanceValue > 0 {
+                distanceUnitsLabel.hidden = false
+            } else {
+                distanceUnitsLabel.hidden = true
+            }
+        }
+    }
     
     var mainTableData: [[String: AnyObject]] = []
     var willShowPacePicker = false
@@ -196,6 +232,11 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         // Set the rendering mode to AlwaysTemplate in order to ignore the image's color and change it's tint
         self.navigationItem.titleView = UIImageView(image: (UIImage(named: "shoeLogo"))?.imageWithRenderingMode(.AlwaysTemplate))
         self.navigationItem.titleView?.tintColor = Storyboard.Colors.DarkTint
+        
+        paceUnitsLabel.attributedText = paceUnitsText
+        paceUnitsLabel.hidden = true
+        distanceUnitsLabel.attributedText = distanceUnitsText
+        distanceUnitsLabel.hidden = true
     }
     
     private func createArray(numberOfElements: Int) -> [Int] {
@@ -222,6 +263,7 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         durationValue.Hours = 0
         durationValue.Minutes = 0
         durationValue.Seconds = 0
+        distanceValue = 0
         
         mainTableData[0][Storyboard.Pace.Picker.Key] = " "
         mainTableData[1][Storyboard.Duration.Picker.Key] = " "
@@ -241,11 +283,11 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         if modifiedVariables.Pace.IsModified {
             if modifiedVariables.Duration.IsModified {
                 // Pace is in minutes per mile, so enter the inverse into the formula
-                var result = 0.0
+//                var distanceValue = 0.0
                 if paceValue.TotalSeconds == 0 {
-                    result = PacingCalculations().distanceFormula(Double(paceValue.TotalSeconds), time: Double(durationValue.TotalSeconds))
+                    distanceValue = PacingCalculations().distanceFormula(Double(paceValue.TotalSeconds), time: Double(durationValue.TotalSeconds))
                 } else {
-                    result = PacingCalculations().distanceFormula(1/Double(paceValue.TotalSeconds), time: Double(durationValue.TotalSeconds))
+                    distanceValue = PacingCalculations().distanceFormula(1/Double(paceValue.TotalSeconds), time: Double(durationValue.TotalSeconds))
                 }
                 
                 // Update distance row
@@ -255,7 +297,7 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
                 }
                 let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: distanceRow, inSection: 0))
 //                cell?.detailTextLabel?.text = "\(result)"
-                (cell?.viewWithTag(Storyboard.Distance.Tag) as! UITextField).text = "\(round(Storyboard.Distance.Rounding * result) / Storyboard.Distance.Rounding)"
+                (cell?.viewWithTag(Storyboard.Distance.Tag) as! UITextField).text = "\(round(Storyboard.Distance.Rounding * distanceValue) / Storyboard.Distance.Rounding)"
                 cell?.imageView?.image = UIImage(named: "arrowAnswer")
 //                // Reset new variable flags
 //                resetNewVariables()
@@ -339,6 +381,13 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
             break
         }
     }
+    
+    // MARK: - Toggle Units
+    func togglePaceUnits(sender: UIButton!) {
+        println("Pace units toggled")
+    }
+    
+    
     
     // MARK: - Utilities
     private func hasInlinePicker() -> Bool {
@@ -648,6 +697,8 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
             
             let minuteLabel = UILabel()
             let secondLabel = UILabel()
+            let minuteSubtext = UILabel()
+            let secondSubtext = UILabel()
             
             let minuteLabelText = NSAttributedString(string: "min", attributes:
                 [
@@ -856,14 +907,78 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         let itemData = mainTableData[modelRow]
         
         if cellID == Storyboard.Pace.CellID {
+            // Add "select" image to the row
+            cell?.imageView?.image = UIImage(named: "arrowInactive")
+            
             // Populate pace field
             cell?.textLabel?.text = itemData[kTitleKey] as? String
             cell?.detailTextLabel?.text = itemData[Storyboard.Pace.Picker.Key] as? String
+            
+            // Add the pace units label
+            paceUnitsLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+            
+            cell?.addSubview(paceUnitsLabel)
+            
+            let paceUnitsLabelConstraints = [
+                NSLayoutConstraint(
+                    item: paceUnitsLabel,
+                    attribute: NSLayoutAttribute.Top,
+                    relatedBy: NSLayoutRelation.Equal,
+                    toItem: cell?.detailTextLabel,
+                    attribute: NSLayoutAttribute.Bottom,
+                    multiplier: 1,
+                    constant: 0
+                ),
+                NSLayoutConstraint(
+                    item: paceUnitsLabel,
+                    attribute: NSLayoutAttribute.CenterX,
+                    relatedBy: NSLayoutRelation.Equal,
+                    toItem: cell?.detailTextLabel,
+                    attribute: NSLayoutAttribute.CenterX,
+                    multiplier: 1,
+                    constant: 0
+                ),
+            ]
+            cell?.addConstraints(paceUnitsLabelConstraints)
+            
         } else if cellID == Storyboard.Duration.CellID {
+            // Add "select" image to the row
+            cell?.imageView?.image = UIImage(named: "arrowInactive")
+
             // Populate duration field
             cell?.textLabel?.text = itemData[kTitleKey] as? String
             cell?.detailTextLabel?.text = itemData[Storyboard.Duration.Picker.Key] as? String
         } else if cellID == Storyboard.Distance.CellID {
+            // Add the distance unit label
+            distanceUnitsLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+            
+            cell?.addSubview(distanceUnitsLabel)
+            
+            let distanceUnitsConstraints = [
+                NSLayoutConstraint(
+                    item: distanceUnitsLabel,
+                    attribute: NSLayoutAttribute.Top,
+                    relatedBy: NSLayoutRelation.Equal,
+                    toItem: cell?.detailTextLabel,
+                    attribute: NSLayoutAttribute.Bottom,
+                    multiplier: 1,
+                    constant: 0
+                ),
+                NSLayoutConstraint(
+                    item: distanceUnitsLabel,
+                    attribute: NSLayoutAttribute.Trailing,
+                    relatedBy: NSLayoutRelation.Equal,
+                    toItem: cell?.detailTextLabel,
+                    attribute: NSLayoutAttribute.Trailing,
+                    multiplier: 1,
+                    constant: 0),
+            ]
+            
+            cell?.addConstraints(distanceUnitsConstraints)
+            
+            // Add "select" image to the row
+            cell?.imageView?.image = UIImage(named: "arrowInactive")
+            
             cell?.textLabel?.text = itemData[kTitleKey] as? String
             cell?.detailTextLabel?.hidden = true
             cell?.viewWithTag(Storyboard.Distance.Tag)?.removeFromSuperview()
@@ -956,7 +1071,7 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
     func textFieldDidEndEditing(textField: UITextField) {
         self.resignFirstResponder()
     }
-        
+    
     
     // MARK: - UITableViewDelegate
         
