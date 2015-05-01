@@ -89,6 +89,10 @@ struct PacingCalculations
             func yardsToMiles(yards: Double) -> Double {
                 return yards * 0.000568182
             }
+            
+            func milesToKilometers(miles: Double) -> Double {
+                return miles * 1.60934
+            }
         }
     }
 }
