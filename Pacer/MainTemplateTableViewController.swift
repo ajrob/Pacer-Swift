@@ -21,54 +21,6 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
     
     let kTitleKey = "title" // key for obtaining the data source item's title
     
-    // Layout structure for the 3 main variables
-    private struct Storyboard {
-        // Order of the rows:
-        //  - Pace
-        //  - Pace Picker
-        //  - Duration
-        //  - Duration Picker
-        //  - Distance
-        struct Pace {
-            static let Row    = 0          // Row position of the pace
-            static let CellID = "paceCell" // Will hold the pace information
-
-            struct Picker {
-                static let CellID          = "pacePickerCell" // Will contain the pace picker values
-                static let Key             = "pace"           // Key for obtaining the data source item's pace picker value
-                static let Tag             = 20               // Tag identifying the pace picker view
-                static let MinuteComponent = 0
-                static let SecondComponent = 1
-            }
-        }
-        struct Duration {
-            static let Row    = 1              // Row position of the duration
-            static let CellID = "durationCell" // Will hold the duration information
-            struct Picker {
-                static let CellID          = "durationPickerCell" // Will contain the duration picker values
-                static let Key             = "duration"           // Key for obtaining the data source item's duration picker value
-                static let Tag             = 30                   // Tag identifying the duration picker view
-                static let HourComponent   = 0
-                static let MinuteComponent = 1
-                static let SecondComponent = 2
-            }
-        }
-        struct Distance {
-            static let Row    = 2              // Row position of the distance
-            static let CellID = "distanceCell" // Will hold the distance information
-            static let Tag = 10                // Tag identifying the distance UITextField
-            static let Key = "distance"        // Key for obtaining the data source item's distance value
-            static let Rounding = 10.0           // Rounding factor (e.g. 10 = nearest tenth)
-        }
-        static let PickerComponentWidth = CGFloat(100.0)              // General width of all components in every picker
-        static let PickerStaticLabelPadding = CGFloat(30.0)           // Padding of the labels
-        static let PickerDefaultSpaceBetweenComponents = CGFloat(4.0) // Approximate default spacing between components
-        struct Colors {
-            static let Tint: UIColor = UIColor(red: CGFloat(255.0 / 255.0), green: CGFloat(56.0 / 255.0), blue: CGFloat(36.0 / 255.0), alpha: CGFloat(1.0)) // #FF3824
-            static let DarkTint: UIColor = UIColor(red: 58 / 255.0, green: 51 / 255.0, blue: 53 / 255.0, alpha: 1.0) // #3A3335
-        }
-    }
-    
     struct DurationTimeFormat {
         var Hours:   Int = 0 {
             didSet { TotalSeconds = (Hours * 3600) + (Minutes * 60) + Seconds }
@@ -206,12 +158,20 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         modifiedVariables.Pace.TableViewController = self
         modifiedVariables.Pace.Row = Storyboard.Pace.Row
         modifiedVariables.Pace.IsModified = false
+        modifiedVariables.Pace.RowSelectionButton.tag = Storyboard.Pace.Tag
+        modifiedVariables.Pace.RowSelectionButton.addTarget(self, action: Selector("rowSelectionButtonPressed:"), forControlEvents: .TouchUpInside)
+        
         modifiedVariables.Duration.TableViewController = self
         modifiedVariables.Duration.Row = Storyboard.Duration.Row
         modifiedVariables.Duration.IsModified = false
+        modifiedVariables.Duration.RowSelectionButton.tag = Storyboard.Duration.Tag
+        modifiedVariables.Duration.RowSelectionButton.addTarget(self, action: Selector("rowSelectionButtonPressed:"), forControlEvents: .TouchUpInside)
+        
         modifiedVariables.Distance.TableViewController = self
         modifiedVariables.Distance.Row = Storyboard.Distance.Row
         modifiedVariables.Distance.IsModified = false
+        modifiedVariables.Distance.RowSelectionButton.tag = Storyboard.Distance.Tag
+        modifiedVariables.Distance.RowSelectionButton.addTarget(self, action: Selector("rowSelectionButtonPressed:"), forControlEvents: .TouchUpInside)
         
         var tap = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
 
@@ -221,22 +181,33 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         // Adding a zero-sized footer prevents additional blank rows from being displayed.
 //        self.tableView.tableFooterView = UIView(frame: CGRectZero)
         // Header/Footer color
-        self.tableView.tableFooterView?.backgroundColor = Storyboard.Colors.Tint
-        self.tableView.tableHeaderView?.backgroundColor = Storyboard.Colors.Tint
+        self.tableView.tableFooterView?.backgroundColor = Colors.Tint
+        self.tableView.tableHeaderView?.backgroundColor = Colors.Tint
         
         // Set bar button color scheme
-        calculateBarButton.tintColor = Storyboard.Colors.Tint
-        clearBarButton.tintColor = Storyboard.Colors.Tint
-        tableView.separatorColor = Storyboard.Colors.Tint
+        calculateBarButton.tintColor = Colors.Tint
+        clearBarButton.tintColor = Colors.Tint
+        tableView.separatorColor = Colors.Tint
         
         // Set the rendering mode to AlwaysTemplate in order to ignore the image's color and change it's tint
         self.navigationItem.titleView = UIImageView(image: (UIImage(named: "shoeLogo"))?.imageWithRenderingMode(.AlwaysTemplate))
-        self.navigationItem.titleView?.tintColor = Storyboard.Colors.DarkTint
+        self.navigationItem.titleView?.tintColor = Colors.DarkTint
         
         paceUnitsLabel.attributedText = paceUnitsText
         paceUnitsLabel.hidden = true
         distanceUnitsLabel.attributedText = distanceUnitsText
         distanceUnitsLabel.hidden = true
+    }
+    
+    func rowSelectionButtonPressed(sender: UIButton!) {
+        removePickerRow()
+        if sender.tag == Storyboard.Pace.Tag {
+            addModifiedVariable(modifiedVariables.Pace)
+        } else if sender.tag == Storyboard.Duration.Tag {
+            addModifiedVariable(modifiedVariables.Duration)
+        } else if sender.tag == Storyboard.Distance.Tag {
+            addModifiedVariable(modifiedVariables.Distance)
+        }
     }
     
     private func createArray(numberOfElements: Int) -> [Int] {
@@ -298,7 +269,8 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
                 let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: distanceRow, inSection: 0))
 //                cell?.detailTextLabel?.text = "\(result)"
                 (cell?.viewWithTag(Storyboard.Distance.Tag) as! UITextField).text = "\(round(Storyboard.Distance.Rounding * distanceValue) / Storyboard.Distance.Rounding)"
-                cell?.imageView?.image = UIImage(named: "arrowAnswer")
+//                cell?.imageView?.image = UIImage(named: "arrowAnswer")
+                modifiedVariables.Distance.RowSelectionButton.rowState = .Calculated
 //                // Reset new variable flags
 //                resetNewVariables()
             } else if modifiedVariables.Distance.IsModified {
@@ -321,7 +293,8 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
                 }
                 let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: durationRow, inSection: 0))
                 cell?.detailTextLabel?.text = "\(durationValue.description())"
-                cell?.imageView?.image = UIImage(named: "arrowAnswer")
+//                cell?.imageView?.image = UIImage(named: "arrowAnswer")
+                modifiedVariables.Duration.RowSelectionButton.rowState = .Calculated
             }
         } else if modifiedVariables.Duration.IsModified && modifiedVariables.Distance.IsModified {
             let result = PacingCalculations().rateFormula(distanceValue, time: Double(durationValue.TotalSeconds))
@@ -337,7 +310,8 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
             // Update pace row
             let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: Storyboard.Pace.Row, inSection: 0))
             cell?.detailTextLabel?.text = "\(paceValue.description())"
-            cell?.imageView?.image = UIImage(named: "arrowAnswer")
+//            cell?.imageView?.image = UIImage(named: "arrowAnswer")
+            modifiedVariables.Pace.RowSelectionButton.rowState = .Calculated
         }
     }
     
@@ -908,7 +882,32 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         
         if cellID == Storyboard.Pace.CellID {
             // Add "select" image to the row
-            cell?.imageView?.image = UIImage(named: "arrowInactive")
+//            cell?.imageView?.image = UIImage(named: "arrowInactive")
+            
+            modifiedVariables.Pace.RowSelectionButton.setTranslatesAutoresizingMaskIntoConstraints(false)
+            cell?.contentView.addSubview(modifiedVariables.Pace.RowSelectionButton)
+            let rowSelectionButtonConstraints = [
+                NSLayoutConstraint(
+                    item: modifiedVariables.Pace.RowSelectionButton,
+                    attribute: NSLayoutAttribute.Leading,
+                    relatedBy: NSLayoutRelation.Equal,
+                    toItem: cell?.contentView,
+                    attribute: NSLayoutAttribute.LeadingMargin,
+                    multiplier: 1,
+                    constant: 0
+                ),
+                NSLayoutConstraint(
+                    item: modifiedVariables.Pace.RowSelectionButton,
+                    attribute: NSLayoutAttribute.CenterY,
+                    relatedBy: NSLayoutRelation.Equal,
+                    toItem: cell?.textLabel,
+                    attribute: NSLayoutAttribute.CenterY,
+                    multiplier: 1,
+                    constant: 0
+                ),
+            ]
+            cell?.addConstraints(rowSelectionButtonConstraints)
+            cell?.indentationLevel = 4
             
             // Populate pace field
             cell?.textLabel?.text = itemData[kTitleKey] as? String
@@ -943,7 +942,31 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
             
         } else if cellID == Storyboard.Duration.CellID {
             // Add "select" image to the row
-            cell?.imageView?.image = UIImage(named: "arrowInactive")
+//            cell?.imageView?.image = UIImage(named: "arrowInactive")
+            modifiedVariables.Duration.RowSelectionButton.setTranslatesAutoresizingMaskIntoConstraints(false)
+            cell?.contentView.addSubview(modifiedVariables.Duration.RowSelectionButton)
+            let rowSelectionButtonConstraints = [
+                NSLayoutConstraint(
+                    item: modifiedVariables.Duration.RowSelectionButton,
+                    attribute: NSLayoutAttribute.Leading,
+                    relatedBy: NSLayoutRelation.Equal,
+                    toItem: cell?.contentView,
+                    attribute: NSLayoutAttribute.LeadingMargin,
+                    multiplier: 1,
+                    constant: 0
+                ),
+                NSLayoutConstraint(
+                    item: modifiedVariables.Duration.RowSelectionButton,
+                    attribute: NSLayoutAttribute.CenterY,
+                    relatedBy: NSLayoutRelation.Equal,
+                    toItem: cell?.textLabel,
+                    attribute: NSLayoutAttribute.CenterY,
+                    multiplier: 1,
+                    constant: 0
+                ),
+            ]
+            cell?.addConstraints(rowSelectionButtonConstraints)
+            cell?.indentationLevel = 4
 
             // Populate duration field
             cell?.textLabel?.text = itemData[kTitleKey] as? String
@@ -975,9 +998,6 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
             ]
             
             cell?.addConstraints(distanceUnitsConstraints)
-            
-            // Add "select" image to the row
-            cell?.imageView?.image = UIImage(named: "arrowInactive")
             
             cell?.textLabel?.text = itemData[kTitleKey] as? String
             cell?.detailTextLabel?.hidden = true
@@ -1028,6 +1048,34 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
             textField.delegate = self
             
             textField.text = itemData[Storyboard.Distance.Key] as? String
+            
+            // Add "select" image to the row
+//            cell?.imageView?.image = UIImage(named: "arrowInactive")
+            modifiedVariables.Distance.RowSelectionButton.setTranslatesAutoresizingMaskIntoConstraints(false)
+            cell?.contentView.addSubview(modifiedVariables.Distance.RowSelectionButton)
+            let rowSelectionButtonConstraints = [
+                NSLayoutConstraint(
+                    item: modifiedVariables.Distance.RowSelectionButton,
+                    attribute: NSLayoutAttribute.Leading,
+                    relatedBy: NSLayoutRelation.Equal,
+                    toItem: cell?.contentView,
+                    attribute: NSLayoutAttribute.LeadingMargin,
+                    multiplier: 1,
+                    constant: 0
+                ),
+                NSLayoutConstraint(
+                    item: modifiedVariables.Distance.RowSelectionButton,
+                    attribute: NSLayoutAttribute.CenterY,
+                    relatedBy: NSLayoutRelation.Equal,
+                    toItem: cell?.textLabel,
+                    attribute: NSLayoutAttribute.CenterY,
+                    multiplier: 1,
+                    constant: 0
+                ),
+            ]
+            cell?.addConstraints(rowSelectionButtonConstraints)
+            cell?.indentationLevel = 4
+
         }
 
         return cell!
@@ -1136,21 +1184,24 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
 }
 
 // Class which represents the 3 main variables: Pace, Duration, and Distance
-class Variable {
+class Variable : NSObject {
     var Row: Int = 0
     var TableViewController: MainTemplateTableViewController? = nil
+    var RowSelectionButton = SelectRowButton()
     var IsModified: Bool = false {
         didSet {
             var selectedRow = self.Row
             if self.IsModified {
                 let cell = TableViewController?.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: selectedRow, inSection: 0))
-                cell?.imageView?.image = UIImage(named: "arrowActive")
+//                cell?.imageView?.image = UIImage(named: "arrowActive")
+                RowSelectionButton.rowState = .Active
             } else {
                 if self.TableViewController?.pickerIndexPath != nil && self.Row >= self.TableViewController?.pickerIndexPath?.row {
                     selectedRow++
                 }
                 let cell = TableViewController?.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: selectedRow, inSection: 0))
-                cell?.imageView?.image = UIImage(named: "arrowInactive")
+//                cell?.imageView?.image = UIImage(named: "arrowInactive")
+                RowSelectionButton.rowState = .Inactive
                 reloadRow(selectedRow)
             }
         }

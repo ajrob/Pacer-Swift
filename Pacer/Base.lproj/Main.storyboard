@@ -79,7 +79,7 @@
                             </variation>
                         </view>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="paceCell" textLabel="T89-Ll-KOr" detailTextLabel="RJi-SA-RRJ" imageView="ObQ-6F-eD4" style="IBUITableViewCellStyleValue1" id="KIn-zX-fJj">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="paceCell" textLabel="T89-Ll-KOr" detailTextLabel="RJi-SA-RRJ" style="IBUITableViewCellStyleValue1" id="KIn-zX-fJj">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KIn-zX-fJj" id="1Ry-Ta-4Z5">
                                     <autoresizingMask key="autoresizingMask"/>
@@ -96,9 +96,6 @@
                                             <color key="textColor" red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" image="arrowInactive" id="ObQ-6F-eD4">
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </imageView>
                                     </subviews>
                                     <gestureRecognizers/>
                                 </tableViewCellContentView>
@@ -125,7 +122,7 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="durationCell" textLabel="ALt-lG-wBQ" detailTextLabel="oCl-ab-9ZK" imageView="PIV-LF-SFC" style="IBUITableViewCellStyleValue1" id="d1E-c5-5fw">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="durationCell" textLabel="ALt-lG-wBQ" detailTextLabel="oCl-ab-9ZK" style="IBUITableViewCellStyleValue1" id="d1E-c5-5fw">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="d1E-c5-5fw" id="NY6-eu-DNR">
                                     <autoresizingMask key="autoresizingMask"/>
@@ -142,9 +139,6 @@
                                             <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" image="arrowInactive" id="PIV-LF-SFC">
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </imageView>
                                     </subviews>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -170,7 +164,7 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="distanceCell" textLabel="POV-z4-Hmd" detailTextLabel="cje-06-UJ3" imageView="sof-Vc-4qv" style="IBUITableViewCellStyleValue1" id="hEF-Pi-UHz">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="distanceCell" textLabel="POV-z4-Hmd" detailTextLabel="cje-06-UJ3" style="IBUITableViewCellStyleValue1" id="hEF-Pi-UHz">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hEF-Pi-UHz" id="4h8-c0-m64">
                                     <autoresizingMask key="autoresizingMask"/>
@@ -187,9 +181,6 @@
                                             <color key="textColor" red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" image="arrowInactive" id="sof-Vc-4qv">
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </imageView>
                                     </subviews>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -229,7 +220,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" dataMode="static" style="plain" separatorStyle="default" allowsSelection="NO" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="C3H-9a-yX4">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <sections>
                             <tableViewSection id="fRx-Uf-gmw">
                                 <cells>
@@ -275,6 +266,10 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="doneButton" destination="TM8-mL-KwS" id="37l-fd-gVD"/>
+                        <outlet property="units" destination="d0T-1J-HsF" id="cT5-bz-dqN"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MFO-Vu-slA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -319,6 +314,5 @@
     </scenes>
     <resources>
         <image name="Calculate" width="26" height="26"/>
-        <image name="arrowInactive" width="28" height="28"/>
     </resources>
 </document>
