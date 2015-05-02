@@ -21,6 +21,9 @@ enum LapType: String {
     }
 }
 
+// Units key
+let kMetricKey = "metricUnitsKey"
+
 // Layout structure for the 3 main variables
 struct Storyboard {
     // Order of the rows:
@@ -33,6 +36,10 @@ struct Storyboard {
         static let Row    = 0          // Row position of the pace
         static let CellID = "paceCell" // Will hold the pace information
         static let Tag    = 1          // Identifier for pace
+        struct UnitLabel {
+            static let Imperial = "min/mi"
+            static let Metric = "min/km"
+        }
         
         struct Picker {
             static let CellID          = "pacePickerCell" // Will contain the pace picker values
@@ -62,10 +69,15 @@ struct Storyboard {
         static let Tag = 10                // Tag identifying the distance UITextField
         static let Key = "distance"        // Key for obtaining the data source item's distance value
         static let Rounding = 10.0           // Rounding factor (e.g. 10 = nearest tenth)
+        struct UnitLabel {
+            static let Imperial = "mi"
+            static let Metric = "km"
+        }
     }
     static let PickerComponentWidth = CGFloat(100.0)              // General width of all components in every picker
     static let PickerStaticLabelPadding = CGFloat(30.0)           // Padding of the labels
     static let PickerDefaultSpaceBetweenComponents = CGFloat(4.0) // Approximate default spacing between components
+    static let SettingsSegue = "settingsSegue"  // Setting view segue identifier
 }
 
 struct DurationTimeFormat {

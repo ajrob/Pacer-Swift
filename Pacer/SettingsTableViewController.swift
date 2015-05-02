@@ -11,27 +11,40 @@ import UIKit
 class SettingsTableViewController: UITableViewController {
 
     @IBOutlet weak var doneButton: UIBarButtonItem!
-    @IBOutlet weak var units: UISegmentedControl!
+    @IBOutlet weak var metricSwitch: UISwitch!
     
     @IBAction func done(sender: UIBarButtonItem) {
         presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
     }
     
+    var isMetric = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let defaults = NSUserDefaults.standardUserDefaults()
+        isMetric = defaults.boolForKey(kMetricKey)
+        metricSwitch.on = isMetric
         
         // Adding a zero-sized footer prevents additional blank rows from being displayed.
         self.tableView.tableFooterView = UIView(frame: CGRectZero)
 
         // Color scheme
         doneButton.tintColor = Colors.Tint
-        units.tintColor = Colors.Tint
+        metricSwitch.tintColor = Colors.Tint
+        metricSwitch.onTintColor = Colors.Tint
         
         // Background blur effect
         var visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.ExtraLight))
         tableView.backgroundView = visualEffectView
     }
 
+    @IBAction func toggleUnits(sender: UISwitch) {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        defaults.setBool(metricSwitch.on, forKey: kMetricKey)
+        isMetric = metricSwitch.on
+    }
+    
     /*
     // MARK: - Navigation
 

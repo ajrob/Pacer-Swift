@@ -58,7 +58,7 @@
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                     <connections>
-                                        <segue destination="aU7-sX-TiP" kind="presentation" modalPresentationStyle="overCurrentContext" id="vVk-Na-1lA"/>
+                                        <segue destination="aU7-sX-TiP" kind="presentation" identifier="settingsSegue" modalPresentationStyle="overCurrentContext" id="vVk-Na-1lA"/>
                                     </connections>
                                 </button>
                             </subviews>
@@ -229,26 +229,35 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eog-2z-efF" id="gMC-pg-VhY">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Units" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rS3-TS-5Jk">
-                                                    <rect key="frame" x="8" y="11" width="40" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Metric" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rS3-TS-5Jk">
+                                                    <rect key="frame" x="8" y="12" width="46" height="20"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="d0T-1J-HsF">
-                                                    <rect key="frame" x="435" y="8" width="157" height="29"/>
-                                                    <segments>
-                                                        <segment title="Miles"/>
-                                                        <segment title="Kilometers"/>
-                                                    </segments>
-                                                </segmentedControl>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="jaU-5j-vCy">
+                                                    <rect key="frame" x="543" y="6" width="51" height="31"/>
+                                                    <connections>
+                                                        <action selector="toggleUnits:" destination="Hka-P4-93W" eventType="valueChanged" id="WAd-KT-89k"/>
+                                                    </connections>
+                                                </switch>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="d0T-1J-HsF" firstAttribute="trailing" secondItem="gMC-pg-VhY" secondAttribute="trailingMargin" id="017-Px-DK6"/>
+                                                <constraint firstItem="jaU-5j-vCy" firstAttribute="trailing" secondItem="gMC-pg-VhY" secondAttribute="trailingMargin" id="CXU-bo-cYF"/>
+                                                <constraint firstAttribute="centerY" secondItem="jaU-5j-vCy" secondAttribute="centerY" id="EaR-jE-EzF"/>
                                                 <constraint firstItem="rS3-TS-5Jk" firstAttribute="leading" secondItem="gMC-pg-VhY" secondAttribute="leadingMargin" id="FdS-co-9Tc"/>
+                                                <constraint firstAttribute="centerX" secondItem="jaU-5j-vCy" secondAttribute="centerX" constant="-268" id="Qsq-uT-Q6f"/>
+                                                <constraint firstItem="jaU-5j-vCy" firstAttribute="top" secondItem="gMC-pg-VhY" secondAttribute="topMargin" constant="-2" id="Ycx-T4-blQ"/>
+                                                <constraint firstAttribute="centerX" secondItem="jaU-5j-vCy" secondAttribute="centerX" constant="-267.5" id="hP6-gG-tfy"/>
                                                 <constraint firstAttribute="centerY" secondItem="rS3-TS-5Jk" secondAttribute="centerY" id="hUn-Jv-Txb"/>
-                                                <constraint firstAttribute="centerY" secondItem="d0T-1J-HsF" secondAttribute="centerY" constant="-0.5" id="wey-7l-477"/>
                                             </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="Qsq-uT-Q6f"/>
+                                                    <exclude reference="Ycx-T4-blQ"/>
+                                                    <exclude reference="hP6-gG-tfy"/>
+                                                </mask>
+                                            </variation>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </cells>
@@ -268,7 +277,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="doneButton" destination="TM8-mL-KwS" id="37l-fd-gVD"/>
-                        <outlet property="units" destination="d0T-1J-HsF" id="cT5-bz-dqN"/>
+                        <outlet property="metricSwitch" destination="jaU-5j-vCy" id="GQi-sc-ZgL"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MFO-Vu-slA" userLabel="First Responder" sceneMemberID="firstResponder"/>

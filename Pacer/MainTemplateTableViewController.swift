@@ -19,6 +19,8 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         }
     }
     
+    var isMetric = false
+    
     let kTitleKey = "title" // key for obtaining the data source item's title
     
     struct DurationTimeFormat {
@@ -72,20 +74,9 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
     
     // Labels
     let paceUnitsLabel = UILabel()
-    let paceUnitsText = NSAttributedString(string: "min/mi", attributes:
-        [
-//            NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleCaption2),
-            NSFontAttributeName: UIFont.systemFontOfSize(CGFloat(8.0)),
-            NSForegroundColorAttributeName: UIColor.lightGrayColor()
-        ]
-    )
+    var paceUnitsAttributedText = NSAttributedString()
     let distanceUnitsLabel = UILabel()
-    let distanceUnitsText = NSAttributedString(string: "mi", attributes:
-        [
-            NSFontAttributeName: UIFont.systemFontOfSize(CGFloat(8.0)),
-            NSForegroundColorAttributeName: UIColor.lightGrayColor()
-        ]
-    )
+    var distanceUnitsAttributedText = NSAttributedString()
 
     
     // Variables to hold pace, duration, and distance data
@@ -193,10 +184,62 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         self.navigationItem.titleView = UIImageView(image: (UIImage(named: "shoeLogo"))?.imageWithRenderingMode(.AlwaysTemplate))
         self.navigationItem.titleView?.tintColor = Colors.DarkTint
         
-        paceUnitsLabel.attributedText = paceUnitsText
+        // Set unit labels
+        let defaults = NSUserDefaults.standardUserDefaults()
+        isMetric = defaults.boolForKey(kMetricKey)
+        toggleMetric()
         paceUnitsLabel.hidden = true
-        distanceUnitsLabel.attributedText = distanceUnitsText
         distanceUnitsLabel.hidden = true
+    }
+    
+    var ucobserver: NSObjectProtocol?
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // Observe to see if units change
+        observeUserDefaults()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        if let observer = ucobserver {
+            NSNotificationCenter.defaultCenter().removeObserver(observer)
+        }
+    }
+    
+    private func observeUserDefaults() {
+        let center = NSNotificationCenter.defaultCenter()
+        let queue = NSOperationQueue.mainQueue()
+        ucobserver = center.addObserverForName(NSUserDefaultsDidChangeNotification,
+            object: NSUserDefaults.standardUserDefaults(),
+            queue: queue){ notification in
+                let defaults = NSUserDefaults.standardUserDefaults()
+                self.isMetric = defaults.boolForKey(kMetricKey)
+                self.toggleMetric()
+        }
+    }
+    
+    private func toggleMetric() {
+        // Change labels
+        let paceUnitText = isMetric ? Storyboard.Pace.UnitLabel.Metric : Storyboard.Pace.UnitLabel.Imperial
+        let distanceUnitText = isMetric ? Storyboard.Distance.UnitLabel.Metric : Storyboard.Distance.UnitLabel.Imperial
+        paceUnitsLabel.attributedText = NSAttributedString(string: paceUnitText, attributes:
+            [
+//                NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleCaption2),
+                NSFontAttributeName: UIFont.systemFontOfSize(CGFloat(8.0)),
+                NSForegroundColorAttributeName: UIColor.lightGrayColor()
+            ]
+        )
+        distanceUnitsLabel.attributedText = NSAttributedString(string: distanceUnitText, attributes:
+            [
+                NSFontAttributeName: UIFont.systemFontOfSize(CGFloat(8.0)),
+                NSForegroundColorAttributeName: UIColor.lightGrayColor()
+            ]
+        )
+        
+        // Recalculate if needed
+        calculateValues()
     }
     
     func rowSelectionButtonPressed(sender: UIButton!) {
@@ -261,6 +304,10 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
                     distanceValue = PacingCalculations().distanceFormula(1/Double(paceValue.TotalSeconds), time: Double(durationValue.TotalSeconds))
                 }
                 
+                if isMetric {
+                    distanceValue = PacingCalculations.Conversion.Length().milesToKilometers(distanceValue)
+                }
+                
                 // Update distance row
                 var distanceRow = Storyboard.Distance.Row
                 if pickerIndexPath != nil {
@@ -274,7 +321,7 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
 //                // Reset new variable flags
 //                resetNewVariables()
             } else if modifiedVariables.Distance.IsModified {
-                // Pace is in minutes per mile, so enter the inverse into the formula
+                // Pace is in minutes per mile/km, so enter the inverse into the formula
                 var result = 0.0
                 if paceValue.TotalSeconds == 0 {
                     result = PacingCalculations().timeFormula(Double(paceValue.TotalSeconds), distance: Double(distanceValue))
@@ -1171,16 +1218,27 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         resetNewVariables()
     }
     
-    
-    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
+        if segue.identifier == Storyboard.SettingsSegue {
+            if let settingsViewController = segue.destinationViewController.contentViewController as? SettingsTableViewController {
+                settingsViewController.isMetric = self.isMetric
+            }
+        }
     }
-    */
+}
+
+// Extension to deal with embedded navigation view controllers in segues
+extension UIViewController {
+    var contentViewController: UIViewController {
+        if let navCon = self as? UINavigationController {
+            return navCon.visibleViewController
+        } else {
+            return self
+        }
+    }
 }
 
 // Class which represents the 3 main variables: Pace, Duration, and Distance
