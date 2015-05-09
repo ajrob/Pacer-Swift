@@ -134,6 +134,8 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        
         let rowOne = [kTitleKey: "Pace", Storyboard.Pace.Picker.Key: " "]
         let rowTwo = [kTitleKey: "Duration", Storyboard.Duration.Picker.Key: " "]
         let rowThree = [kTitleKey: "Distance", Storyboard.Distance.Key: " "]
@@ -172,7 +174,7 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         // Adding a zero-sized footer prevents additional blank rows from being displayed.
 //        self.tableView.tableFooterView = UIView(frame: CGRectZero)
         // Header/Footer color
-        self.tableView.tableFooterView?.backgroundColor = Colors.Tint
+//        self.tableView.tableFooterView?.backgroundColor = Colors.Tint
         self.tableView.tableHeaderView?.backgroundColor = Colors.Tint
         
         // Set bar button color scheme
@@ -313,13 +315,14 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
                 if pickerIndexPath != nil {
                     distanceRow += 1
                 }
-                let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: distanceRow, inSection: 0))
-//                cell?.detailTextLabel?.text = "\(result)"
-                (cell?.viewWithTag(Storyboard.Distance.Tag) as! UITextField).text = "\(round(Storyboard.Distance.Rounding * distanceValue) / Storyboard.Distance.Rounding)"
-//                cell?.imageView?.image = UIImage(named: "arrowAnswer")
-                modifiedVariables.Distance.RowSelectionButton.rowState = .Calculated
-//                // Reset new variable flags
-//                resetNewVariables()
+                let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: distanceRow, inSection: 0)) as? DistanceTableViewCell
+////                cell?.detailTextLabel?.text = "\(result)"
+//                (cell?.viewWithTag(Storyboard.Distance.Tag) as! UITextField).text = "\(round(Storyboard.Distance.Rounding * distanceValue) / Storyboard.Distance.Rounding)"
+                cell?.distanceTextField.text = "\(round(Storyboard.Distance.Rounding * distanceValue) / Storyboard.Distance.Rounding)"
+////                cell?.imageView?.image = UIImage(named: "arrowAnswer")
+//                modifiedVariables.Distance.RowSelectionButton.rowState = .Calculated
+////                // Reset new variable flags
+////                resetNewVariables()
             } else if modifiedVariables.Distance.IsModified {
                 // Pace is in minutes per mile/km, so enter the inverse into the formula
                 var result = 0.0
@@ -338,9 +341,10 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
                 if pickerIndexPath != nil {
                     durationRow += 1
                 }
-                let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: durationRow, inSection: 0))
-                cell?.detailTextLabel?.text = "\(durationValue.description())"
-//                cell?.imageView?.image = UIImage(named: "arrowAnswer")
+                let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: durationRow, inSection: 0)) as? DurationTableViewCell
+                cell?.durationValueLabel.text = "\(durationValue.description())"
+//                cell?.detailTextLabel?.text = "\(durationValue.description())"
+////                cell?.imageView?.image = UIImage(named: "arrowAnswer")
                 modifiedVariables.Duration.RowSelectionButton.rowState = .Calculated
             }
         } else if modifiedVariables.Duration.IsModified && modifiedVariables.Distance.IsModified {
@@ -355,9 +359,10 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
             paceValue.Seconds = formattedResult.seconds
             
             // Update pace row
-            let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: Storyboard.Pace.Row, inSection: 0))
-            cell?.detailTextLabel?.text = "\(paceValue.description())"
-//            cell?.imageView?.image = UIImage(named: "arrowAnswer")
+            let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: Storyboard.Pace.Row, inSection: 0)) as? PaceTableViewCell
+            cell?.paceValueLabel.text = "\(paceValue.description())"
+//            cell?.detailTextLabel?.text = "\(paceValue.description())"
+////            cell?.imageView?.image = UIImage(named: "arrowAnswer")
             modifiedVariables.Pace.RowSelectionButton.rowState = .Calculated
         }
     }
@@ -593,8 +598,10 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
                 break
             }
             mainTableData[self.pickerIndexPath!.row - 1][Storyboard.Pace.Picker.Key] = paceValue.description()
-            var cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: pickerIndexPath!.row - 1, inSection: 0))
-            cell?.detailTextLabel?.text = paceValue.description()
+            var cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: pickerIndexPath!.row - 1, inSection: 0)) as? PaceTableViewCell
+//            cell?.detailTextLabel?.text = paceValue.description()
+            
+            cell?.paceValueLabel.text = paceValue.description()
             
             // New value, so add the pace to the stack
             addModifiedVariable(modifiedVariables.Pace)
@@ -612,8 +619,9 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
             mainTableData[self.pickerIndexPath!.row - 1][Storyboard.Duration.Picker.Key] = durationValue.description()
             var pickerCell = tableView.cellForRowAtIndexPath(NSIndexPath(forItem: pickerIndexPath!.row, inSection: 0))
             println("\(pickerCell?.frame.size)")
-            var cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: pickerIndexPath!.row - 1, inSection: 0))
-            cell?.detailTextLabel?.text = durationValue.description()
+            var cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: pickerIndexPath!.row - 1, inSection: 0)) as? DurationTableViewCell
+//            cell?.detailTextLabel?.text = durationValue.description()
+            cell?.durationValueLabel.text = durationValue.description()
             
             // New value, so add the duration to the stack
             addModifiedVariable(modifiedVariables.Duration)
@@ -644,7 +652,16 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
                     attribute: NSLayoutAttribute.CenterY,
                     multiplier: 1,
                     constant: 0),
+                NSLayoutConstraint(
+                    item: pickerLabel,
+                    attribute: NSLayoutAttribute.Trailing,
+                    relatedBy: NSLayoutRelation.Equal,
+                    toItem: containerView,
+                    attribute: NSLayoutAttribute.CenterX,
+                    multiplier: 1,
+                    constant: 0),
             ]
+            
             containerView.addConstraints(constraints)
         }
         var titleData = " "
@@ -658,9 +675,11 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         let title = NSAttributedString(string: titleData, attributes:
             [
                 NSFontAttributeName:UIFont.systemFontOfSize(CGFloat(17.0)),
-                NSForegroundColorAttributeName:UIColor.blackColor()
+                NSForegroundColorAttributeName:UIColor.blackColor(),
             ])
         pickerLabel.attributedText = title
+        pickerLabel.textAlignment = .Right
+        
         return containerView
     }
     
@@ -682,11 +701,10 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         }
         return mainTableData.count
     }
-
+    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell: UITableViewCell?
         
-        var cellID = Storyboard.Distance.CellID
+        var cellID = ""
         
         if indexPathHasPicker(indexPath) {
             // The indexPath is the one containing the inline picker
@@ -705,16 +723,21 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         } else if indexPathIsDuration(indexPath) {
             // The indexPath is one that contains the duration information
             cellID = Storyboard.Duration.CellID
+        } else {
+            cellID = Storyboard.Distance.CellID
         }
         
-        cell = tableView.dequeueReusableCellWithIdentifier(cellID) as? UITableViewCell
+//        cell = tableView.dequeueReusableCellWithIdentifier(cellID) as? UITableViewCell
         
         //Add labels to pickers if needed
         if cellID == Storyboard.Pace.Picker.CellID {
-            // Add blur effect
-            var visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.ExtraLight))
-            visualEffectView.frame = cell!.bounds
-            cell?.backgroundView = visualEffectView
+            var cell: UITableViewCell?
+            cell = tableView.dequeueReusableCellWithIdentifier(cellID) as? UITableViewCell
+            
+//            // Add blur effect
+//            var visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Light))
+//            visualEffectView.frame = cell!.bounds
+//            cell?.backgroundView = visualEffectView
             
             let minuteLabel = UILabel()
             let secondLabel = UILabel()
@@ -746,24 +769,6 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
             let constraints = [
                 NSLayoutConstraint(
                     item: minuteLabel,
-                    attribute: NSLayoutAttribute.Width,
-                    relatedBy: NSLayoutRelation.Equal,
-                    toItem: nil,
-                    attribute: NSLayoutAttribute.NotAnAttribute,
-                    multiplier: 1,
-                    constant: Storyboard.PickerComponentWidth
-                ),
-                NSLayoutConstraint(
-                    item: secondLabel,
-                    attribute: NSLayoutAttribute.Width,
-                    relatedBy: NSLayoutRelation.Equal,
-                    toItem: nil,
-                    attribute: NSLayoutAttribute.NotAnAttribute,
-                    multiplier: 1,
-                    constant: Storyboard.PickerComponentWidth
-                ),
-                NSLayoutConstraint(
-                    item: minuteLabel,
                     attribute: NSLayoutAttribute.CenterY,
                     relatedBy: NSLayoutRelation.Equal,
                     toItem: cell?.contentView,
@@ -777,7 +782,8 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
                     toItem: cell?.contentView,
                     attribute: NSLayoutAttribute.CenterX,
                     multiplier: 1,
-                    constant: -(Storyboard.PickerComponentWidth - Storyboard.PickerStaticLabelPadding + Storyboard.PickerDefaultSpaceBetweenComponents)),
+                    constant: -(Storyboard.PickerComponentWidth / 2) + Storyboard.PickerDefaultSpaceBetweenComponents
+                ),
                 NSLayoutConstraint(
                     item: secondLabel,
                     attribute: NSLayoutAttribute.CenterY,
@@ -793,20 +799,24 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
                     toItem: cell?.contentView,
                     attribute: NSLayoutAttribute.CenterX,
                     multiplier: 1,
-                    constant: Storyboard.PickerStaticLabelPadding + Storyboard.PickerDefaultSpaceBetweenComponents)
+                    constant: Storyboard.PickerComponentWidth / 2 + Storyboard.PickerDefaultSpaceBetweenComponents * 2)
             ]
             cell?.contentView.addConstraints(constraints)
+            return cell!
         } else if cellID == Storyboard.Duration.Picker.CellID {
-            // Add blur effect
-            var visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.ExtraLight))
-            visualEffectView.frame = cell!.bounds
-            cell?.backgroundView = visualEffectView
+            var cell: UITableViewCell?
+            cell = tableView.dequeueReusableCellWithIdentifier(cellID) as? UITableViewCell
+            
+//            // Add blur effect
+//            var visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.ExtraLight))
+//            visualEffectView.frame = cell!.bounds
+//            cell?.backgroundView = visualEffectView
             
             let hourLabel   = UILabel()
             let minuteLabel = UILabel()
             let secondLabel = UILabel()
             
-            let hourLabelText = NSAttributedString(string: "hr", attributes:
+            let hourLabelText = NSAttributedString(string: "hour", attributes:
                 [
                     NSFontAttributeName: UIFont.systemFontOfSize(CGFloat(15.0)),
                     NSForegroundColorAttributeName: UIColor.darkGrayColor()
@@ -840,33 +850,6 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
             let constraints = [
                 NSLayoutConstraint(
                     item: hourLabel,
-                    attribute: NSLayoutAttribute.Width,
-                    relatedBy: NSLayoutRelation.Equal,
-                    toItem: nil,
-                    attribute: NSLayoutAttribute.NotAnAttribute,
-                    multiplier: 1,
-                    constant: Storyboard.PickerComponentWidth
-                ),
-                NSLayoutConstraint(
-                    item: minuteLabel,
-                    attribute: NSLayoutAttribute.Width,
-                    relatedBy: NSLayoutRelation.Equal,
-                    toItem: nil,
-                    attribute: NSLayoutAttribute.NotAnAttribute,
-                    multiplier: 1,
-                    constant: Storyboard.PickerComponentWidth
-                ),
-                NSLayoutConstraint(
-                    item: secondLabel,
-                    attribute: NSLayoutAttribute.Width,
-                    relatedBy: NSLayoutRelation.Equal,
-                    toItem: nil,
-                    attribute: NSLayoutAttribute.NotAnAttribute,
-                    multiplier: 1,
-                    constant: Storyboard.PickerComponentWidth
-                ),
-                NSLayoutConstraint(
-                    item: hourLabel,
                     attribute: NSLayoutAttribute.CenterY,
                     relatedBy: NSLayoutRelation.Equal,
                     toItem: cell?.contentView,
@@ -880,7 +863,7 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
                     toItem: cell?.contentView,
                     attribute: NSLayoutAttribute.CenterX,
                     multiplier: 1,
-                    constant: -(Storyboard.PickerComponentWidth * 1.5 - Storyboard.PickerStaticLabelPadding + Storyboard.PickerDefaultSpaceBetweenComponents)),
+                    constant: -Storyboard.PickerComponentWidth),
                 NSLayoutConstraint(
                     item: minuteLabel,
                     attribute: NSLayoutAttribute.CenterY,
@@ -896,7 +879,7 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
                     toItem: cell?.contentView,
                     attribute: NSLayoutAttribute.CenterX,
                     multiplier: 1,
-                    constant: -(Storyboard.PickerComponentWidth / 2 - Storyboard.PickerStaticLabelPadding - Storyboard.PickerDefaultSpaceBetweenComponents)),
+                    constant: Storyboard.PickerDefaultSpaceBetweenComponents),
                 NSLayoutConstraint(
                     item: secondLabel,
                     attribute: NSLayoutAttribute.CenterY,
@@ -912,9 +895,10 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
                     toItem: cell?.contentView,
                     attribute: NSLayoutAttribute.CenterX,
                     multiplier: 1,
-                    constant: Storyboard.PickerComponentWidth / 2 + Storyboard.PickerStaticLabelPadding + Storyboard.PickerDefaultSpaceBetweenComponents*3)
+                    constant: Storyboard.PickerComponentWidth + Storyboard.PickerDefaultSpaceBetweenComponents * 2)
             ]
             cell?.contentView.addConstraints(constraints)
+            return cell!
         }
         
         // If we have a picker open whose cell is above the cell we want to update,
@@ -928,215 +912,231 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         let itemData = mainTableData[modelRow]
         
         if cellID == Storyboard.Pace.CellID {
+            var cell: PaceTableViewCell?
+            cell = tableView.dequeueReusableCellWithIdentifier(cellID) as? PaceTableViewCell
+            
             // Add "select" image to the row
 //            cell?.imageView?.image = UIImage(named: "arrowInactive")
             
-            modifiedVariables.Pace.RowSelectionButton.setTranslatesAutoresizingMaskIntoConstraints(false)
-            cell?.contentView.addSubview(modifiedVariables.Pace.RowSelectionButton)
-            let rowSelectionButtonConstraints = [
-                NSLayoutConstraint(
-                    item: modifiedVariables.Pace.RowSelectionButton,
-                    attribute: NSLayoutAttribute.Leading,
-                    relatedBy: NSLayoutRelation.Equal,
-                    toItem: cell?.contentView,
-                    attribute: NSLayoutAttribute.LeadingMargin,
-                    multiplier: 1,
-                    constant: 0
-                ),
-                NSLayoutConstraint(
-                    item: modifiedVariables.Pace.RowSelectionButton,
-                    attribute: NSLayoutAttribute.CenterY,
-                    relatedBy: NSLayoutRelation.Equal,
-                    toItem: cell?.textLabel,
-                    attribute: NSLayoutAttribute.CenterY,
-                    multiplier: 1,
-                    constant: 0
-                ),
-            ]
-            cell?.addConstraints(rowSelectionButtonConstraints)
-            cell?.indentationLevel = 4
+//            modifiedVariables.Pace.RowSelectionButton.setTranslatesAutoresizingMaskIntoConstraints(false)
+//            cell?.contentView.addSubview(modifiedVariables.Pace.RowSelectionButton)
+//            let rowSelectionButtonConstraints = [
+//                NSLayoutConstraint(
+//                    item: modifiedVariables.Pace.RowSelectionButton,
+//                    attribute: NSLayoutAttribute.Leading,
+//                    relatedBy: NSLayoutRelation.Equal,
+//                    toItem: cell?.contentView,
+//                    attribute: NSLayoutAttribute.LeadingMargin,
+//                    multiplier: 1,
+//                    constant: 0
+//                ),
+//                NSLayoutConstraint(
+//                    item: modifiedVariables.Pace.RowSelectionButton,
+//                    attribute: NSLayoutAttribute.CenterY,
+//                    relatedBy: NSLayoutRelation.Equal,
+//                    toItem: cell?.textLabel,
+//                    attribute: NSLayoutAttribute.CenterY,
+//                    multiplier: 1,
+//                    constant: 0
+//                ),
+//            ]
+//            cell?.addConstraints(rowSelectionButtonConstraints)
+//            cell?.indentationLevel = 4
             
             // Populate pace field
-            cell?.textLabel?.text = itemData[kTitleKey] as? String
-            cell?.detailTextLabel?.text = itemData[Storyboard.Pace.Picker.Key] as? String
+            cell?.paceValueLabel.text = itemData[Storyboard.Pace.Picker.Key] as? String
+//            cell?.textLabel?.text = itemData[kTitleKey] as? String
+//            cell?.detailTextLabel?.text = itemData[Storyboard.Pace.Picker.Key] as? String
             
             // Add the pace units label
-            paceUnitsLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
-            
-            cell?.addSubview(paceUnitsLabel)
-            
-            let paceUnitsLabelConstraints = [
-                NSLayoutConstraint(
-                    item: paceUnitsLabel,
-                    attribute: NSLayoutAttribute.Top,
-                    relatedBy: NSLayoutRelation.Equal,
-                    toItem: cell?.detailTextLabel,
-                    attribute: NSLayoutAttribute.Bottom,
-                    multiplier: 1,
-                    constant: 0
-                ),
-                NSLayoutConstraint(
-                    item: paceUnitsLabel,
-                    attribute: NSLayoutAttribute.CenterX,
-                    relatedBy: NSLayoutRelation.Equal,
-                    toItem: cell?.detailTextLabel,
-                    attribute: NSLayoutAttribute.CenterX,
-                    multiplier: 1,
-                    constant: 0
-                ),
-            ]
-            cell?.addConstraints(paceUnitsLabelConstraints)
-            
+//            paceUnitsLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+//            
+//            cell?.addSubview(paceUnitsLabel)
+//            
+//            let paceUnitsLabelConstraints = [
+//                NSLayoutConstraint(
+//                    item: paceUnitsLabel,
+//                    attribute: NSLayoutAttribute.Top,
+//                    relatedBy: NSLayoutRelation.Equal,
+//                    toItem: cell?.detailTextLabel,
+//                    attribute: NSLayoutAttribute.Bottom,
+//                    multiplier: 1,
+//                    constant: 0
+//                ),
+//                NSLayoutConstraint(
+//                    item: paceUnitsLabel,
+//                    attribute: NSLayoutAttribute.CenterX,
+//                    relatedBy: NSLayoutRelation.Equal,
+//                    toItem: cell?.detailTextLabel,
+//                    attribute: NSLayoutAttribute.CenterX,
+//                    multiplier: 1,
+//                    constant: 0
+//                ),
+//            ]
+//            cell?.addConstraints(paceUnitsLabelConstraints)
+            return cell!
         } else if cellID == Storyboard.Duration.CellID {
+            var cell: DurationTableViewCell?
+            cell = tableView.dequeueReusableCellWithIdentifier(cellID) as? DurationTableViewCell
+            
             // Add "select" image to the row
 //            cell?.imageView?.image = UIImage(named: "arrowInactive")
-            modifiedVariables.Duration.RowSelectionButton.setTranslatesAutoresizingMaskIntoConstraints(false)
-            cell?.contentView.addSubview(modifiedVariables.Duration.RowSelectionButton)
-            let rowSelectionButtonConstraints = [
-                NSLayoutConstraint(
-                    item: modifiedVariables.Duration.RowSelectionButton,
-                    attribute: NSLayoutAttribute.Leading,
-                    relatedBy: NSLayoutRelation.Equal,
-                    toItem: cell?.contentView,
-                    attribute: NSLayoutAttribute.LeadingMargin,
-                    multiplier: 1,
-                    constant: 0
-                ),
-                NSLayoutConstraint(
-                    item: modifiedVariables.Duration.RowSelectionButton,
-                    attribute: NSLayoutAttribute.CenterY,
-                    relatedBy: NSLayoutRelation.Equal,
-                    toItem: cell?.textLabel,
-                    attribute: NSLayoutAttribute.CenterY,
-                    multiplier: 1,
-                    constant: 0
-                ),
-            ]
-            cell?.addConstraints(rowSelectionButtonConstraints)
-            cell?.indentationLevel = 4
+//            modifiedVariables.Duration.RowSelectionButton.setTranslatesAutoresizingMaskIntoConstraints(false)
+//            cell?.contentView.addSubview(modifiedVariables.Duration.RowSelectionButton)
+//            let rowSelectionButtonConstraints = [
+//                NSLayoutConstraint(
+//                    item: modifiedVariables.Duration.RowSelectionButton,
+//                    attribute: NSLayoutAttribute.Leading,
+//                    relatedBy: NSLayoutRelation.Equal,
+//                    toItem: cell?.contentView,
+//                    attribute: NSLayoutAttribute.LeadingMargin,
+//                    multiplier: 1,
+//                    constant: 0
+//                ),
+//                NSLayoutConstraint(
+//                    item: modifiedVariables.Duration.RowSelectionButton,
+//                    attribute: NSLayoutAttribute.CenterY,
+//                    relatedBy: NSLayoutRelation.Equal,
+//                    toItem: cell?.textLabel,
+//                    attribute: NSLayoutAttribute.CenterY,
+//                    multiplier: 1,
+//                    constant: 0
+//                ),
+//            ]
+//            cell?.addConstraints(rowSelectionButtonConstraints)
+//            cell?.indentationLevel = 4
 
             // Populate duration field
-            cell?.textLabel?.text = itemData[kTitleKey] as? String
-            cell?.detailTextLabel?.text = itemData[Storyboard.Duration.Picker.Key] as? String
+//            cell?.textLabel?.text = itemData[kTitleKey] as? String
+//            cell?.detailTextLabel?.text = itemData[Storyboard.Duration.Picker.Key] as? String
+            cell?.durationValueLabel.text = itemData[Storyboard.Duration.Picker.Key] as? String
+            
+            return cell!
         } else if cellID == Storyboard.Distance.CellID {
+            var cell: DistanceTableViewCell?
+            cell = tableView.dequeueReusableCellWithIdentifier(cellID) as? DistanceTableViewCell
+            
             // Add the distance unit label
-            distanceUnitsLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+//            distanceUnitsLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+//            
+//            cell?.addSubview(distanceUnitsLabel)
+//            
+//            let distanceUnitsConstraints = [
+//                NSLayoutConstraint(
+//                    item: distanceUnitsLabel,
+//                    attribute: NSLayoutAttribute.Top,
+//                    relatedBy: NSLayoutRelation.Equal,
+//                    toItem: cell?.detailTextLabel,
+//                    attribute: NSLayoutAttribute.Bottom,
+//                    multiplier: 1,
+//                    constant: 0
+//                ),
+//                NSLayoutConstraint(
+//                    item: distanceUnitsLabel,
+//                    attribute: NSLayoutAttribute.Trailing,
+//                    relatedBy: NSLayoutRelation.Equal,
+//                    toItem: cell?.detailTextLabel,
+//                    attribute: NSLayoutAttribute.Trailing,
+//                    multiplier: 1,
+//                    constant: 0),
+//            ]
+//            
+//            cell?.addConstraints(distanceUnitsConstraints)
             
-            cell?.addSubview(distanceUnitsLabel)
+//            cell?.textLabel?.text = itemData[kTitleKey] as? String
+//            cell?.detailTextLabel?.hidden = true
+//            cell?.viewWithTag(Storyboard.Distance.Tag)?.removeFromSuperview()
+//            textField = UITextField()
+//            cell?.distanceTextField.clearButtonMode = UITextFieldViewMode.WhileEditing
+//            textField.textColor = UIColor.grayColor()
+//            textField.tag = Storyboard.Distance.Tag
+//            textField.setTranslatesAutoresizingMaskIntoConstraints(false)
+            cell?.distanceTextField.keyboardType = UIKeyboardType.DecimalPad
             
-            let distanceUnitsConstraints = [
-                NSLayoutConstraint(
-                    item: distanceUnitsLabel,
-                    attribute: NSLayoutAttribute.Top,
-                    relatedBy: NSLayoutRelation.Equal,
-                    toItem: cell?.detailTextLabel,
-                    attribute: NSLayoutAttribute.Bottom,
-                    multiplier: 1,
-                    constant: 0
-                ),
-                NSLayoutConstraint(
-                    item: distanceUnitsLabel,
-                    attribute: NSLayoutAttribute.Trailing,
-                    relatedBy: NSLayoutRelation.Equal,
-                    toItem: cell?.detailTextLabel,
-                    attribute: NSLayoutAttribute.Trailing,
-                    multiplier: 1,
-                    constant: 0),
-            ]
+            cell?.distanceTextField.addTarget(self, action: Selector("textFieldChanged:"), forControlEvents: UIControlEvents.EditingChanged)
             
-            cell?.addConstraints(distanceUnitsConstraints)
+//            cell?.contentView.addSubview(textField)
+//            cell?.addConstraint(NSLayoutConstraint(
+//                item: textField,
+//                attribute: NSLayoutAttribute.Leading,
+//                relatedBy: NSLayoutRelation.Equal,
+//                toItem: cell?.textLabel,
+//                attribute: NSLayoutAttribute.Trailing,
+//                multiplier: 1,
+//                constant: 8))
+//            cell?.addConstraint(NSLayoutConstraint(
+//                item: textField,
+//                attribute: NSLayoutAttribute.Top,
+//                relatedBy: NSLayoutRelation.Equal,
+//                toItem: cell?.contentView,
+//                attribute: NSLayoutAttribute.Top,
+//                multiplier: 1,
+//                constant: 8))
+//            cell?.addConstraint(NSLayoutConstraint(
+//                item: textField,
+//                attribute: NSLayoutAttribute.Bottom,
+//                relatedBy: NSLayoutRelation.Equal,
+//                toItem: cell?.contentView,
+//                attribute: NSLayoutAttribute.Bottom,
+//                multiplier: 1,
+//                constant: -8))
+//            cell?.addConstraint(NSLayoutConstraint(
+//                item: textField,
+//                attribute: NSLayoutAttribute.Trailing,
+//                relatedBy: NSLayoutRelation.Equal,
+//                toItem: cell?.contentView,
+//                attribute: NSLayoutAttribute.Trailing,
+//                multiplier: 1,
+//                constant: -16))
+//            textField.textAlignment = .Right
+            cell?.distanceTextField.delegate = self
             
-            cell?.textLabel?.text = itemData[kTitleKey] as? String
-            cell?.detailTextLabel?.hidden = true
-            cell?.viewWithTag(Storyboard.Distance.Tag)?.removeFromSuperview()
-            textField = UITextField()
-            textField.clearButtonMode = UITextFieldViewMode.WhileEditing
-            textField.textColor = UIColor.grayColor()
-            textField.tag = Storyboard.Distance.Tag
-            textField.setTranslatesAutoresizingMaskIntoConstraints(false)
-            textField.keyboardType = UIKeyboardType.DecimalPad
-            
-            textField.addTarget(self, action: Selector("textFieldChanged"), forControlEvents: UIControlEvents.EditingChanged)
-            
-            cell?.contentView.addSubview(textField)
-            cell?.addConstraint(NSLayoutConstraint(
-                item: textField,
-                attribute: NSLayoutAttribute.Leading,
-                relatedBy: NSLayoutRelation.Equal,
-                toItem: cell?.textLabel,
-                attribute: NSLayoutAttribute.Trailing,
-                multiplier: 1,
-                constant: 8))
-            cell?.addConstraint(NSLayoutConstraint(
-                item: textField,
-                attribute: NSLayoutAttribute.Top,
-                relatedBy: NSLayoutRelation.Equal,
-                toItem: cell?.contentView,
-                attribute: NSLayoutAttribute.Top,
-                multiplier: 1,
-                constant: 8))
-            cell?.addConstraint(NSLayoutConstraint(
-                item: textField,
-                attribute: NSLayoutAttribute.Bottom,
-                relatedBy: NSLayoutRelation.Equal,
-                toItem: cell?.contentView,
-                attribute: NSLayoutAttribute.Bottom,
-                multiplier: 1,
-                constant: -8))
-            cell?.addConstraint(NSLayoutConstraint(
-                item: textField,
-                attribute: NSLayoutAttribute.Trailing,
-                relatedBy: NSLayoutRelation.Equal,
-                toItem: cell?.contentView,
-                attribute: NSLayoutAttribute.Trailing,
-                multiplier: 1,
-                constant: -16))
-            textField.textAlignment = .Right
-            textField.delegate = self
-            
-            textField.text = itemData[Storyboard.Distance.Key] as? String
+            cell?.distanceTextField.text = itemData[Storyboard.Distance.Key] as? String
             
             // Add "select" image to the row
-//            cell?.imageView?.image = UIImage(named: "arrowInactive")
-            modifiedVariables.Distance.RowSelectionButton.setTranslatesAutoresizingMaskIntoConstraints(false)
-            cell?.contentView.addSubview(modifiedVariables.Distance.RowSelectionButton)
-            let rowSelectionButtonConstraints = [
-                NSLayoutConstraint(
-                    item: modifiedVariables.Distance.RowSelectionButton,
-                    attribute: NSLayoutAttribute.Leading,
-                    relatedBy: NSLayoutRelation.Equal,
-                    toItem: cell?.contentView,
-                    attribute: NSLayoutAttribute.LeadingMargin,
-                    multiplier: 1,
-                    constant: 0
-                ),
-                NSLayoutConstraint(
-                    item: modifiedVariables.Distance.RowSelectionButton,
-                    attribute: NSLayoutAttribute.CenterY,
-                    relatedBy: NSLayoutRelation.Equal,
-                    toItem: cell?.textLabel,
-                    attribute: NSLayoutAttribute.CenterY,
-                    multiplier: 1,
-                    constant: 0
-                ),
-            ]
-            cell?.addConstraints(rowSelectionButtonConstraints)
-            cell?.indentationLevel = 4
-
+////            cell?.imageView?.image = UIImage(named: "arrowInactive")
+//            modifiedVariables.Distance.RowSelectionButton.setTranslatesAutoresizingMaskIntoConstraints(false)
+//            cell?.contentView.addSubview(modifiedVariables.Distance.RowSelectionButton)
+//            let rowSelectionButtonConstraints = [
+//                NSLayoutConstraint(
+//                    item: modifiedVariables.Distance.RowSelectionButton,
+//                    attribute: NSLayoutAttribute.Leading,
+//                    relatedBy: NSLayoutRelation.Equal,
+//                    toItem: cell?.contentView,
+//                    attribute: NSLayoutAttribute.LeadingMargin,
+//                    multiplier: 1,
+//                    constant: 0
+//                ),
+//                NSLayoutConstraint(
+//                    item: modifiedVariables.Distance.RowSelectionButton,
+//                    attribute: NSLayoutAttribute.CenterY,
+//                    relatedBy: NSLayoutRelation.Equal,
+//                    toItem: cell?.textLabel,
+//                    attribute: NSLayoutAttribute.CenterY,
+//                    multiplier: 1,
+//                    constant: 0
+//                ),
+//            ]
+//            cell?.addConstraints(rowSelectionButtonConstraints)
+//            cell?.indentationLevel = 4
+            
+            return cell!
         }
 
-        return cell!
+        return UITableViewCell()
     }
     
     // MARK: - UITextFieldDelegate
     func endEditingNow() {
         self.view.endEditing(true)
     }
-    func textFieldChanged() {
+    func textFieldChanged(textField: UITextField) {
         distanceValue = (textField.text as NSString).doubleValue
         mainTableData[2][Storyboard.Distance.Key] = textField.text
         addModifiedVariable(modifiedVariables.Distance)
-        println("Text field edited")
+//        distanceValue = (textField.text as NSString).doubleValue
+//        mainTableData[2][Storyboard.Distance.Key] = textField.text
+//        addModifiedVariable(modifiedVariables.Distance)
     }
     
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
@@ -1171,7 +1171,7 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
     // MARK: - UITableViewDelegate
         
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return (indexPathHasPicker(indexPath) ? pickerCellRowHeight : tableView.rowHeight)
+        return (indexPathHasPicker(indexPath) ? pickerCellRowHeight : Storyboard.RowHeight)
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

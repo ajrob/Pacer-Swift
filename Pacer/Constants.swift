@@ -74,6 +74,7 @@ struct Storyboard {
             static let Metric = "km"
         }
     }
+    static let RowHeight: CGFloat = 55.0
     static let PickerComponentWidth = CGFloat(100.0)              // General width of all components in every picker
     static let PickerStaticLabelPadding = CGFloat(30.0)           // Padding of the labels
     static let PickerDefaultSpaceBetweenComponents = CGFloat(4.0) // Approximate default spacing between components
