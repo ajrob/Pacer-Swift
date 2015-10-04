@@ -42,7 +42,7 @@ struct PacingCalculations
         }
         //DEBUG
         for split in splits {
-            println("\(split.lapType.description) \(split.lap): \(split.cumulativeSeconds) seconds")
+            print("\(split.lapType.description) \(split.lap): \(split.cumulativeSeconds) seconds", terminator: "")
         }
         //ENDDEBUG
         
@@ -72,7 +72,7 @@ struct PacingCalculations
             }
             
             // Converts the given amount of seconds to a tuple containing hours, minutes, and seconds
-            func secondsInHoursMinutesSeconds(var seconds: Int) -> (hours: Int, minutes: Int, seconds: Int) {
+            func secondsInHoursMinutesSeconds(seconds: Int) -> (hours: Int, minutes: Int, seconds: Int) {
                 return (seconds / 3600, (seconds / 60) % 60, seconds % 60)
             }
         }

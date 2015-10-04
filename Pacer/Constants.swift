@@ -22,7 +22,8 @@ enum LapType: String {
 }
 
 // Units key
-let kMetricKey = "metricUnitsKey"
+let kMetricPaceKey = "metricPaceUnitsKey"
+let kMetricDistanceKey = "metricDistanceUnitsKey"
 
 // Layout structure for the 3 main variables
 struct Storyboard {

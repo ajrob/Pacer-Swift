@@ -8,11 +8,11 @@
 
 import UIKit
 
-class DistanceTableViewCell: UITableViewCell {
+class DistanceTableViewCell: CustomMainTableViewCell {
 
     @IBOutlet weak var distanceTextField: UITextField!
-    @IBOutlet weak var distanceUnits: UIButton!
-    @IBOutlet weak var selectRowButton: UIButton!
+    @IBOutlet weak var distanceUnitsLabel: UILabel!
+//    @IBOutlet weak var selectRowButton: UIButton!
     
     override func awakeFromNib() {
         super.awakeFromNib()

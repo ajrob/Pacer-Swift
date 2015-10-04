@@ -14,12 +14,21 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
     @IBOutlet weak var clearBarButton: UIBarButtonItem!
     
     func dismissKeyboard() {
-        if textField.editing {
-            textField.resignFirstResponder()
+        if distanceTextField.editing {
+            distanceTextField.resignFirstResponder()
         }
     }
     
-    var isMetric = false
+    var distanceTextField = UITextField()
+    
+    var isPaceMetric = false {
+        didSet {
+            if isPaceMetric {
+                
+            }
+        }
+    }
+    var isDistanceMetric = false
     
     let kTitleKey = "title" // key for obtaining the data source item's title
     
@@ -134,8 +143,6 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        
         let rowOne = [kTitleKey: "Pace", Storyboard.Pace.Picker.Key: " "]
         let rowTwo = [kTitleKey: "Duration", Storyboard.Duration.Picker.Key: " "]
         let rowThree = [kTitleKey: "Distance", Storyboard.Distance.Key: " "]
@@ -154,6 +161,7 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         modifiedVariables.Pace.RowSelectionButton.tag = Storyboard.Pace.Tag
         modifiedVariables.Pace.RowSelectionButton.addTarget(self, action: Selector("rowSelectionButtonPressed:"), forControlEvents: .TouchUpInside)
         
+        
         modifiedVariables.Duration.TableViewController = self
         modifiedVariables.Duration.Row = Storyboard.Duration.Row
         modifiedVariables.Duration.IsModified = false
@@ -166,7 +174,7 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         modifiedVariables.Distance.RowSelectionButton.tag = Storyboard.Distance.Tag
         modifiedVariables.Distance.RowSelectionButton.addTarget(self, action: Selector("rowSelectionButtonPressed:"), forControlEvents: .TouchUpInside)
         
-        var tap = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
+        let tap = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
 
         tableView.addGestureRecognizer(tap)
         tap.cancelsTouchesInView = false
@@ -188,10 +196,12 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         
         // Set unit labels
         let defaults = NSUserDefaults.standardUserDefaults()
-        isMetric = defaults.boolForKey(kMetricKey)
-        toggleMetric()
-        paceUnitsLabel.hidden = true
-        distanceUnitsLabel.hidden = true
+        isPaceMetric = defaults.boolForKey(kMetricPaceKey)
+        isDistanceMetric = defaults.boolForKey(kMetricDistanceKey)
+        toggleDistanceUnitLabel()
+        togglePaceUnitLabel()
+//        paceUnitsLabel.hidden = true
+//        distanceUnitsLabel.hidden = true
     }
     
     var ucobserver: NSObjectProtocol?
@@ -200,13 +210,45 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         super.viewDidAppear(animated)
         
         // Observe to see if units change
-        observeUserDefaults()
+//        observeUserDefaults()
+        // Use KVO
+        let defaults = NSUserDefaults.standardUserDefaults()
+        defaults.addObserver(self,
+            forKeyPath: kMetricDistanceKey,
+            options: NSKeyValueObservingOptions.New,
+            context: nil)
+        defaults.addObserver(self,
+            forKeyPath: kMetricPaceKey,
+            options: NSKeyValueObservingOptions.New,
+            context: nil)
+        
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         if let observer = ucobserver {
             NSNotificationCenter.defaultCenter().removeObserver(observer)
+        }
+        
+        // Remove KVO
+        let defaults = NSUserDefaults.standardUserDefaults()
+        defaults.removeObserver(self, forKeyPath: kMetricDistanceKey)
+        defaults.removeObserver(self, forKeyPath: kMetricPaceKey)
+    }
+    
+    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        if let unitsKey = keyPath {
+            switch unitsKey {
+            case kMetricDistanceKey:
+                self.isDistanceMetric = defaults.boolForKey(kMetricDistanceKey)
+                self.toggleDistanceUnitLabel()
+            case kMetricPaceKey:
+                self.isPaceMetric = defaults.boolForKey(kMetricPaceKey)
+                self.togglePaceUnitLabel()
+            default:
+                break
+            }
         }
     }
     
@@ -217,28 +259,43 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
             object: NSUserDefaults.standardUserDefaults(),
             queue: queue){ notification in
                 let defaults = NSUserDefaults.standardUserDefaults()
-                self.isMetric = defaults.boolForKey(kMetricKey)
-                self.toggleMetric()
+                self.isPaceMetric = defaults.boolForKey(kMetricPaceKey)
+                self.toggleDistanceUnitLabel()
         }
     }
     
-    private func toggleMetric() {
-        // Change labels
-        let paceUnitText = isMetric ? Storyboard.Pace.UnitLabel.Metric : Storyboard.Pace.UnitLabel.Imperial
-        let distanceUnitText = isMetric ? Storyboard.Distance.UnitLabel.Metric : Storyboard.Distance.UnitLabel.Imperial
-        paceUnitsLabel.attributedText = NSAttributedString(string: paceUnitText, attributes:
-            [
-//                NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleCaption2),
-                NSFontAttributeName: UIFont.systemFontOfSize(CGFloat(8.0)),
-                NSForegroundColorAttributeName: UIColor.lightGrayColor()
-            ]
-        )
-        distanceUnitsLabel.attributedText = NSAttributedString(string: distanceUnitText, attributes:
-            [
-                NSFontAttributeName: UIFont.systemFontOfSize(CGFloat(8.0)),
-                NSForegroundColorAttributeName: UIColor.lightGrayColor()
-            ]
-        )
+    private func toggleDistanceUnitLabel() {
+        self.distanceUnitsLabel.text = isDistanceMetric ? Storyboard.Distance.UnitLabel.Metric : Storyboard.Distance.UnitLabel.Imperial
+        removePickerRow()
+        tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: Storyboard.Distance.Row, inSection: 0)], withRowAnimation: .None)
+        modifiedVariables.Distance.RowSelectionButton.refreshUI()
+        
+        calculateValues()
+    }
+    
+    private func togglePaceUnitLabel() {
+//        // Change labels
+//        let paceUnitText = isPaceMetric ? Storyboard.Pace.UnitLabel.Metric : Storyboard.Pace.UnitLabel.Imperial
+//        let distanceUnitText = isPaceMetric ? Storyboard.Distance.UnitLabel.Metric : Storyboard.Distance.UnitLabel.Imperial
+//        paceUnitsLabel.attributedText = NSAttributedString(string: paceUnitText, attributes:
+//            [
+//                NSFontAttributeName: UIFont.systemFontOfSize(CGFloat(8.0)),
+//                NSForegroundColorAttributeName: UIColor.lightGrayColor()
+//            ]
+//        )
+//        distanceUnitsLabel.attributedText = NSAttributedString(string: distanceUnitText, attributes:
+//            [
+//                NSFontAttributeName: UIFont.systemFontOfSize(CGFloat(8.0)),
+//                NSForegroundColorAttributeName: UIColor.lightGrayColor()
+//            ]
+//        )
+//        let paceUnitText = isPaceMetric ? Storyboard.Pace.UnitLabel.Metric : Storyboard.Pace.UnitLabel.Imperial
+//        let cell = tableView.dequeueReusableCellWithIdentifier(Storyboard.Pace.CellID) as? PaceTableViewCell
+        
+        self.paceUnitsLabel.text = isPaceMetric ? Storyboard.Pace.UnitLabel.Metric : Storyboard.Pace.UnitLabel.Imperial
+        removePickerRow()
+        tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: UITableViewRowAnimation.None)
+//        cell?.paceUnitLabel.text = paceUnitText
         
         // Recalculate if needed
         calculateValues()
@@ -296,6 +353,7 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
     
     private func calculateValues() {
         // Do calculations
+        var effectiveDistance = 0.0
         if modifiedVariables.Pace.IsModified {
             if modifiedVariables.Duration.IsModified {
                 // Pace is in minutes per mile, so enter the inverse into the formula
@@ -306,8 +364,11 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
                     distanceValue = PacingCalculations().distanceFormula(1/Double(paceValue.TotalSeconds), time: Double(durationValue.TotalSeconds))
                 }
                 
-                if isMetric {
-                    distanceValue = PacingCalculations.Conversion.Length().milesToKilometers(distanceValue)
+                effectiveDistance = distanceValue
+                
+                if isPaceMetric && !isDistanceMetric {
+                    // If the pace is metric, but the distance is imperial, convert to km.
+                    effectiveDistance = PacingCalculations.Conversion.Length().kilometersToMiles(distanceValue)
                 }
                 
                 // Update distance row
@@ -318,18 +379,25 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
                 let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: distanceRow, inSection: 0)) as? DistanceTableViewCell
 ////                cell?.detailTextLabel?.text = "\(result)"
 //                (cell?.viewWithTag(Storyboard.Distance.Tag) as! UITextField).text = "\(round(Storyboard.Distance.Rounding * distanceValue) / Storyboard.Distance.Rounding)"
-                cell?.distanceTextField.text = "\(round(Storyboard.Distance.Rounding * distanceValue) / Storyboard.Distance.Rounding)"
+                cell?.distanceTextField.text = "\(round(Storyboard.Distance.Rounding * effectiveDistance) / Storyboard.Distance.Rounding)"
 ////                cell?.imageView?.image = UIImage(named: "arrowAnswer")
+                cell?.selectRowButton.setImage(UIImage(named: "arrowAnswer"), forState: .Normal)
 //                modifiedVariables.Distance.RowSelectionButton.rowState = .Calculated
 ////                // Reset new variable flags
 ////                resetNewVariables()
             } else if modifiedVariables.Distance.IsModified {
-                // Pace is in minutes per mile/km, so enter the inverse into the formula
+                // Pace is in minutes per mile (or km), so enter the inverse into the formula
                 var result = 0.0
+                effectiveDistance = distanceValue
+                if isPaceMetric && !isDistanceMetric {
+                    effectiveDistance = PacingCalculations.Conversion.Length().milesToKilometers(distanceValue)
+                } else if !isPaceMetric && isDistanceMetric {
+                    effectiveDistance = PacingCalculations.Conversion.Length().kilometersToMiles(distanceValue)
+                }
                 if paceValue.TotalSeconds == 0 {
-                    result = PacingCalculations().timeFormula(Double(paceValue.TotalSeconds), distance: Double(distanceValue))
+                    result = PacingCalculations().timeFormula(Double(paceValue.TotalSeconds), distance: Double(effectiveDistance))
                 } else {
-                    result = PacingCalculations().timeFormula(1/Double(paceValue.TotalSeconds), distance: Double(distanceValue))
+                    result = PacingCalculations().timeFormula(1/Double(paceValue.TotalSeconds), distance: Double(effectiveDistance))
                 }
                 let formattedResult = PacingCalculations.Conversion.Time().secondsInHoursMinutesSeconds(Int(result))
                 durationValue.Hours = formattedResult.hours
@@ -345,10 +413,19 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
                 cell?.durationValueLabel.text = "\(durationValue.description())"
 //                cell?.detailTextLabel?.text = "\(durationValue.description())"
 ////                cell?.imageView?.image = UIImage(named: "arrowAnswer")
+                cell?.selectRowButton.setImage(UIImage(named: "arrowAnswer"), forState: .Normal)
                 modifiedVariables.Duration.RowSelectionButton.rowState = .Calculated
             }
         } else if modifiedVariables.Duration.IsModified && modifiedVariables.Distance.IsModified {
-            let result = PacingCalculations().rateFormula(distanceValue, time: Double(durationValue.TotalSeconds))
+            var result = 0.0
+            effectiveDistance = distanceValue
+            if isPaceMetric && !isDistanceMetric {
+                effectiveDistance = PacingCalculations.Conversion.Length().milesToKilometers(distanceValue)
+            } else if !isPaceMetric && isDistanceMetric {
+                effectiveDistance = PacingCalculations.Conversion.Length().kilometersToMiles(distanceValue)
+            }
+            result = PacingCalculations().rateFormula(effectiveDistance, time: Double(durationValue.TotalSeconds))
+            
             var formattedResult: (hours: Int, minutes: Int, seconds: Int)
             if result == 0 {
                 formattedResult = PacingCalculations.Conversion.Time().secondsInHoursMinutesSeconds(Int(result))
@@ -363,6 +440,7 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
             cell?.paceValueLabel.text = "\(paceValue.description())"
 //            cell?.detailTextLabel?.text = "\(paceValue.description())"
 ////            cell?.imageView?.image = UIImage(named: "arrowAnswer")
+            cell?.selectRowButton.setImage(UIImage(named: "arrowAnswer"), forState: .Normal)
             modifiedVariables.Pace.RowSelectionButton.rowState = .Calculated
         }
     }
@@ -410,7 +488,7 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
     
     // MARK: - Toggle Units
     func togglePaceUnits(sender: UIButton!) {
-        println("Pace units toggled")
+        print("Pace units toggled", terminator: "")
     }
     
     
@@ -491,7 +569,7 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
             before = pickerIndexPath?.row < indexPath.row
         }
         
-        var sameCellClicked = (pickerIndexPath?.row == indexPath.row + 1)
+        let sameCellClicked = (pickerIndexPath?.row == indexPath.row + 1)
         
         // Remove any picker cell if it exists
         if self.hasInlinePicker() {
@@ -598,7 +676,7 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
                 break
             }
             mainTableData[self.pickerIndexPath!.row - 1][Storyboard.Pace.Picker.Key] = paceValue.description()
-            var cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: pickerIndexPath!.row - 1, inSection: 0)) as? PaceTableViewCell
+            let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: pickerIndexPath!.row - 1, inSection: 0)) as? PaceTableViewCell
 //            cell?.detailTextLabel?.text = paceValue.description()
             
             cell?.paceValueLabel.text = paceValue.description()
@@ -617,9 +695,9 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
                 break
             }
             mainTableData[self.pickerIndexPath!.row - 1][Storyboard.Duration.Picker.Key] = durationValue.description()
-            var pickerCell = tableView.cellForRowAtIndexPath(NSIndexPath(forItem: pickerIndexPath!.row, inSection: 0))
-            println("\(pickerCell?.frame.size)")
-            var cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: pickerIndexPath!.row - 1, inSection: 0)) as? DurationTableViewCell
+            let pickerCell = tableView.cellForRowAtIndexPath(NSIndexPath(forItem: pickerIndexPath!.row, inSection: 0))
+            print("\(pickerCell?.frame.size)", terminator: "")
+            let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: pickerIndexPath!.row - 1, inSection: 0)) as? DurationTableViewCell
 //            cell?.detailTextLabel?.text = durationValue.description()
             cell?.durationValueLabel.text = durationValue.description()
             
@@ -628,13 +706,13 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         }
     }
     
-    func pickerView(pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusingView view: UIView!) -> UIView {
+    func pickerView(pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusingView view: UIView?) -> UIView {
         var containerView = view
-        var pickerLabel = UILabel()
+        let pickerLabel = UILabel()
         if view == nil {
             containerView = UIView()
-            containerView.addSubview(pickerLabel)
-            pickerLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+            containerView!.addSubview(pickerLabel)
+            pickerLabel.translatesAutoresizingMaskIntoConstraints = false
             let constraints = [
                 NSLayoutConstraint(
                     item: pickerLabel,
@@ -662,7 +740,7 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
                     constant: 0),
             ]
             
-            containerView.addConstraints(constraints)
+            containerView!.addConstraints(constraints)
         }
         var titleData = " "
         if pickerView.tag == Storyboard.Pace.Picker.Tag {
@@ -680,7 +758,7 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         pickerLabel.attributedText = title
         pickerLabel.textAlignment = .Right
         
-        return containerView
+        return containerView!
     }
     
     func pickerView(pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
@@ -731,8 +809,9 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         
         //Add labels to pickers if needed
         if cellID == Storyboard.Pace.Picker.CellID {
-            var cell: UITableViewCell?
-            cell = tableView.dequeueReusableCellWithIdentifier(cellID) as? UITableViewCell
+//            var cell: UITableViewCell?
+            let cell: UITableViewCell? = tableView.dequeueReusableCellWithIdentifier(cellID)
+//            cell = tableView.dequeueReusableCellWithIdentifier(cellID) as? UITableViewCell
             
 //            // Add blur effect
 //            var visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Light))
@@ -760,8 +839,8 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
             minuteLabel.attributedText = minuteLabelText
             secondLabel.attributedText = secondLabelText
             
-            minuteLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
-            secondLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+            minuteLabel.translatesAutoresizingMaskIntoConstraints = false
+            secondLabel.translatesAutoresizingMaskIntoConstraints = false
             
             cell?.contentView.addSubview(minuteLabel)
             cell?.contentView.addSubview(secondLabel)
@@ -804,8 +883,9 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
             cell?.contentView.addConstraints(constraints)
             return cell!
         } else if cellID == Storyboard.Duration.Picker.CellID {
-            var cell: UITableViewCell?
-            cell = tableView.dequeueReusableCellWithIdentifier(cellID) as? UITableViewCell
+//            var cell: UITableViewCell?
+            let cell: UITableViewCell? = tableView.dequeueReusableCellWithIdentifier(cellID)
+//            cell = tableView.dequeueReusableCellWithIdentifier(cellID) as? UITableViewCell
             
 //            // Add blur effect
 //            var visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.ExtraLight))
@@ -839,9 +919,9 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
             minuteLabel.attributedText = minuteLabelText
             secondLabel.attributedText = secondLabelText
             
-            hourLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
-            minuteLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
-            secondLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+            hourLabel.translatesAutoresizingMaskIntoConstraints = false
+            minuteLabel.translatesAutoresizingMaskIntoConstraints = false
+            secondLabel.translatesAutoresizingMaskIntoConstraints = false
             
             cell?.contentView.addSubview(hourLabel)
             cell?.contentView.addSubview(minuteLabel)
@@ -915,6 +995,9 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
             var cell: PaceTableViewCell?
             cell = tableView.dequeueReusableCellWithIdentifier(cellID) as? PaceTableViewCell
             
+            cell?.selectRowButton.tag = Storyboard.Pace.Tag
+            cell?.selectRowButton.addTarget(self, action: Selector("rowSelectionButtonPressed:"), forControlEvents: .TouchUpInside)
+            
             // Add "select" image to the row
 //            cell?.imageView?.image = UIImage(named: "arrowInactive")
             
@@ -945,6 +1028,7 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
             
             // Populate pace field
             cell?.paceValueLabel.text = itemData[Storyboard.Pace.Picker.Key] as? String
+            cell?.paceUnitLabel.text = paceUnitsLabel.text
 //            cell?.textLabel?.text = itemData[kTitleKey] as? String
 //            cell?.detailTextLabel?.text = itemData[Storyboard.Pace.Picker.Key] as? String
             
@@ -978,6 +1062,9 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         } else if cellID == Storyboard.Duration.CellID {
             var cell: DurationTableViewCell?
             cell = tableView.dequeueReusableCellWithIdentifier(cellID) as? DurationTableViewCell
+            
+            cell?.selectRowButton.tag = Storyboard.Duration.Tag
+            cell?.selectRowButton.addTarget(self, action: Selector("rowSelectionButtonPressed:"), forControlEvents: .TouchUpInside)
             
             // Add "select" image to the row
 //            cell?.imageView?.image = UIImage(named: "arrowInactive")
@@ -1013,8 +1100,36 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
             
             return cell!
         } else if cellID == Storyboard.Distance.CellID {
-            var cell: DistanceTableViewCell?
-            cell = tableView.dequeueReusableCellWithIdentifier(cellID) as? DistanceTableViewCell
+//            var cell: DistanceTableViewCell?
+            if let cell = tableView.dequeueReusableCellWithIdentifier(cellID) as? DistanceTableViewCell {
+                if let textfield = cell.distanceTextField {
+                    distanceTextField = textfield
+                }
+                
+//                cell.selectRowButton.refreshUI()
+//                modifiedVariables.Distance.refreshSelectButtonState()
+                
+                cell.selectRowButton.tag = Storyboard.Distance.Tag
+                cell.selectRowButton.addTarget(self, action: Selector("rowSelectionButtonPressed:"), forControlEvents: .TouchUpInside)
+                
+                cell.distanceUnitsLabel.text = distanceUnitsLabel.text
+                
+                
+                cell.distanceTextField.keyboardType = UIKeyboardType.DecimalPad
+                
+                cell.distanceTextField.addTarget(self, action: Selector("textFieldChanged:"), forControlEvents: UIControlEvents.EditingChanged)
+                
+                
+                cell.distanceTextField.delegate = self
+                
+                cell.distanceTextField.text = itemData[Storyboard.Distance.Key] as? String
+                
+                return cell
+            } else {
+                return UITableViewCell()
+            }
+            
+            
             
             // Add the distance unit label
 //            distanceUnitsLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
@@ -1051,9 +1166,6 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
 //            textField.textColor = UIColor.grayColor()
 //            textField.tag = Storyboard.Distance.Tag
 //            textField.setTranslatesAutoresizingMaskIntoConstraints(false)
-            cell?.distanceTextField.keyboardType = UIKeyboardType.DecimalPad
-            
-            cell?.distanceTextField.addTarget(self, action: Selector("textFieldChanged:"), forControlEvents: UIControlEvents.EditingChanged)
             
 //            cell?.contentView.addSubview(textField)
 //            cell?.addConstraint(NSLayoutConstraint(
@@ -1089,9 +1201,6 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
 //                multiplier: 1,
 //                constant: -16))
 //            textField.textAlignment = .Right
-            cell?.distanceTextField.delegate = self
-            
-            cell?.distanceTextField.text = itemData[Storyboard.Distance.Key] as? String
             
             // Add "select" image to the row
 ////            cell?.imageView?.image = UIImage(named: "arrowInactive")
@@ -1120,7 +1229,7 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
 //            cell?.addConstraints(rowSelectionButtonConstraints)
 //            cell?.indentationLevel = 4
             
-            return cell!
+//            return cell!
         }
 
         return UITableViewCell()
@@ -1131,13 +1240,17 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
         self.view.endEditing(true)
     }
     func textFieldChanged(textField: UITextField) {
-        distanceValue = (textField.text as NSString).doubleValue
+        
+        distanceValue = (textField.text! as NSString).doubleValue
         mainTableData[2][Storyboard.Distance.Key] = textField.text
         addModifiedVariable(modifiedVariables.Distance)
 //        distanceValue = (textField.text as NSString).doubleValue
 //        mainTableData[2][Storyboard.Distance.Key] = textField.text
 //        addModifiedVariable(modifiedVariables.Distance)
     }
+    
+    
+    @IBOutlet var distanceEvents: UIScrollView!
     
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
         // Collapse any pickers
@@ -1155,10 +1268,11 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
             target: self,
             action: Selector("endEditingNow"))
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: self, action: nil)
-        var toolbarButtons = [flexibleSpace, doneButton]
+        let toolbarButtons = [flexibleSpace, doneButton]
         keyboardDoneButtonBar.setItems(toolbarButtons, animated: false)
         
-        textField.inputAccessoryView = keyboardDoneButtonBar
+//        textField.inputAccessoryView = keyboardDoneButtonBar
+        textField.inputAccessoryView = distanceEvents
         
         return true
     }
@@ -1203,7 +1317,6 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
 ////            cell.backgroundColor = UIColor.clearColor()
 //                cell.imageView?.image = nil
 //        }
-        
     }
 
     
@@ -1224,7 +1337,7 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == Storyboard.SettingsSegue {
             if let settingsViewController = segue.destinationViewController.contentViewController as? SettingsTableViewController {
-                settingsViewController.isMetric = self.isMetric
+                settingsViewController.isPaceMetric = self.isPaceMetric
             }
         }
     }
@@ -1234,7 +1347,7 @@ class MainTemplateTableViewController: UITableViewController, UIPickerViewDataSo
 extension UIViewController {
     var contentViewController: UIViewController {
         if let navCon = self as? UINavigationController {
-            return navCon.visibleViewController
+            return navCon.visibleViewController!
         } else {
             return self
         }
@@ -1246,20 +1359,27 @@ class Variable : NSObject {
     var Row: Int = 0
     var TableViewController: MainTemplateTableViewController? = nil
     var RowSelectionButton = SelectRowButton()
+    
     var IsModified: Bool = false {
         didSet {
             var selectedRow = self.Row
             if self.IsModified {
-                let cell = TableViewController?.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: selectedRow, inSection: 0))
-//                cell?.imageView?.image = UIImage(named: "arrowActive")
-                RowSelectionButton.rowState = .Active
+                if let cell = TableViewController?.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: selectedRow, inSection: 0)) as? CustomMainTableViewCell {
+    //                cell?.imageView?.image = UIImage(named: "arrowActive")
+//                    cell.selectRowButton.setImage(UIImage(named: "arrowActive"), forState: UIControlState.Normal)
+                    cell.selectRowButton.rowState = .Active
+//                    RowSelectionButton.rowState = .Active
+                }
             } else {
                 if self.TableViewController?.pickerIndexPath != nil && self.Row >= self.TableViewController?.pickerIndexPath?.row {
                     selectedRow++
                 }
-                let cell = TableViewController?.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: selectedRow, inSection: 0))
-//                cell?.imageView?.image = UIImage(named: "arrowInactive")
-                RowSelectionButton.rowState = .Inactive
+                if let cell = TableViewController?.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: selectedRow, inSection: 0)) as? CustomMainTableViewCell {
+    //                cell?.imageView?.image = UIImage(named: "arrowInactive")
+//                    cell.selectRowButton.setImage(UIImage(named: "arrowInactive"), forState: .Normal)
+                    cell.selectRowButton.rowState = .Inactive
+//                    RowSelectionButton.rowState = .Inactive
+                }
                 reloadRow(selectedRow)
             }
         }

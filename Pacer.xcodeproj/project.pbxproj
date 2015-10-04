@@ -12,6 +12,7 @@
 		FA4AA04D1AF7247200F9D264 /* PaceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4AA04C1AF7247200F9D264 /* PaceTableViewCell.swift */; };
 		FA4AA04F1AF7248100F9D264 /* DurationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4AA04E1AF7248100F9D264 /* DurationTableViewCell.swift */; };
 		FA4AA0511AF7248E00F9D264 /* DistanceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4AA0501AF7248E00F9D264 /* DistanceTableViewCell.swift */; };
+		FA4AA0551AFE830400F9D264 /* CustomMainTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4AA0541AFE830400F9D264 /* CustomMainTableViewCell.swift */; };
 		FA5367F71AB29A5D000C5E0E /* MainTemplateTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5367F61AB29A5D000C5E0E /* MainTemplateTableViewController.swift */; };
 		FA5638301A96FE4400E9BB0A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA56382F1A96FE4400E9BB0A /* AppDelegate.swift */; };
 		FA5638351A96FE4400E9BB0A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA5638331A96FE4400E9BB0A /* Main.storyboard */; };
@@ -20,6 +21,7 @@
 		FA5638461A96FE4400E9BB0A /* PacerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5638451A96FE4400E9BB0A /* PacerTests.swift */; };
 		FA5638501A97010400E9BB0A /* PacingCalculations.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA56384F1A97010400E9BB0A /* PacingCalculations.swift */; };
 		FA79DC021A99A8580038EA8E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA79DC011A99A8580038EA8E /* Constants.swift */; };
+		FAE112041B125C57004774D2 /* distanceEventsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAE112031B125C57004774D2 /* distanceEventsView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +40,7 @@
 		FA4AA04C1AF7247200F9D264 /* PaceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaceTableViewCell.swift; sourceTree = "<group>"; };
 		FA4AA04E1AF7248100F9D264 /* DurationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DurationTableViewCell.swift; sourceTree = "<group>"; };
 		FA4AA0501AF7248E00F9D264 /* DistanceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DistanceTableViewCell.swift; sourceTree = "<group>"; };
+		FA4AA0541AFE830400F9D264 /* CustomMainTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomMainTableViewCell.swift; sourceTree = "<group>"; };
 		FA5367F61AB29A5D000C5E0E /* MainTemplateTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTemplateTableViewController.swift; sourceTree = "<group>"; };
 		FA56382A1A96FE4400E9BB0A /* Pacer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pacer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA56382E1A96FE4400E9BB0A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -50,6 +53,7 @@
 		FA5638451A96FE4400E9BB0A /* PacerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PacerTests.swift; sourceTree = "<group>"; };
 		FA56384F1A97010400E9BB0A /* PacingCalculations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PacingCalculations.swift; sourceTree = "<group>"; };
 		FA79DC011A99A8580038EA8E /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		FAE112031B125C57004774D2 /* distanceEventsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = distanceEventsView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +80,7 @@
 				FA4AA04C1AF7247200F9D264 /* PaceTableViewCell.swift */,
 				FA4AA04E1AF7248100F9D264 /* DurationTableViewCell.swift */,
 				FA4AA0501AF7248E00F9D264 /* DistanceTableViewCell.swift */,
+				FA4AA0541AFE830400F9D264 /* CustomMainTableViewCell.swift */,
 			);
 			name = TableViewCells;
 			sourceTree = "<group>";
@@ -109,6 +114,7 @@
 				FA3397951AEDF99700C9889C /* SettingsTableViewController.swift */,
 				FA33979B1AF3290800C9889C /* SelectRowButton.swift */,
 				FA4AA0531AF724A000F9D264 /* TableViewCells */,
+				FAE112031B125C57004774D2 /* distanceEventsView.xib */,
 			);
 			path = Pacer;
 			sourceTree = "<group>";
@@ -185,11 +191,14 @@
 		FA5638221A96FE4400E9BB0A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftMigration = 0700;
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = "Alex Robinson";
 				TargetAttributes = {
 					FA5638291A96FE4400E9BB0A = {
 						CreatedOnToolsVersion = 6.1.1;
+						DevelopmentTeam = JU8E89GLL6;
 					};
 					FA56383E1A96FE4400E9BB0A = {
 						CreatedOnToolsVersion = 6.1.1;
@@ -223,6 +232,7 @@
 			files = (
 				FA5638351A96FE4400E9BB0A /* Main.storyboard in Resources */,
 				FA56383A1A96FE4400E9BB0A /* LaunchScreen.xib in Resources */,
+				FAE112041B125C57004774D2 /* distanceEventsView.xib in Resources */,
 				FA5638371A96FE4400E9BB0A /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -246,6 +256,7 @@
 				FA3397961AEDF99700C9889C /* SettingsTableViewController.swift in Sources */,
 				FA5367F71AB29A5D000C5E0E /* MainTemplateTableViewController.swift in Sources */,
 				FA4AA0511AF7248E00F9D264 /* DistanceTableViewCell.swift in Sources */,
+				FA4AA0551AFE830400F9D264 /* CustomMainTableViewCell.swift in Sources */,
 				FA79DC021A99A8580038EA8E /* Constants.swift in Sources */,
 				FA5638501A97010400E9BB0A /* PacingCalculations.swift in Sources */,
 				FA4AA04D1AF7247200F9D264 /* PaceTableViewCell.swift in Sources */,
@@ -372,9 +383,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Pacer/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -382,9 +396,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Pacer/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

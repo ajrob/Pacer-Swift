@@ -8,11 +8,12 @@
 
 import UIKit
 
-class PaceTableViewCell: UITableViewCell {
+class PaceTableViewCell: CustomMainTableViewCell {
 
-    @IBOutlet weak var paceUnitsButton: UIButton!
+    
+    @IBOutlet weak var paceUnitLabel: UILabel!
     @IBOutlet weak var paceValueLabel: UILabel!
-    @IBOutlet weak var selectRowButton: UIButton!
+//    @IBOutlet var selectRowButton: UIButton!
     
     override func awakeFromNib() {
         super.awakeFromNib()

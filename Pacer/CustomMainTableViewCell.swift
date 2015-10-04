@@ -1,17 +1,16 @@
 //
-//  DurationTableViewCell.swift
+//  CustomMainTableViewCell.swift
 //  Pacer
 //
-//  Created by Alex Robinson on 5/3/15.
+//  Created by Alex Robinson on 5/9/15.
 //  Copyright (c) 2015 Alex Robinson. All rights reserved.
 //
 
 import UIKit
 
-class DurationTableViewCell: CustomMainTableViewCell {
+class CustomMainTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var durationValueLabel: UILabel!
-//    @IBOutlet weak var selectRowButton: UIButton!
+    @IBOutlet weak var selectRowButton: SelectRowButton!
     
     override func awakeFromNib() {
         super.awakeFromNib()

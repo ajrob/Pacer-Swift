@@ -11,38 +11,48 @@ import UIKit
 class SettingsTableViewController: UITableViewController {
 
     @IBOutlet weak var doneButton: UIBarButtonItem!
-    @IBOutlet weak var metricSwitch: UISwitch!
+    @IBOutlet weak var metricPaceSwitch: UISwitch!
+    @IBOutlet weak var metricDistanceSwitch: UISwitch!
     
     @IBAction func done(sender: UIBarButtonItem) {
         presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    var isMetric = false
+    var isPaceMetric = false
+    var isDistanceMetric = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let defaults = NSUserDefaults.standardUserDefaults()
-        isMetric = defaults.boolForKey(kMetricKey)
-        metricSwitch.on = isMetric
+        isPaceMetric = defaults.boolForKey(kMetricPaceKey)
+        isDistanceMetric = defaults.boolForKey(kMetricDistanceKey)
+        metricPaceSwitch.on = isPaceMetric
+        metricDistanceSwitch.on = isDistanceMetric
         
         // Adding a zero-sized footer prevents additional blank rows from being displayed.
         self.tableView.tableFooterView = UIView(frame: CGRectZero)
 
         // Color scheme
         doneButton.tintColor = Colors.Tint
-        metricSwitch.tintColor = Colors.Tint
-        metricSwitch.onTintColor = Colors.Tint
+        metricPaceSwitch.onTintColor = Colors.Tint
+        metricDistanceSwitch.onTintColor = Colors.Tint
         
         // Background blur effect
-        var visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.ExtraLight))
+        let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.ExtraLight))
         tableView.backgroundView = visualEffectView
     }
 
     @IBAction func toggleUnits(sender: UISwitch) {
         let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.setBool(metricSwitch.on, forKey: kMetricKey)
-        isMetric = metricSwitch.on
+        defaults.setBool(metricPaceSwitch.on, forKey: kMetricPaceKey)
+        isPaceMetric = metricPaceSwitch.on
+    }
+    
+    @IBAction func toggleDistanceUnits(sender: UISwitch) {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        defaults.setBool(metricDistanceSwitch.on, forKey: kMetricDistanceKey)
+        isDistanceMetric = metricDistanceSwitch.on
     }
     
     /*

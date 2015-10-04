@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7531" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Yx9-jw-lJd">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Yx9-jw-lJd">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -41,7 +42,7 @@
                             </variation>
                         </view>
                         <view key="tableFooterView" contentMode="scaleToFill" id="8HR-ci-XBT">
-                            <rect key="frame" x="0.0" y="596" width="600" height="54"/>
+                            <rect key="frame" x="0.0" y="609" width="600" height="54"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fill in two options to calculate the third." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2sk-sD-qxy">
@@ -53,7 +54,7 @@
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lc5-ik-nFp">
                                     <rect key="frame" x="550" y="5" width="30" height="44"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="26"/>
-                                    <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="0.20999999999999999" colorSpace="calibratedRGB"/>
+                                    <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="0.53000000000000003" colorSpace="calibratedRGB"/>
                                     <state key="normal" title="⚙">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
@@ -80,17 +81,19 @@
                         </view>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="paceCell" rowHeight="55" id="KIn-zX-fJj" customClass="PaceTableViewCell" customModule="Pacer" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="120" width="600" height="55"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KIn-zX-fJj" id="1Ry-Ta-4Z5">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="54"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V3q-ab-xK9">
+                                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V3q-ab-xK9" customClass="SelectRowButton" customModule="Pacer" customModuleProvider="target">
                                             <rect key="frame" x="8" y="13" width="28" height="28"/>
                                             <state key="normal" image="arrowInactive">
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
                                         </button>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pace" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8QF-mb-otb">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Pace" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8QF-mb-otb">
                                             <rect key="frame" x="44" y="8" width="37" height="38"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -134,16 +137,19 @@
                                     </variation>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="paceUnitLabel" destination="tdc-XR-2wc" id="StY-Q3-kBk"/>
                                     <outlet property="paceValueLabel" destination="7vm-TT-QFq" id="Kj2-Zt-l5t"/>
-                                    <outlet property="selectRowButton" destination="V3q-ab-xK9" id="vWf-5s-f6s"/>
+                                    <outlet property="selectRowButton" destination="V3q-ab-xK9" id="wcp-2S-MKg"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="pacePickerCell" rowHeight="162" id="MBu-w4-SqD">
+                                <rect key="frame" x="0.0" y="175" width="600" height="162"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="MBu-w4-SqD" id="b6n-kq-j0d">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="161"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <pickerView tag="20" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="60D-r7-X31">
+                                        <pickerView tag="20" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="60D-r7-X31">
                                             <rect key="frame" x="8" y="-1" width="584" height="162"/>
                                             <connections>
                                                 <outlet property="dataSource" destination="0fp-Os-3Z4" id="BoV-Zt-Uaq"/>
@@ -160,11 +166,13 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="durationCell" rowHeight="55" id="d1E-c5-5fw" customClass="DurationTableViewCell" customModule="Pacer" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="337" width="600" height="55"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="d1E-c5-5fw" id="NY6-eu-DNR">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="54"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1hY-04-lwC">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1hY-04-lwC" customClass="SelectRowButton" customModule="Pacer" customModuleProvider="target">
                                             <rect key="frame" x="8" y="12" width="28" height="28"/>
                                             <state key="normal" image="arrowInactive">
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -210,15 +218,17 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="durationValueLabel" destination="uS8-3s-9Kd" id="1bK-i3-pon"/>
-                                    <outlet property="selectRowButton" destination="1hY-04-lwC" id="Y5p-YO-vXu"/>
+                                    <outlet property="selectRowButton" destination="1hY-04-lwC" id="O6g-YC-gtA"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="durationPickerCell" rowHeight="162" id="gS7-Te-X6t">
+                                <rect key="frame" x="0.0" y="392" width="600" height="162"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gS7-Te-X6t" id="3zp-dx-Utv">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="161"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <pickerView tag="30" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XL0-pE-hMq">
+                                        <pickerView tag="30" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XL0-pE-hMq">
                                             <rect key="frame" x="8" y="-1" width="584" height="162"/>
                                             <connections>
                                                 <outlet property="dataSource" destination="0fp-Os-3Z4" id="CMQ-Mn-OKT"/>
@@ -236,11 +246,13 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="distanceCell" rowHeight="55" id="hEF-Pi-UHz" customClass="DistanceTableViewCell" customModule="Pacer" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="554" width="600" height="55"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hEF-Pi-UHz" id="4h8-c0-m64">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="54"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SvG-GE-geQ">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SvG-GE-geQ" customClass="SelectRowButton" customModule="Pacer" customModuleProvider="target">
                                             <rect key="frame" x="8" y="13" width="28" height="28"/>
                                             <state key="normal" image="arrowInactive">
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -295,7 +307,8 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="distanceTextField" destination="unt-a4-RaP" id="atW-eb-GT4"/>
-                                    <outlet property="selectRowButton" destination="SvG-GE-geQ" id="EmN-eE-uLH"/>
+                                    <outlet property="distanceUnitsLabel" destination="iZt-cP-k9T" id="qyM-t9-aW6"/>
+                                    <outlet property="selectRowButton" destination="SvG-GE-geQ" id="3zY-fX-BfN"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -321,9 +334,55 @@
                     <connections>
                         <outlet property="calculateBarButton" destination="E1I-u6-rIW" id="qDj-U3-SpC"/>
                         <outlet property="clearBarButton" destination="NKO-gm-6YH" id="tV1-5m-abt"/>
+                        <outlet property="distanceEvents" destination="8xm-mz-WkO" id="10e-qc-e6f"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6gh-po-KqL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" directionalLockEnabled="YES" bounces="NO" alwaysBounceHorizontal="YES" showsVerticalScrollIndicator="NO" bouncesZoom="NO" id="8xm-mz-WkO">
+                    <rect key="frame" x="0.0" y="0.0" width="240" height="56"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="so1-Uw-DnA">
+                            <rect key="frame" x="97" y="49" width="46" height="30"/>
+                            <state key="normal" title="5k">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pVn-VH-bFQ">
+                            <rect key="frame" x="97" y="49" width="46" height="30"/>
+                            <state key="normal" title="10k">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RPd-LU-HwV">
+                            <rect key="frame" x="97" y="49" width="46" height="30"/>
+                            <state key="normal" title="Marathon">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="0.93363320709999997" green="0.62068275589999999" blue="0.00052817270329999998" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstItem="so1-Uw-DnA" firstAttribute="leading" secondItem="pVn-VH-bFQ" secondAttribute="trailing" constant="-46" id="BzT-Zr-cNy"/>
+                        <constraint firstItem="pVn-VH-bFQ" firstAttribute="leading" secondItem="RPd-LU-HwV" secondAttribute="trailing" constant="-46" id="CAk-OE-TVz"/>
+                        <constraint firstItem="so1-Uw-DnA" firstAttribute="leading" secondItem="8xm-mz-WkO" secondAttribute="leading" constant="20" symbolic="YES" id="DEI-rF-DZO"/>
+                        <constraint firstItem="pVn-VH-bFQ" firstAttribute="top" secondItem="8xm-mz-WkO" secondAttribute="top" constant="20" symbolic="YES" id="Oy9-qw-XiE"/>
+                        <constraint firstItem="so1-Uw-DnA" firstAttribute="top" secondItem="8xm-mz-WkO" secondAttribute="top" constant="20" symbolic="YES" id="PmA-PF-IMJ"/>
+                        <constraint firstItem="RPd-LU-HwV" firstAttribute="top" secondItem="8xm-mz-WkO" secondAttribute="top" constant="20" symbolic="YES" id="U2Z-TP-aMx"/>
+                        <constraint firstAttribute="bottom" secondItem="RPd-LU-HwV" secondAttribute="bottom" constant="20" symbolic="YES" id="W6F-G3-Xcs"/>
+                        <constraint firstAttribute="bottom" secondItem="so1-Uw-DnA" secondAttribute="bottom" constant="20" symbolic="YES" id="Xlr-2m-c2i"/>
+                        <constraint firstItem="RPd-LU-HwV" firstAttribute="leading" secondItem="pVn-VH-bFQ" secondAttribute="trailing" constant="8" symbolic="YES" id="atg-5v-GaB"/>
+                        <constraint firstAttribute="trailing" secondItem="RPd-LU-HwV" secondAttribute="trailing" constant="20" symbolic="YES" id="cZG-G9-bCj"/>
+                        <constraint firstItem="so1-Uw-DnA" firstAttribute="trailing" secondItem="pVn-VH-bFQ" secondAttribute="leading" constant="8" symbolic="YES" id="eOa-Vz-WD7"/>
+                        <constraint firstAttribute="bottom" secondItem="pVn-VH-bFQ" secondAttribute="bottom" constant="20" symbolic="YES" id="wck-7x-bPy"/>
+                    </constraints>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="CAk-OE-TVz"/>
+                            <exclude reference="BzT-Zr-cNy"/>
+                        </mask>
+                    </variation>
+                </scrollView>
             </objects>
             <point key="canvasLocation" x="1526" y="2483"/>
         </scene>
@@ -339,12 +398,14 @@
                             <tableViewSection id="fRx-Uf-gmw">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="eog-2z-efF">
+                                        <rect key="frame" x="0.0" y="64" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eog-2z-efF" id="gMC-pg-VhY">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Metric" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rS3-TS-5Jk">
-                                                    <rect key="frame" x="8" y="12" width="46" height="20"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Metric Pace Units" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rS3-TS-5Jk">
+                                                    <rect key="frame" x="8" y="12" width="130" height="20"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -374,6 +435,44 @@
                                             </variation>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="xE4-Jm-Otd">
+                                        <rect key="frame" x="0.0" y="108" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xE4-Jm-Otd" id="peL-SB-U0n">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Metric Distance Units" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s2C-iP-n9A">
+                                                    <rect key="frame" x="8" y="12" width="156" height="20"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="lSc-vF-Mmc">
+                                                    <rect key="frame" x="543" y="6" width="51" height="31"/>
+                                                    <connections>
+                                                        <action selector="toggleDistanceUnits:" destination="Hka-P4-93W" eventType="valueChanged" id="xpj-uC-wbq"/>
+                                                    </connections>
+                                                </switch>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="centerY" secondItem="s2C-iP-n9A" secondAttribute="centerY" id="5xi-Qh-ZWu"/>
+                                                <constraint firstItem="lSc-vF-Mmc" firstAttribute="top" secondItem="peL-SB-U0n" secondAttribute="topMargin" constant="-2" id="Azl-x8-rmu"/>
+                                                <constraint firstItem="lSc-vF-Mmc" firstAttribute="trailing" secondItem="peL-SB-U0n" secondAttribute="trailingMargin" id="Dmq-c1-rOG"/>
+                                                <constraint firstItem="s2C-iP-n9A" firstAttribute="leading" secondItem="peL-SB-U0n" secondAttribute="leadingMargin" id="hD0-dl-UtP"/>
+                                                <constraint firstAttribute="centerX" secondItem="lSc-vF-Mmc" secondAttribute="centerX" constant="-267.5" id="rLH-M6-n1b"/>
+                                                <constraint firstAttribute="centerY" secondItem="lSc-vF-Mmc" secondAttribute="centerY" id="rY5-pW-8GS"/>
+                                                <constraint firstAttribute="centerX" secondItem="lSc-vF-Mmc" secondAttribute="centerX" constant="-268" id="xsJ-me-h8C"/>
+                                            </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="Azl-x8-rmu"/>
+                                                    <exclude reference="rLH-M6-n1b"/>
+                                                    <exclude reference="xsJ-me-h8C"/>
+                                                </mask>
+                                            </variation>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -391,7 +490,8 @@
                     </navigationItem>
                     <connections>
                         <outlet property="doneButton" destination="TM8-mL-KwS" id="37l-fd-gVD"/>
-                        <outlet property="metricSwitch" destination="jaU-5j-vCy" id="GQi-sc-ZgL"/>
+                        <outlet property="metricDistanceSwitch" destination="lSc-vF-Mmc" id="pQq-dp-YBJ"/>
+                        <outlet property="metricPaceSwitch" destination="jaU-5j-vCy" id="BKZ-OH-ntt"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MFO-Vu-slA" userLabel="First Responder" sceneMemberID="firstResponder"/>

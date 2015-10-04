@@ -17,14 +17,17 @@ enum SelectedState {
 class SelectRowButton: UIButton {
     var rowState = SelectedState.Inactive {
         didSet {
-            switch rowState {
-            case .Inactive:
-                setImage(UIImage(named: "arrowInactive"), forState: .Normal)
-            case .Active:
-                setImage(UIImage(named: "arrowActive"), forState: .Normal)
-            case .Calculated:
-                setImage(UIImage(named: "arrowAnswer"), forState: .Normal)
-            }
+            self.refreshUI()
+        }
+    }
+    func refreshUI() {
+        switch rowState {
+        case .Active:
+            setImage(UIImage(named: "arrowActive"), forState: .Normal)
+        case .Inactive:
+            setImage(UIImage(named: "arrowInactive"), forState: .Normal)
+        case .Calculated:
+            setImage(UIImage(named: "arrowAnswer"), forState: .Normal)
         }
     }
 }
