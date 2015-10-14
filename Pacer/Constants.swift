@@ -83,17 +83,30 @@ struct Storyboard {
 }
 
 struct DurationTimeFormat {
-    var Hours:   Int = 0 {
-        didSet { TotalSeconds = (Hours * 3600) + (Minutes * 60) + Seconds }
-    }
-    var Minutes: Int = 0 {
-        didSet { TotalSeconds = (Hours * 3600) + (Minutes * 60) + Seconds }
-    }
-    var Seconds: Int = 0 {
-        didSet { TotalSeconds = (Hours * 3600) + (Minutes * 60) + Seconds }
+    var Hours:   Int = 0
+    var Minutes: Int = 0
+    var Seconds: Int = 0
+    
+    var TotalSeconds: Int {
+        get {
+            return ((Hours * 3600) + (Minutes * 60) + Seconds)
+        }
+        set
+        {
+            var total = newValue
+            Hours = total / 3600
+            total = total - (Hours * 3600)
+            Minutes = total / 60
+            total = total - (Minutes * 60)
+            Seconds = total
+        }
     }
     
-    var TotalSeconds: Int = 0
+    var Print: String {
+        get {
+            return description()
+        }
+    }
     
     func description() -> String {
         var minFormatted = Minutes.description
@@ -107,14 +120,27 @@ struct DurationTimeFormat {
 }
 
 struct PaceTimeFormat {
-    var Minutes: Int = 0 {
-        didSet { TotalSeconds = (Minutes * 60) + Seconds }
-    }
-    var Seconds: Int = 0 {
-        didSet { TotalSeconds = (Minutes * 60) + Seconds }
+    var Minutes: Int = 0
+    var Seconds: Int = 0
+    
+    var TotalSeconds: Int {
+        get {
+            return ((Minutes * 60) + Seconds)
+        }
+        set
+            {
+                var total = newValue
+                Minutes = total / 60
+                total = total - (Minutes * 60)
+                Seconds = total
+        }
     }
     
-    var TotalSeconds: Int = 0
+    var Print: String {
+        get {
+            return description()
+        }
+    }
     
     func description() -> String {
         var secFormatted = Seconds.description
@@ -123,6 +149,11 @@ struct PaceTimeFormat {
         if Seconds < 10 { secFormatted = "0\(secFormatted)" }
         return "\(Minutes):\(secFormatted)"
     }
+}
+
+struct Increment {
+    static let Points = 50
+    static let Seconds = 300
 }
 
 struct Colors {
