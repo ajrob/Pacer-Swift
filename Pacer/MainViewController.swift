@@ -45,7 +45,7 @@ class MainViewController: UIViewController {
                 inputsVC.willHideDistance = true
                 inputsVC.willHideDuration = false
                 inputsVC.willHidePace     = false
-                
+                                
             } else if segue.identifier == "rateSegue" {
                 
                 inputsVC.titleSaying = (self.rateButton.titleLabel?.text)!

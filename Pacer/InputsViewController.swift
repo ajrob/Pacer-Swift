@@ -8,18 +8,20 @@
 
 import UIKit
 
-class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
-    @IBOutlet weak var titleLabel: UILabel!
-    
+class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate {
     @IBOutlet weak var inputsStackView:   UIStackView!
     @IBOutlet weak var distanceInputView: UIView!
     @IBOutlet weak var durationInputView: UIView!
     @IBOutlet weak var paceInputView:     UIView!
     
+    @IBOutlet weak var heroStackView: UIStackView!
+    @IBOutlet weak var resultLabel: UILabel!
+    @IBOutlet weak var titleLabel: UILabel!
+
     @IBOutlet weak var durationTextField: DurationTextField!
     @IBOutlet weak var distanceTextField: CustomDefaultTextField!
     @IBOutlet weak var paceTextField:     CustomDefaultTextField!
-    
+        
     var willHideDuration = false
     var willHideDistance = false
     var willHidePace     = false
@@ -31,37 +33,60 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
     var durationPickerData  = [[Int]]()
     var pacePickerData      = [[Int]]()
     var durationValue:DurationTimeFormat = DurationTimeFormat() {
-        willSet(newDuration) {
+        didSet(newDuration) {
             durationTextField.text = newDuration.Print
+            if willHideDistance {
+                solveForDistance()
+            } else if willHidePace {
+                solveForPace()
+            }
         }
     }
     var paceValue:PaceTimeFormat = PaceTimeFormat() {
-        willSet(newPace) {
+        didSet(newPace) {
             paceTextField.text = newPace.Print
+            if willHideDistance {
+                solveForDistance()
+            } else if willHideDuration {
+                solveForDuration()
+            }
+        }
+    }
+    var distanceValue:Double = 0.0 {
+        didSet(newDuration) {
+            if willHideDuration {
+                solveForDuration()
+            } else if willHidePace {
+                solveForPace()
+            }
         }
     }
     var previousTranslationPoint = CGFloat()
     
-    //FOR DEBUGGING
-    @IBOutlet weak var translationPoint: UILabel!
-    var startingPoint = CGPoint()
-    
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         if willHideDistance {
             inputsStackView.removeArrangedSubview(distanceInputView)
+            solveForDistance()
         }
         if willHideDuration {
             inputsStackView.removeArrangedSubview(durationInputView)
+            solveForDuration()
         }
         if willHidePace {
             inputsStackView.removeArrangedSubview(paceInputView)
+            solveForPace()
         }
         
+        heroStackView.addArrangedSubview(resultLabel)
+        
         titleLabel.text = titleSaying
+        
+        //Distance Textfield setup
+        distanceTextField.addTarget(self, action: Selector("textFieldChanged:"), forControlEvents: UIControlEvents.EditingChanged)
+        distanceTextField.delegate = self
         
         /*** Pickers Setup ***/
         // Duration Picker
@@ -80,7 +105,6 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
         paceTextField.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: Selector("incrementPaceByFiveMinutes:")))
         
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: Selector("dismissKeyboard")))
-        self.view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: Selector("printTranslation:")))
     }
 
     override func didReceiveMemoryWarning() {
@@ -125,6 +149,42 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
         }
         return totalSeconds
     }
+    
+    // MARK: - UITextFieldDelegate
+    func endEditingNow() {
+        self.view.endEditing(true)
+    }
+    func textFieldChanged(textField: UITextField) {
+        distanceValue = (textField.text! as NSString).doubleValue
+    }
+    
+    @IBOutlet var distanceEvents: UIScrollView!
+    
+    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+        
+        // Create button bar for the keyboard
+        let keyboardDoneButtonBar = UIToolbar()
+        keyboardDoneButtonBar.sizeToFit()
+        
+        let doneButton = UIBarButtonItem(
+            title: "Done",
+            style: UIBarButtonItemStyle.Plain,
+            target: self,
+            action: Selector("endEditingNow"))
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: self, action: nil)
+        let toolbarButtons = [flexibleSpace, doneButton]
+        keyboardDoneButtonBar.setItems(toolbarButtons, animated: false)
+        
+        //        textField.inputAccessoryView = keyboardDoneButtonBar
+        textField.inputAccessoryView = distanceEvents
+        
+        return true
+    }
+    
+    func textFieldDidEndEditing(textField: UITextField) {
+        self.resignFirstResponder()
+    }
+
     
     // MARK: - UIPickerViewDataSource
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
@@ -187,15 +247,6 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
         return array
     }
     
-    func printTranslation(panGesture:UIPanGestureRecognizer) {
-        if panGesture.state == UIGestureRecognizerState.Began {
-            startingPoint = panGesture.translationInView(self.view)
-        }
-        let currentPoint = panGesture.translationInView(self.view)
-        let velocity = panGesture.velocityInView(self.view)
-        translationPoint.text = "X: \(currentPoint.x), Y: \(Int(abs(currentPoint.y)) / 50) | Velocity: x:\(round(velocity.x)), y: \(round(velocity.y))"
-    }
-    
     private func updateDurationPicker() {
         durationPickerView.selectRow(durationValue.Hours, inComponent: 0, animated: true)
         durationPickerView.selectRow(durationValue.Minutes, inComponent: 1, animated: true)
@@ -208,12 +259,72 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
     }
     
     func dismissKeyboard() {
-        durationTextField.resignFirstResponder()
-        paceTextField.resignFirstResponder()
-        distanceTextField.resignFirstResponder()
+        if durationTextField.editing {
+            durationTextField.resignFirstResponder()
+        }
+        if paceTextField.editing {
+            paceTextField.resignFirstResponder()
+        }
+        if distanceTextField.editing {
+            distanceTextField.resignFirstResponder()
+        }
+    }
+    
+    private func solveForDistance() {
+        if paceValue.TotalSeconds == 0 {
+            distanceValue = PacingCalculations().distanceFormula(Double(paceValue.TotalSeconds), time: Double(durationValue.TotalSeconds))
+        } else {
+            distanceValue = PacingCalculations().distanceFormula(1/Double(paceValue.TotalSeconds), time: Double(durationValue.TotalSeconds))
+        }
+        resultLabel.text = "\(round(distanceValue * Storyboard.Distance.Rounding) / Storyboard.Distance.Rounding) mi"
+    }
+    
+    private func solveForDuration() {
+        var result: Double
+        let effectiveDistance = distanceValue
+//        if isPaceMetric && !isDistanceMetric {
+//            effectiveDistance = PacingCalculations.Conversion.Length().milesToKilometers(distanceValue)
+//        } else if !isPaceMetric && isDistanceMetric {
+//            effectiveDistance = PacingCalculations.Conversion.Length().kilometersToMiles(distanceValue)
+//        }
+        if paceValue.TotalSeconds == 0 {
+            result = PacingCalculations().timeFormula(Double(paceValue.TotalSeconds), distance: Double(effectiveDistance))
+        } else {
+            result = PacingCalculations().timeFormula(1/Double(paceValue.TotalSeconds), distance: Double(effectiveDistance))
+        }
+        let formattedResult = PacingCalculations.Conversion.Time().secondsInHoursMinutesSeconds(Int(result))
+        
+        durationValue.Hours = formattedResult.hours
+        durationValue.Minutes = formattedResult.minutes
+        durationValue.Seconds = formattedResult.seconds
+        
+        resultLabel.text = durationValue.description()
+    }
+    
+    private func solveForPace() {
+        var result = 0.0
+        let effectiveDistance = distanceValue
+//        if isPaceMetric && !isDistanceMetric {
+//            effectiveDistance = PacingCalculations.Conversion.Length().milesToKilometers(distanceValue)
+//        } else if !isPaceMetric && isDistanceMetric {
+//            effectiveDistance = PacingCalculations.Conversion.Length().kilometersToMiles(distanceValue)
+//        }
+        result = PacingCalculations().rateFormula(effectiveDistance, time: Double(durationValue.TotalSeconds))
+        
+        var formattedResult: (hours: Int, minutes: Int, seconds: Int)
+        if result == 0 {
+            formattedResult = PacingCalculations.Conversion.Time().secondsInHoursMinutesSeconds(Int(result))
+        } else {
+            formattedResult = PacingCalculations.Conversion.Time().secondsInHoursMinutesSeconds(Int(1/result))
+        }
+        paceValue.Minutes = formattedResult.minutes
+        paceValue.Seconds = formattedResult.seconds
+        
+        resultLabel.text = "\(paceValue.description()) min/mi"
     }
     
     var titleSaying = "I haven't been set yet"
+    
     
     /*
     // MARK: - Navigation
