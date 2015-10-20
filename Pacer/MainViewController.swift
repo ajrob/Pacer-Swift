@@ -15,6 +15,12 @@ class MainViewController: UIViewController {
 
         // Do any additional setup after loading the view.
     }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        navigationController?.navigationBar.tintColor = UIColor.blackColor().colorWithAlphaComponent(0.75)
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

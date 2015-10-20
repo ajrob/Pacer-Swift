@@ -16,10 +16,10 @@ import UIKit
         // Defaults for the Storyboard render
         self.layer.borderWidth = 0
         self.layer.cornerRadius = 4
-        self.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.15)
+        self.backgroundColor = UIColor(red: 255, green: 255, blue: 255, alpha: 0.15)
         if let placeholderString = self.placeholder {
             self.attributedPlaceholder = NSAttributedString(string: placeholderString, attributes: [
-                NSForegroundColorAttributeName: UIColor.lightTextColor()
+                NSForegroundColorAttributeName: UIColor.lightTextColor().colorWithAlphaComponent(0.25)
                 ])
         }
     }
@@ -30,10 +30,10 @@ import UIKit
         //Defaults for the build render
         self.layer.borderWidth = 0
         self.layer.cornerRadius = 4
-        self.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.15)
+        self.backgroundColor = UIColor(red: 255, green: 255, blue: 255, alpha: 0.15)
         if let placeholderString = self.placeholder {
             self.attributedPlaceholder = NSAttributedString(string: placeholderString, attributes: [
-                NSForegroundColorAttributeName: UIColor.lightTextColor()
+                NSForegroundColorAttributeName: UIColor.lightTextColor().colorWithAlphaComponent(0.25)
                 ])
         }
     }

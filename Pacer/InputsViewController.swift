@@ -14,6 +14,8 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
     @IBOutlet weak var durationInputView: UIView!
     @IBOutlet weak var paceInputView:     UIView!
     
+    @IBOutlet var distanceEvents: UIScrollView!
+    
     @IBOutlet weak var heroStackView: UIStackView!
     @IBOutlet weak var resultLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
@@ -22,12 +24,22 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
     @IBOutlet weak var distanceTextField: CustomDefaultTextField!
     @IBOutlet weak var paceTextField:     CustomDefaultTextField!
         
+    @IBOutlet var mainView: UIView!
+    
+    var activeField = UITextField()
+    
     var willHideDuration = false
     var willHideDistance = false
     var willHidePace     = false
     
-    var durationPickerView = UIPickerView()
-    var pacePickerView     = UIPickerView()
+    var isPaceMetric     = false
+    var isDistanceMetric = false
+    
+    @IBOutlet var durationPickerViewContainer: UIView!
+    @IBOutlet weak var durationPickerView: UIPickerView!
+    
+    @IBOutlet var pacePickerViewContainer: UIView!
+    @IBOutlet weak var pacePickerView: UIPickerView!
     
     var arrayOfSixty: [Int] = []
     var durationPickerData  = [[Int]]()
@@ -53,7 +65,7 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
         }
     }
     var distanceValue:Double = 0.0 {
-        didSet(newDuration) {
+        didSet(newDistance) {
             if willHideDuration {
                 solveForDuration()
             } else if willHidePace {
@@ -63,24 +75,60 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
     }
     var previousTranslationPoint = CGFloat()
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        distanceInputView.bounds.origin.x -= view.bounds.width
+        durationInputView.bounds.origin.x -= view.bounds.width
+        paceInputView.bounds.origin.x     -= view.bounds.width
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        if willHideDistance {
+            inputsStackView.removeArrangedSubview(distanceInputView)
+            distanceInputView.hidden = true
+            UIView.animateWithDuration(0.45, delay: 0, usingSpringWithDamping: 0.75, initialSpringVelocity: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { self.paceInputView.bounds.origin.x += self.view.bounds.width }, completion: nil)
+            UIView.animateWithDuration(0.25, delay: 0.25, usingSpringWithDamping: 0.75, initialSpringVelocity: 40, options: UIViewAnimationOptions.CurveEaseInOut, animations: { self.durationInputView.bounds.origin.x += self.view.bounds.width }, completion: nil)
+            solveForDistance()
+        } else if willHideDuration {
+            inputsStackView.removeArrangedSubview(durationInputView)
+            durationInputView.hidden = true
+            UIView.animateWithDuration(0.45, delay: 0, usingSpringWithDamping: 0.75, initialSpringVelocity: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { self.paceInputView.bounds.origin.x += self.view.bounds.width }, completion: nil)
+            UIView.animateWithDuration(0.25, delay: 0.25, usingSpringWithDamping: 0.75, initialSpringVelocity: 40, options: UIViewAnimationOptions.CurveEaseInOut, animations: { self.distanceInputView.bounds.origin.x += self.view.bounds.width }, completion: nil)
+            solveForDuration()
+        } else if willHidePace {
+            inputsStackView.removeArrangedSubview(paceInputView)
+            paceInputView.hidden = true
+            UIView.animateWithDuration(0.45, delay: 0, usingSpringWithDamping: 0.75, initialSpringVelocity: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { self.distanceInputView.bounds.origin.x += self.view.bounds.width }, completion: nil)
+            UIView.animateWithDuration(0.25, delay: 0.25, usingSpringWithDamping: 0.75, initialSpringVelocity: 40, options: UIViewAnimationOptions.CurveEaseInOut, animations: { self.durationInputView.bounds.origin.x += self.view.bounds.width }, completion: nil)
+            solveForPace()
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
         if willHideDistance {
             inputsStackView.removeArrangedSubview(distanceInputView)
+            distanceInputView.hidden = true
+            durationInputView.hidden = false
+            paceInputView.hidden = false
             solveForDistance()
         }
         if willHideDuration {
             inputsStackView.removeArrangedSubview(durationInputView)
+            distanceInputView.hidden = false
+            durationInputView.hidden = true
+            paceInputView.hidden = false
             solveForDuration()
         }
         if willHidePace {
             inputsStackView.removeArrangedSubview(paceInputView)
+            distanceInputView.hidden = false
+            durationInputView.hidden = false
+            paceInputView.hidden = true
             solveForPace()
         }
-        
-        heroStackView.addArrangedSubview(resultLabel)
         
         titleLabel.text = titleSaying
         
@@ -90,26 +138,48 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
         
         /*** Pickers Setup ***/
         // Duration Picker
-        durationPickerView.delegate = self
-        durationPickerView.dataSource = self
-        durationTextField.inputView = durationPickerView
+        durationTextField.delegate = self
+        durationTextField.inputView = durationPickerViewContainer
         arrayOfSixty = createSequentialIntArray(60)
         durationPickerData = [createSequentialIntArray(80), arrayOfSixty, arrayOfSixty]
         durationTextField.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: Selector("incrementDurationByFiveMinutes:")))
 
         // Pace Picker
-        pacePickerView.delegate = self
-        durationPickerView.dataSource = self
-        paceTextField.inputView = pacePickerView
+        paceTextField.delegate = self
+        paceTextField.inputView = pacePickerViewContainer
         pacePickerData = [arrayOfSixty, arrayOfSixty]
         paceTextField.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: Selector("incrementPaceByFiveMinutes:")))
         
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: Selector("dismissKeyboard")))
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardNotification:"), name:UIKeyboardWillChangeFrameNotification, object: nil);
+    }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func keyboardNotification(notification:NSNotification) {
+        if let userInfo = notification.userInfo {
+            guard let endFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue() else { return }
+            
+            let convertedPoint = activeField.convertPoint(CGPointMake(
+                activeField.frame.origin.x,
+                activeField.frame.origin.y + activeField.frame.size.height),
+                toView: self.view)
+            if self.view.frame.origin.y != 0 {
+                self.view.frame.origin.y = 0
+            }
+            if CGRectContainsPoint(endFrame, convertedPoint) {
+                print("Inside")
+                self.view.frame.origin.y = self.view.frame.origin.y - (convertedPoint.y - endFrame.origin.y)
+            }
+        }
     }
     
     func incrementDurationByFiveMinutes(panGesture:UIPanGestureRecognizer) {
@@ -157,9 +227,7 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
     func textFieldChanged(textField: UITextField) {
         distanceValue = (textField.text! as NSString).doubleValue
     }
-    
-    @IBOutlet var distanceEvents: UIScrollView!
-    
+
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
         
         // Create button bar for the keyboard
@@ -168,15 +236,21 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
         
         let doneButton = UIBarButtonItem(
             title: "Done",
-            style: UIBarButtonItemStyle.Plain,
+            style: UIBarButtonItemStyle.Done,
             target: self,
             action: Selector("endEditingNow"))
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: self, action: nil)
-        let toolbarButtons = [flexibleSpace, doneButton]
-        keyboardDoneButtonBar.setItems(toolbarButtons, animated: false)
+        let toolbarButtons: [UIBarButtonItem]
+        if textField.isEqual(distanceTextField) {
+            let distanceEventsBarButtonItem = UIBarButtonItem(customView: distanceEvents)
+            toolbarButtons = [distanceEventsBarButtonItem, flexibleSpace, doneButton]
+        } else {
+            toolbarButtons = [flexibleSpace, doneButton]
+        }
         
-        //        textField.inputAccessoryView = keyboardDoneButtonBar
-        textField.inputAccessoryView = distanceEvents
+        keyboardDoneButtonBar.setItems(toolbarButtons, animated: true)
+        
+        textField.inputAccessoryView = keyboardDoneButtonBar
         
         return true
     }
@@ -184,11 +258,14 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
     func textFieldDidEndEditing(textField: UITextField) {
         self.resignFirstResponder()
     }
-
+    
+    func textFieldDidBeginEditing(textField: UITextField) {
+        activeField = textField
+    }
     
     // MARK: - UIPickerViewDataSource
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
-        if pickerView.isEqual(durationPickerView) {
+        if pickerView.tag == Storyboard.Duration.Picker.Tag {
             return durationPickerData.count
         } else {
             return pacePickerData.count
@@ -196,7 +273,7 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
     }
     
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        if pickerView.isEqual(durationPickerView) {
+        if pickerView.tag == Storyboard.Duration.Picker.Tag {
             return durationPickerData[component].count
         } else {
             return pacePickerData[component].count
@@ -205,7 +282,7 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
     
     // MARK: - UIPickerViewDelegate
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        if pickerView.isEqual(durationPickerView) {
+        if pickerView.tag == Storyboard.Duration.Picker.Tag {
             switch component {
             case 0:
                 durationValue.Hours = durationPickerData[component][row]
@@ -217,7 +294,7 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
                 break
             }
             durationTextField.text = "\(durationValue.Print)"
-        } else if pickerView.isEqual(pacePickerView) {
+        } else if pickerView.tag == Storyboard.Pace.Picker.Tag {
             switch component {
             case 0:
                 paceValue.Minutes = pacePickerData[component][row]
@@ -231,14 +308,107 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
     }
     
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        if pickerView.isEqual(durationPickerView) {
+        if pickerView.tag == Storyboard.Duration.Picker.Tag {
             return "\(durationPickerData[component][row])"
         } else {
             return "\(pacePickerData[component][row])"
         }
     }
     
+    func pickerView(pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusingView view: UIView?) -> UIView {
+        var containerView = view
+        let pickerLabel = UILabel()
+        if view == nil {
+            containerView = UIView()
+            containerView!.addSubview(pickerLabel)
+            pickerLabel.translatesAutoresizingMaskIntoConstraints = false
+            let constraints = [
+                NSLayoutConstraint(
+                    item: pickerLabel,
+                    attribute: NSLayoutAttribute.Leading,
+                    relatedBy: NSLayoutRelation.Equal,
+                    toItem: containerView,
+                    attribute: NSLayoutAttribute.Leading,
+                    multiplier: 1,
+                    constant: 0),
+                NSLayoutConstraint(
+                    item: pickerLabel,
+                    attribute: NSLayoutAttribute.CenterY,
+                    relatedBy: NSLayoutRelation.Equal,
+                    toItem: containerView,
+                    attribute: NSLayoutAttribute.CenterY,
+                    multiplier: 1,
+                    constant: 0),
+                NSLayoutConstraint(
+                    item: pickerLabel,
+                    attribute: NSLayoutAttribute.Trailing,
+                    relatedBy: NSLayoutRelation.Equal,
+                    toItem: containerView,
+                    attribute: NSLayoutAttribute.CenterX,
+                    multiplier: 1,
+                    constant: 0),
+            ]
+            
+            containerView!.addConstraints(constraints)
+        }
+        var titleData = " "
+        if pickerView.tag == Storyboard.Pace.Picker.Tag {
+            titleData = pacePickerData[component][row].description
+        } else if pickerView.tag == Storyboard.Duration.Picker.Tag {
+            titleData = durationPickerData[component][row].description
+        } else {
+            titleData = " "
+        }
+        let title = NSAttributedString(string: titleData, attributes:
+            [
+                NSFontAttributeName:UIFont.systemFontOfSize(CGFloat(17.0)),
+                NSForegroundColorAttributeName:UIColor.blackColor(),
+            ])
+        pickerLabel.attributedText = title
+        pickerLabel.textAlignment = .Right
+        
+//        pickerLabel.backgroundColor = UIColor.purpleColor()
+        
+        return containerView!
+    }
+
+    
+    // MARK: - Metric to Imperial toggling
+    @IBOutlet weak var paceUnitsButton: CustomDefaultButton!
+    @IBAction func togglePaceUnits(sender: CustomDefaultButton) {
+        isPaceMetric = !isPaceMetric
+        if isPaceMetric {
+            paceUnitsButton.setTitle("min/km", forState: .Normal)
+        } else {
+            paceUnitsButton.setTitle("min/mi", forState: .Normal)
+        }
+        if willHideDistance {
+            solveForDistance()
+        } else if willHideDuration {
+            solveForDuration()
+        }
+    }
+    
+    @IBOutlet weak var distanceUnitsButton: CustomDefaultButton!
+    @IBAction func toggleDistanceUnits(sender: CustomDefaultButton) {
+        _toggleDistanceUnits()
+    }
+    
     // MARK: - Private functions
+    private func _toggleDistanceUnits(){
+        isDistanceMetric = !isDistanceMetric
+        if isDistanceMetric {
+            distanceUnitsButton.setTitle("km", forState: .Normal)
+        } else {
+            distanceUnitsButton.setTitle("mi", forState: .Normal)
+        }
+        if willHidePace {
+            solveForPace()
+        } else if willHideDuration {
+            solveForDuration()
+        }
+    }
+    
     private func createSequentialIntArray(numberOfElements: Int) -> [Int] {
         var array = [Int]()
         for (var i = 0; i < numberOfElements; i++) {
@@ -276,17 +446,20 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
         } else {
             distanceValue = PacingCalculations().distanceFormula(1/Double(paceValue.TotalSeconds), time: Double(durationValue.TotalSeconds))
         }
-        resultLabel.text = "\(round(distanceValue * Storyboard.Distance.Rounding) / Storyboard.Distance.Rounding) mi"
+        
+        let units = isDistanceMetric ? "km" : "mi"
+        resultLabel.text = "\(round(distanceValue * Storyboard.Distance.Rounding) / Storyboard.Distance.Rounding) \(units)"
+        toggleResultLabel(distanceValue)
     }
     
     private func solveForDuration() {
         var result: Double
-        let effectiveDistance = distanceValue
-//        if isPaceMetric && !isDistanceMetric {
-//            effectiveDistance = PacingCalculations.Conversion.Length().milesToKilometers(distanceValue)
-//        } else if !isPaceMetric && isDistanceMetric {
-//            effectiveDistance = PacingCalculations.Conversion.Length().kilometersToMiles(distanceValue)
-//        }
+        var effectiveDistance = distanceValue
+        if isPaceMetric && !isDistanceMetric {
+            effectiveDistance = PacingCalculations.Conversion.Length().milesToKilometers(distanceValue)
+        } else if !isPaceMetric && isDistanceMetric {
+            effectiveDistance = PacingCalculations.Conversion.Length().kilometersToMiles(distanceValue)
+        }
         if paceValue.TotalSeconds == 0 {
             result = PacingCalculations().timeFormula(Double(paceValue.TotalSeconds), distance: Double(effectiveDistance))
         } else {
@@ -299,16 +472,17 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
         durationValue.Seconds = formattedResult.seconds
         
         resultLabel.text = durationValue.description()
+        toggleResultLabel(Double(durationValue.TotalSeconds))
     }
     
     private func solveForPace() {
         var result = 0.0
-        let effectiveDistance = distanceValue
-//        if isPaceMetric && !isDistanceMetric {
-//            effectiveDistance = PacingCalculations.Conversion.Length().milesToKilometers(distanceValue)
-//        } else if !isPaceMetric && isDistanceMetric {
-//            effectiveDistance = PacingCalculations.Conversion.Length().kilometersToMiles(distanceValue)
-//        }
+        var effectiveDistance = distanceValue
+        if isPaceMetric && !isDistanceMetric {
+            effectiveDistance = PacingCalculations.Conversion.Length().milesToKilometers(distanceValue)
+        } else if !isPaceMetric && isDistanceMetric {
+            effectiveDistance = PacingCalculations.Conversion.Length().kilometersToMiles(distanceValue)
+        }
         result = PacingCalculations().rateFormula(effectiveDistance, time: Double(durationValue.TotalSeconds))
         
         var formattedResult: (hours: Int, minutes: Int, seconds: Int)
@@ -320,7 +494,57 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
         paceValue.Minutes = formattedResult.minutes
         paceValue.Seconds = formattedResult.seconds
         
-        resultLabel.text = "\(paceValue.description()) min/mi"
+        let units = isPaceMetric ? "min/km" : "min/mi"
+        resultLabel.text = "\(paceValue.description()) \(units)"
+        toggleResultLabel(Double(paceValue.TotalSeconds))
+    }
+    
+    private func toggleResultLabel(value:Double) {
+        if value == 0 {
+            UIView.animateWithDuration(0.25) { () -> Void in
+                self.resultLabel.hidden = true
+            }
+        } else {
+            UIView.animateWithDuration(0.25) { () -> Void in
+                // Something weird is happening. I had to add 3 of the same statements to get 
+                // the hidden flag to be false
+                self.resultLabel.hidden = false
+                self.resultLabel.hidden = false
+                self.resultLabel.hidden = false
+            }
+        }
+    }
+    
+    @IBAction func fiveKmEvent(sender: UIButton) {
+        if !isDistanceMetric {
+            _toggleDistanceUnits()
+        }
+        distanceValue = 5
+        distanceTextField.text = "\(distanceValue)"
+    }
+    
+    @IBAction func tenKmEvent(sender: UIButton) {
+        if !isDistanceMetric {
+            _toggleDistanceUnits()
+        }
+        distanceValue = 10
+        distanceTextField.text = "\(distanceValue)"
+    }
+    
+    @IBAction func halfMarathonEvent(sender: UIButton) {
+        if isDistanceMetric {
+            _toggleDistanceUnits()
+        }
+        distanceValue = 13.1
+        distanceTextField.text = "\(distanceValue)"
+    }
+    
+    @IBAction func marathonEvent(sender: UIButton) {
+        if isDistanceMetric {
+            _toggleDistanceUnits()
+        }
+        distanceValue = 26.3
+        distanceTextField.text = "\(distanceValue)"
     }
     
     var titleSaying = "I haven't been set yet"

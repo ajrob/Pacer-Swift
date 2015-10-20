@@ -26,6 +26,7 @@
 		FA6DCEC11BC8567F00C09648 /* InputsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6DCEC01BC8567F00C09648 /* InputsViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		FA79DC021A99A8580038EA8E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA79DC011A99A8580038EA8E /* Constants.swift */; };
 		FAD359F01BCAA5440006D1E2 /* DurationTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD359EF1BCAA5440006D1E2 /* DurationTextField.swift */; settings = {ASSET_TAGS = (); }; };
+		FAD3989E1BD09DFA008D3989 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD3989D1BD09DFA008D3989 /* Extensions.swift */; settings = {ASSET_TAGS = (); }; };
 		FAE112041B125C57004774D2 /* distanceEventsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAE112031B125C57004774D2 /* distanceEventsView.xib */; };
 /* End PBXBuildFile section */
 
@@ -63,6 +64,7 @@
 		FA6DCEC01BC8567F00C09648 /* InputsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputsViewController.swift; sourceTree = "<group>"; };
 		FA79DC011A99A8580038EA8E /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		FAD359EF1BCAA5440006D1E2 /* DurationTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DurationTextField.swift; sourceTree = "<group>"; };
+		FAD3989D1BD09DFA008D3989 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		FAE112031B125C57004774D2 /* distanceEventsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = distanceEventsView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -128,6 +130,7 @@
 				FAE112031B125C57004774D2 /* distanceEventsView.xib */,
 				FA6DCEBE1BC8556400C09648 /* MainViewController.swift */,
 				FA6DCEC01BC8567F00C09648 /* InputsViewController.swift */,
+				FAD3989D1BD09DFA008D3989 /* Extensions.swift */,
 			);
 			path = Pacer;
 			sourceTree = "<group>";
@@ -285,6 +288,7 @@
 				FA6DCEC11BC8567F00C09648 /* InputsViewController.swift in Sources */,
 				FA4AA0511AF7248E00F9D264 /* DistanceTableViewCell.swift in Sources */,
 				FA4AA0551AFE830400F9D264 /* CustomMainTableViewCell.swift in Sources */,
+				FAD3989E1BD09DFA008D3989 /* Extensions.swift in Sources */,
 				FA79DC021A99A8580038EA8E /* Constants.swift in Sources */,
 				FA5638501A97010400E9BB0A /* PacingCalculations.swift in Sources */,
 				FA4AA04D1AF7247200F9D264 /* PaceTableViewCell.swift in Sources */,
