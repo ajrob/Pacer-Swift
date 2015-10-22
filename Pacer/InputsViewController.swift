@@ -19,6 +19,7 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
     @IBOutlet weak var heroStackView: UIStackView!
     @IBOutlet weak var resultLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var startOver: UIButton!
 
     @IBOutlet weak var durationTextField: DurationTextField!
     @IBOutlet weak var distanceTextField: CustomDefaultTextField!
@@ -78,6 +79,8 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
+        startOver.bounds.origin.y -= (view.bounds.height + startOver.bounds.height)
+        
         distanceInputView.bounds.origin.x -= view.bounds.width
         durationInputView.bounds.origin.x -= view.bounds.width
         paceInputView.bounds.origin.x     -= view.bounds.width
@@ -85,6 +88,7 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        
         if willHideDistance {
             inputsStackView.removeArrangedSubview(distanceInputView)
             distanceInputView.hidden = true
@@ -104,11 +108,17 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
             UIView.animateWithDuration(0.25, delay: 0.25, usingSpringWithDamping: 0.75, initialSpringVelocity: 40, options: UIViewAnimationOptions.CurveEaseInOut, animations: { self.durationInputView.bounds.origin.x += self.view.bounds.width }, completion: nil)
             solveForPace()
         }
+        
+        UIView.animateWithDuration(0.25, delay: 1, usingSpringWithDamping: 0.75, initialSpringVelocity: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
+                self.startOver.hidden = false
+                self.startOver.bounds.origin.y += (self.view.bounds.height + self.startOver.bounds.height)
+            }, completion: nil)
     }
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        heroStackView.removeArrangedSubview(resultLabel)
+        heroStackView.removeArrangedSubview(resultLabel)
+        startOver.hidden = true
 
         if willHideDistance {
             inputsStackView.removeArrangedSubview(distanceInputView)
