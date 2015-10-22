@@ -107,6 +107,8 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+//        heroStackView.removeArrangedSubview(resultLabel)
 
         if willHideDistance {
             inputsStackView.removeArrangedSubview(distanceInputView)
@@ -503,13 +505,11 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
         if value == 0 {
             UIView.animateWithDuration(0.25) { () -> Void in
                 self.resultLabel.hidden = true
+                self.heroStackView.removeArrangedSubview(self.resultLabel)
             }
         } else {
             UIView.animateWithDuration(0.25) { () -> Void in
-                // Something weird is happening. I had to add 3 of the same statements to get 
-                // the hidden flag to be false
-                self.resultLabel.hidden = false
-                self.resultLabel.hidden = false
+                self.heroStackView.addArrangedSubview(self.resultLabel)
                 self.resultLabel.hidden = false
             }
         }
