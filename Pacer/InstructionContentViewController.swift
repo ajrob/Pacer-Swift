@@ -19,6 +19,8 @@ class InstructionContentViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.view.backgroundColor = Colors.Tint
+        
         self.heading.text = self.titleText
         self.bodyTextView.text = self.bodyText
         self.heading.alpha = 0

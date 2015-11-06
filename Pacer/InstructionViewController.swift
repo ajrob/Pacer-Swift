@@ -38,6 +38,7 @@ class InstructionViewController: UIViewController, UIPageViewControllerDataSourc
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.view.backgroundColor = Colors.Tint
         reset()
     }
 

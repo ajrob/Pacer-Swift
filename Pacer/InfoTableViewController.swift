@@ -33,6 +33,9 @@ class InfoTableViewController: UITableViewController, MFMailComposeViewControlle
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.tableView.backgroundColor = Colors.Tint
+        self.tableView.separatorColor = Colors.Tint
+        
         self.tableView.tableFooterView = footerView
         footerView.frame.size.height = self.tableView.frame.size.height - (self.navigationController?.navigationBar.frame.size.height)! - self.tableView.tableFooterView!.frame.origin.y
         

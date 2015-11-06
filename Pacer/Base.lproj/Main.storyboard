@@ -702,7 +702,7 @@
                             </button>
                         </subviews>
                         <animations/>
-                        <color key="backgroundColor" red="0.16380313930000001" green="0.65508278080000004" blue="0.81632653060000004" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.22352941179999999" green="0.58431372550000005" blue="0.58039215690000001" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="qO9-eS-trC" firstAttribute="leading" secondItem="et3-hF-kUP" secondAttribute="leadingMargin" id="43M-KV-irw"/>
                             <constraint firstItem="qqh-kN-kRV" firstAttribute="top" secondItem="96T-9e-S67" secondAttribute="bottom" constant="8" symbolic="YES" id="Hce-YG-HOs"/>
@@ -803,7 +803,7 @@
                                             </stackView>
                                         </subviews>
                                         <animations/>
-                                        <color key="backgroundColor" red="0.9911243467682167" green="1" blue="0.98838839236917508" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstItem="W0D-eG-yZJ" firstAttribute="leading" secondItem="2Qx-aF-KtX" secondAttribute="leading" id="0sF-RI-C2o"/>
                                             <constraint firstAttribute="trailing" secondItem="W0D-eG-yZJ" secondAttribute="trailing" id="FKl-cv-lkp"/>
@@ -965,11 +965,24 @@
                                                     <action selector="restart:" destination="awf-al-8RH" eventType="touchUpInside" id="jIh-sO-MoM"/>
                                                 </connections>
                                             </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HEy-3e-uad">
+                                                <rect key="frame" x="93" y="311" width="30" height="42"/>
+                                                <animations/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                                <state key="normal" title="◂">
+                                                    <color key="titleColor" red="0.99906483349999997" green="1" blue="0.98908701509999997" alpha="0.24955253482972137" colorSpace="calibratedRGB"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="restart:" destination="awf-al-8RH" eventType="touchUpInside" id="rec-xx-txL"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <animations/>
-                                        <color key="backgroundColor" red="0.16380313930000001" green="0.65508278080000004" blue="0.81632653060000004" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" red="0.22352941179999999" green="0.58431372550000005" blue="0.58039215690000001" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstItem="qab-GB-LDa" firstAttribute="top" secondItem="l9V-0V-yUA" secondAttribute="top" constant="20" symbolic="YES" id="3n8-mV-p4K"/>
+                                            <constraint firstItem="lr2-UH-sA8" firstAttribute="leading" secondItem="HEy-3e-uad" secondAttribute="trailing" constant="8" id="Ec0-xc-HMp"/>
+                                            <constraint firstItem="HEy-3e-uad" firstAttribute="centerY" secondItem="lr2-UH-sA8" secondAttribute="centerY" constant="-2" id="ONd-zJ-17H"/>
                                             <constraint firstItem="lr2-UH-sA8" firstAttribute="centerX" secondItem="l9V-0V-yUA" secondAttribute="centerX" id="Saf-64-MLc"/>
                                             <constraint firstItem="qab-GB-LDa" firstAttribute="leading" secondItem="l9V-0V-yUA" secondAttribute="leading" constant="40" id="VlU-QP-Bvf"/>
                                             <constraint firstAttribute="trailing" secondItem="qab-GB-LDa" secondAttribute="trailing" constant="40" id="imz-84-dnJ"/>
@@ -1001,7 +1014,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Etd-iD-kGx" customClass="CustomDefaultButton" customModule="Pacer" customModuleProvider="target">
-                                <rect key="frame" x="329" y="605" width="30" height="30"/>
+                                <rect key="frame" x="333" y="607" width="30" height="30"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <state key="normal" title="?">
@@ -1029,10 +1042,10 @@
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="Etd-iD-kGx" firstAttribute="centerY" secondItem="A8l-5q-A8s" secondAttribute="centerY" id="8Ch-ZF-auw"/>
+                            <constraint firstItem="Etd-iD-kGx" firstAttribute="centerY" secondItem="A8l-5q-A8s" secondAttribute="centerY" constant="2.5" id="8Ch-ZF-auw"/>
                             <constraint firstItem="A8l-5q-A8s" firstAttribute="top" secondItem="lr2-UH-sA8" secondAttribute="bottom" constant="50" id="F9N-tI-Gnd"/>
                             <constraint firstAttribute="trailingMargin" secondItem="A8l-5q-A8s" secondAttribute="trailing" id="GbX-uP-W4W"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="Etd-iD-kGx" secondAttribute="trailing" id="Qt4-Zz-ffK"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Etd-iD-kGx" secondAttribute="trailing" constant="-4" id="Qt4-Zz-ffK"/>
                             <constraint firstItem="XA2-D9-tK8" firstAttribute="top" secondItem="0XC-4n-LYd" secondAttribute="bottom" id="S2p-Bb-EMp"/>
                             <constraint firstItem="Etd-iD-kGx" firstAttribute="bottom" secondItem="A8l-5q-A8s" secondAttribute="baseline" id="UQZ-GP-pnq"/>
                             <constraint firstItem="XA2-D9-tK8" firstAttribute="top" secondItem="A8l-5q-A8s" secondAttribute="bottom" constant="20" id="XoT-Ra-OCJ"/>
@@ -1054,6 +1067,7 @@
                         </variation>
                     </view>
                     <connections>
+                        <outlet property="InputsView" destination="l9V-0V-yUA" id="dVe-2R-3Iz"/>
                         <outlet property="distanceEvents" destination="Rr9-O2-F8f" id="O7n-mP-aAf"/>
                         <outlet property="distanceInputView" destination="ztW-K2-fKT" id="UUs-j6-MIe"/>
                         <outlet property="distanceTextField" destination="6hq-TK-led" id="xsp-Kr-8dg"/>
@@ -1072,6 +1086,7 @@
                         <outlet property="paceUnitsButton" destination="m9a-HH-gBI" id="NYZ-dD-RrC"/>
                         <outlet property="resultTextView" destination="VSl-fD-aPz" id="RcP-uN-Orv"/>
                         <outlet property="startOver" destination="lr2-UH-sA8" id="tqI-9U-yAe"/>
+                        <outlet property="startOverArrow" destination="HEy-3e-uad" id="vLX-qC-797"/>
                         <outlet property="titleLabel" destination="E1z-aF-hnD" id="ZsC-Ba-VNT"/>
                     </connections>
                 </viewController>
@@ -1236,7 +1251,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <animations/>
-                        <color key="backgroundColor" red="0.16380313930000001" green="0.65508278080000004" blue="0.81632653060000004" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.22352941179999999" green="0.58431372550000005" blue="0.58039215690000001" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <navigationItem key="navigationItem" id="XGv-bw-c0I">
                         <barButtonItem key="rightBarButtonItem" title="Close" id="klC-Jr-rlK">
@@ -1288,7 +1303,7 @@
                             </label>
                         </subviews>
                         <animations/>
-                        <color key="backgroundColor" red="0.16380313930000001" green="0.65508278080000004" blue="0.81632653060000004" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.22352941179999999" green="0.58431372550000005" blue="0.58039215690000001" alpha="1" colorSpace="calibratedRGB"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="Udd-qb-3qJ" firstAttribute="centerX" secondItem="gmh-IQ-ZbP" secondAttribute="centerX" id="0gc-N9-8FL"/>
@@ -1349,6 +1364,7 @@
                         <rect key="frame" x="0.0" y="556" width="600" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <animations/>
+                        <color key="tintColor" red="0.22352941179999999" green="0.58431372550000005" blue="0.58039215690000001" alpha="1" colorSpace="calibratedRGB"/>
                     </toolbar>
                     <connections>
                         <segue destination="bPg-Z3-aaK" kind="relationship" relationship="rootViewController" id="9qE-0v-yfU"/>
@@ -1367,7 +1383,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <color key="separatorColor" red="0.16380313930000001" green="0.65508278080000004" blue="0.81632653060000004" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="separatorColor" red="0.22352941179999999" green="0.58431372550000005" blue="0.58039215690000001" alpha="1" colorSpace="calibratedRGB"/>
                         <view key="tableFooterView" contentMode="scaleAspectFill" verticalHuggingPriority="249" verticalCompressionResistancePriority="751" id="eSx-HD-vAd">
                             <rect key="frame" x="0.0" y="196" width="375" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -1381,7 +1397,7 @@
                                 </label>
                             </subviews>
                             <animations/>
-                            <color key="backgroundColor" red="0.16380313930000001" green="0.65508278080000004" blue="0.81632653060000004" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" red="0.22352941179999999" green="0.58431372550000005" blue="0.58039215690000001" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstItem="qIJ-ax-KnD" firstAttribute="centerY" secondItem="eSx-HD-vAd" secondAttribute="centerY" id="5Gc-6M-Cqi"/>
                                 <constraint firstItem="qIJ-ax-KnD" firstAttribute="centerX" secondItem="eSx-HD-vAd" secondAttribute="centerX" id="Cum-dY-E9O"/>
@@ -1456,7 +1472,6 @@
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3K7-gl-sJd">
                                                     <rect key="frame" x="281" y="7" width="86" height="30"/>
                                                     <animations/>
-                                                    <color key="tintColor" red="0.16380313930000001" green="0.65508278080000004" blue="0.81632653060000004" alpha="1" colorSpace="calibratedRGB"/>
                                                     <state key="normal" title="@pacingapp"/>
                                                     <connections>
                                                         <action selector="tweet:" destination="mHb-c5-WDn" eventType="touchUpInside" id="X4g-9D-xdb"/>
@@ -1540,7 +1555,8 @@
         <image name="arrowInactive" width="28" height="28"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="eON-Eo-aFL"/>
         <segue reference="SKx-oV-hw8"/>
+        <segue reference="kSy-yS-lL1"/>
     </inferredMetricsTieBreakers>
+    <color key="tintColor" red="0.22352941179999999" green="0.58431372550000005" blue="0.58039215690000001" alpha="1" colorSpace="calibratedRGB"/>
 </document>

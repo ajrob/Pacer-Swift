@@ -14,10 +14,21 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        self.view.backgroundColor = Colors.Tint
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+
+        //TODO:
+//        //Launch help screen the first time the application is launched
+//        if !NSUserDefaults.standardUserDefaults().boolForKey(kDidLaunchBeforeKey) {
+//            let helpNavigationController = UINavigationController()
+//            helpNavigationController.viewControllers = [InstructionViewController()]
+//            self.presentViewController(helpNavigationController, animated: true, completion: nil)
+//        } else {
+//            NSUserDefaults.standardUserDefaults().setBool(true, forKey: kDidLaunchBeforeKey)
+//        }
         
         navigationController?.navigationBar.tintColor = UIColor.blackColor().colorWithAlphaComponent(0.75)
     }

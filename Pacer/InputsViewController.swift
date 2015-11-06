@@ -14,13 +14,16 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
     @IBOutlet weak var durationInputView: UIView!
     @IBOutlet weak var paceInputView:     UIView!
     
+    @IBOutlet weak var InputsView: UIView!
+    
     @IBOutlet var distanceEvents: UIScrollView!
     
     @IBOutlet weak var heroStackView: UIStackView!
     @IBOutlet weak var resultTextView: UITextView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var startOver: UIButton!
-
+    @IBOutlet weak var startOverArrow: UIButton!
+    
     @IBOutlet weak var durationTextField: DurationTextField!
     @IBOutlet weak var distanceTextField: CustomDefaultTextField!
     @IBOutlet weak var paceTextField:     CustomDefaultTextField!
@@ -79,11 +82,19 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        startOver.bounds.origin.y -= (view.bounds.height + startOver.bounds.height)
+        startOver.alpha = 0.0
+        startOverArrow.alpha = 0.0
         
         distanceInputView.bounds.origin.x -= view.bounds.width
         durationInputView.bounds.origin.x -= view.bounds.width
         paceInputView.bounds.origin.x     -= view.bounds.width
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        startOver.alpha = 0.0
+        startOverArrow.alpha = 0.0
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -109,16 +120,19 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
             solveForPace()
         }
         
-        UIView.animateWithDuration(0.25, delay: 1, usingSpringWithDamping: 0.75, initialSpringVelocity: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
-                self.startOver.hidden = false
-                self.startOver.bounds.origin.y += (self.view.bounds.height + self.startOver.bounds.height)
+        UIView.animateWithDuration(0.25, delay: 0.5, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+                self.startOver.alpha = 1.0
+            }, completion: nil)
+        UIView.animateWithDuration(1, delay: 1, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+            self.startOverArrow.alpha = 1.0
             }, completion: nil)
     }
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        InputsView.backgroundColor = Colors.Tint
+        
         heroStackView.removeArrangedSubview(resultTextView)
-        startOver.hidden = true
         
         resultTextView.text = ""
 

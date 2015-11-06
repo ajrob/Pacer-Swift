@@ -25,6 +25,8 @@ enum LapType: String {
 let kMetricPaceKey = "metricPaceUnitsKey"
 let kMetricDistanceKey = "metricDistanceUnitsKey"
 
+let kDidLaunchBeforeKey = "didLaunchBefore"
+
 // Layout structure for the 3 main variables
 struct Storyboard {
     // Order of the rows:
@@ -157,6 +159,6 @@ struct Increment {
 }
 
 struct Colors {
-    static let Tint: UIColor = UIColor(red: CGFloat(255.0 / 255.0), green: CGFloat(56.0 / 255.0), blue: CGFloat(36.0 / 255.0), alpha: CGFloat(1.0)) // #FF3824
+    static let Tint: UIColor = UIColor(red: CGFloat(57.0 / 255.0), green: CGFloat(149.0 / 255.0), blue: CGFloat(148.0 / 255.0), alpha: CGFloat(1.0)) // #399594
     static let DarkTint: UIColor = UIColor(red: 58 / 255.0, green: 51 / 255.0, blue: 53 / 255.0, alpha: 1.0) // #3A3335
 }
