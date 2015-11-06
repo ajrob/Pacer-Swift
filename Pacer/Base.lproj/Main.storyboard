@@ -19,171 +19,164 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="hEB-LE-0fE">
-                                <rect key="frame" x="51" y="211" width="273" height="245"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="zbj-0y-v2l">
+                                <rect key="frame" x="16" y="45" width="343" height="614"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EUA-vn-6tG" customClass="CustomDefaultButton" customModule="Pacer" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="273" height="55"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="SSa-Hi-lKJ">
+                                        <rect key="frame" x="29" y="0.0" width="286" height="97"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pace Wrangler" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="23" translatesAutoresizingMaskIntoConstraints="NO" id="zv8-ea-50e">
+                                                <rect key="frame" x="0.0" y="0.0" width="286" height="62"/>
+                                                <animations/>
+                                                <fontDescription key="fontDescription" name="AvenirNext-UltraLight" family="Avenir Next" pointSize="45"/>
+                                                <color key="textColor" red="0.99906483349999997" green="1" blue="0.98908701509999997" alpha="0.69528831269349844" colorSpace="calibratedRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="a running calculator" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="13" translatesAutoresizingMaskIntoConstraints="NO" id="jmi-5F-Zgd">
+                                                <rect key="frame" x="0.0" y="62" width="286" height="35"/>
+                                                <animations/>
+                                                <fontDescription key="fontDescription" name="AvenirNext-UltraLightItalic" family="Avenir Next" pointSize="25"/>
+                                                <color key="textColor" red="0.99906483349999997" green="1" blue="0.98908701509999997" alpha="0.59595104489442707" colorSpace="calibratedRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
                                         <animations/>
-                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.14999999999999999" colorSpace="calibratedRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="55" id="3I7-ra-XwZ"/>
-                                            <constraint firstAttribute="height" constant="45" id="sg0-x1-N36"/>
-                                            <constraint firstAttribute="height" constant="55" id="vzH-Ys-3k6"/>
+                                            <constraint firstItem="jmi-5F-Zgd" firstAttribute="leading" secondItem="SSa-Hi-lKJ" secondAttribute="leading" id="eDq-il-KQp"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
-                                        <color key="tintColor" red="0.91393461809999998" green="0.91734235870000003" blue="0.91954787230000001" alpha="1" colorSpace="calibratedRGB"/>
-                                        <inset key="contentEdgeInsets" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
-                                        <state key="normal" title="How fast will I run?"/>
-                                        <variation key="default">
-                                            <mask key="constraints">
-                                                <exclude reference="3I7-ra-XwZ"/>
-                                                <exclude reference="sg0-x1-N36"/>
-                                            </mask>
-                                        </variation>
-                                        <connections>
-                                            <segue destination="awf-al-8RH" kind="show" identifier="rateSegue" id="wte-vX-272"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="seW-H1-0mA" customClass="CustomDefaultButton" customModule="Pacer" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="95" width="273" height="55"/>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" axis="vertical" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="hEB-LE-0fE">
+                                        <rect key="frame" x="25" y="218" width="294" height="245"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EUA-vn-6tG" customClass="CustomDefaultButton" customModule="Pacer" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="294" height="55"/>
+                                                <animations/>
+                                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.14999999999999999" colorSpace="calibratedRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="55" id="3I7-ra-XwZ"/>
+                                                    <constraint firstAttribute="height" constant="45" id="sg0-x1-N36"/>
+                                                    <constraint firstAttribute="height" constant="55" id="vzH-Ys-3k6"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
+                                                <color key="tintColor" red="0.91393461809999998" green="0.91734235870000003" blue="0.91954787230000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                <inset key="contentEdgeInsets" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
+                                                <state key="normal" title="How fast do I need to run..."/>
+                                                <variation key="default">
+                                                    <mask key="constraints">
+                                                        <exclude reference="3I7-ra-XwZ"/>
+                                                        <exclude reference="sg0-x1-N36"/>
+                                                    </mask>
+                                                </variation>
+                                                <connections>
+                                                    <segue destination="awf-al-8RH" kind="show" identifier="rateSegue" id="wte-vX-272"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="seW-H1-0mA" customClass="CustomDefaultButton" customModule="Pacer" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="95" width="294" height="55"/>
+                                                <animations/>
+                                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.14999999999999999" colorSpace="calibratedRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="45" id="Ox9-Kd-K9l"/>
+                                                    <constraint firstAttribute="height" constant="55" id="RSj-Xx-a24"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
+                                                <color key="tintColor" red="0.91393461807739562" green="0.91734235867229941" blue="0.91954787234042556" alpha="1" colorSpace="calibratedRGB"/>
+                                                <inset key="contentEdgeInsets" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
+                                                <state key="normal" title="How long will it take me to go..."/>
+                                                <variation key="default">
+                                                    <mask key="constraints">
+                                                        <exclude reference="Ox9-Kd-K9l"/>
+                                                    </mask>
+                                                </variation>
+                                                <connections>
+                                                    <segue destination="awf-al-8RH" kind="show" identifier="durationSegue" id="SKx-oV-hw8"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Oid-tN-4c1" customClass="CustomDefaultButton" customModule="Pacer" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="190" width="294" height="55"/>
+                                                <animations/>
+                                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.14999999999999999" colorSpace="calibratedRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="55" id="ii1-f1-9SG"/>
+                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="55" id="osJ-KW-zPm"/>
+                                                    <constraint firstAttribute="height" constant="45" id="zo5-L6-iiH"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
+                                                <color key="tintColor" red="0.91393461809999998" green="0.91734235870000003" blue="0.91954787230000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                <inset key="contentEdgeInsets" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
+                                                <state key="normal" title="How far can I go in..."/>
+                                                <variation key="default">
+                                                    <mask key="constraints">
+                                                        <exclude reference="osJ-KW-zPm"/>
+                                                        <exclude reference="zo5-L6-iiH"/>
+                                                    </mask>
+                                                </variation>
+                                                <connections>
+                                                    <segue destination="awf-al-8RH" kind="show" identifier="distanceSegue" id="Kdv-0d-sWt"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
                                         <animations/>
-                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.14999999999999999" colorSpace="calibratedRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="45" id="Ox9-Kd-K9l"/>
-                                            <constraint firstAttribute="height" constant="55" id="RSj-Xx-a24"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
-                                        <color key="tintColor" red="0.91393461807739562" green="0.91734235867229941" blue="0.91954787234042556" alpha="1" colorSpace="calibratedRGB"/>
-                                        <inset key="contentEdgeInsets" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
-                                        <state key="normal" title="How long will it take me?"/>
-                                        <variation key="default">
-                                            <mask key="constraints">
-                                                <exclude reference="Ox9-Kd-K9l"/>
-                                            </mask>
-                                        </variation>
-                                        <connections>
-                                            <segue destination="awf-al-8RH" kind="show" identifier="durationSegue" id="SKx-oV-hw8"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Oid-tN-4c1" customClass="CustomDefaultButton" customModule="Pacer" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="190" width="273" height="55"/>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iaq-xx-Yme">
+                                        <rect key="frame" x="0.0" y="584" width="343" height="30"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="infoLight" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qO9-eS-trC">
+                                                <rect key="frame" x="0.0" y="0.0" width="313" height="30"/>
+                                                <animations/>
+                                                <color key="tintColor" red="0.99906483349999997" green="1" blue="0.98908701509999997" alpha="0.5" colorSpace="calibratedRGB"/>
+                                                <connections>
+                                                    <segue destination="Fyo-f9-uJG" kind="presentation" id="mBt-Fe-QBm"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="96T-9e-S67" customClass="CustomDefaultButton" customModule="Pacer" customModuleProvider="target">
+                                                <rect key="frame" x="313" y="0.0" width="30" height="30"/>
+                                                <animations/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                <state key="normal" title="?">
+                                                    <color key="titleColor" red="0.99906483349999997" green="1" blue="0.98908701509999997" alpha="0.5" colorSpace="calibratedRGB"/>
+                                                </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                        <color key="value" red="0.99906483349999997" green="1" blue="0.98908701509999997" alpha="0.5" colorSpace="calibratedRGB"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                        <real key="value" value="0.0"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="radius">
+                                                        <real key="value" value="6"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="buttonBackgroundColor">
+                                                        <color key="value" red="1" green="1" blue="1" alpha="0.076637480666563479" colorSpace="calibratedRGB"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <segue destination="mYP-I0-RoM" kind="presentation" id="eON-Eo-aFL"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
                                         <animations/>
-                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.14999999999999999" colorSpace="calibratedRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="55" id="ii1-f1-9SG"/>
-                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="55" id="osJ-KW-zPm"/>
-                                            <constraint firstAttribute="height" constant="45" id="zo5-L6-iiH"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
-                                        <color key="tintColor" red="0.91393461809999998" green="0.91734235870000003" blue="0.91954787230000001" alpha="1" colorSpace="calibratedRGB"/>
-                                        <inset key="contentEdgeInsets" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
-                                        <state key="normal" title="How far will I go?"/>
-                                        <variation key="default">
-                                            <mask key="constraints">
-                                                <exclude reference="osJ-KW-zPm"/>
-                                                <exclude reference="zo5-L6-iiH"/>
-                                            </mask>
-                                        </variation>
-                                        <connections>
-                                            <segue destination="awf-al-8RH" kind="show" identifier="distanceSegue" id="Kdv-0d-sWt"/>
-                                        </connections>
-                                    </button>
+                                    </stackView>
                                 </subviews>
                                 <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="iaq-xx-Yme" secondAttribute="trailing" id="0ql-oh-wp5"/>
+                                    <constraint firstItem="iaq-xx-Yme" firstAttribute="leading" secondItem="zbj-0y-v2l" secondAttribute="leading" id="b1G-iK-hzW"/>
+                                </constraints>
                             </stackView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pace Wrangler" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zv8-ea-50e">
-                                <rect key="frame" x="16" y="45" width="343" height="62"/>
-                                <animations/>
-                                <fontDescription key="fontDescription" name="AvenirNext-UltraLight" family="Avenir Next" pointSize="45"/>
-                                <color key="textColor" red="0.99906483349999997" green="1" blue="0.98908701509999997" alpha="0.69528831269349844" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="a running calculator" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jmi-5F-Zgd">
-                                <rect key="frame" x="80" y="115" width="215" height="35"/>
-                                <animations/>
-                                <fontDescription key="fontDescription" name="AvenirNext-UltraLightItalic" family="Avenir Next" pointSize="25"/>
-                                <color key="textColor" red="0.99906483349999997" green="1" blue="0.98908701509999997" alpha="0.59595104489442707" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoLight" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qO9-eS-trC">
-                                <rect key="frame" x="16" y="625" width="22" height="22"/>
-                                <animations/>
-                                <color key="tintColor" red="0.99906483349999997" green="1" blue="0.98908701509999997" alpha="0.5" colorSpace="calibratedRGB"/>
-                                <connections>
-                                    <segue destination="Fyo-f9-uJG" kind="presentation" id="mBt-Fe-QBm"/>
-                                </connections>
-                            </button>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Lorem ipsum dolor sit er " textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="lqT-Xr-Jir">
-                                <rect key="frame" x="51" y="309" width="273" height="50"/>
-                                <animations/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="96T-9e-S67" customClass="CustomDefaultButton" customModule="Pacer" customModuleProvider="target">
-                                <rect key="frame" x="329" y="617" width="30" height="30"/>
-                                <animations/>
-                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                <state key="normal" title="?">
-                                    <color key="titleColor" red="0.99906483349999997" green="1" blue="0.98908701509999997" alpha="0.5" colorSpace="calibratedRGB"/>
-                                </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                        <color key="value" red="0.99906483349999997" green="1" blue="0.98908701509999997" alpha="0.5" colorSpace="calibratedRGB"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                        <real key="value" value="0.0"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="radius">
-                                        <real key="value" value="6"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="buttonBackgroundColor">
-                                        <color key="value" red="1" green="1" blue="1" alpha="0.076637480666563479" colorSpace="calibratedRGB"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <segue destination="mYP-I0-RoM" kind="presentation" id="eON-Eo-aFL"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" red="0.22352941179999999" green="0.58431372550000005" blue="0.58039215690000001" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="qO9-eS-trC" firstAttribute="leading" secondItem="et3-hF-kUP" secondAttribute="leadingMargin" id="43M-KV-irw"/>
-                            <constraint firstItem="qqh-kN-kRV" firstAttribute="top" secondItem="96T-9e-S67" secondAttribute="bottom" constant="8" symbolic="YES" id="Hce-YG-HOs"/>
-                            <constraint firstItem="jmi-5F-Zgd" firstAttribute="top" secondItem="zv8-ea-50e" secondAttribute="bottom" constant="8" id="LgC-9M-YcJ"/>
-                            <constraint firstItem="qqh-kN-kRV" firstAttribute="top" secondItem="qO9-eS-trC" secondAttribute="bottom" constant="8" symbolic="YES" id="NKH-Wg-b9Y"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="96T-9e-S67" secondAttribute="trailing" id="P9U-bC-Obk"/>
-                            <constraint firstItem="jmi-5F-Zgd" firstAttribute="centerY" secondItem="et3-hF-kUP" secondAttribute="centerY" id="S6V-Jl-fef"/>
-                            <constraint firstItem="hEB-LE-0fE" firstAttribute="top" secondItem="xKa-RD-4Cn" secondAttribute="bottom" constant="150" id="VK5-XS-64a"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="zv8-ea-50e" secondAttribute="trailing" id="XeA-48-ULy"/>
-                            <constraint firstItem="hEB-LE-0fE" firstAttribute="centerY" secondItem="et3-hF-kUP" secondAttribute="centerY" id="Y3I-in-DhX"/>
-                            <constraint firstItem="qqh-kN-kRV" firstAttribute="top" secondItem="zv8-ea-50e" secondAttribute="bottom" constant="20" id="Y7k-KB-xTo"/>
-                            <constraint firstItem="zv8-ea-50e" firstAttribute="top" secondItem="xKa-RD-4Cn" secondAttribute="bottom" constant="25" id="Ydr-h3-KkQ"/>
-                            <constraint firstItem="jmi-5F-Zgd" firstAttribute="centerX" secondItem="et3-hF-kUP" secondAttribute="centerX" id="bSB-cF-Pts"/>
-                            <constraint firstAttribute="leadingMargin" secondItem="hEB-LE-0fE" secondAttribute="leading" constant="-35" id="bfQ-WX-Yqx"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="hEB-LE-0fE" secondAttribute="trailing" constant="35" id="cxs-kb-52T"/>
-                            <constraint firstAttribute="leadingMargin" secondItem="zv8-ea-50e" secondAttribute="leading" id="d7H-88-Uci"/>
-                            <constraint firstItem="hEB-LE-0fE" firstAttribute="centerY" secondItem="et3-hF-kUP" secondAttribute="centerY" id="fWN-cQ-Ned"/>
-                            <constraint firstItem="96T-9e-S67" firstAttribute="baseline" secondItem="zv8-ea-50e" secondAttribute="baseline" id="huO-Wr-kx2"/>
-                            <constraint firstItem="qqh-kN-kRV" firstAttribute="top" secondItem="96T-9e-S67" secondAttribute="bottom" constant="20" id="j3e-O4-3va"/>
-                            <constraint firstItem="96T-9e-S67" firstAttribute="bottom" secondItem="zv8-ea-50e" secondAttribute="baseline" id="tiM-vy-B75"/>
-                            <constraint firstItem="qqh-kN-kRV" firstAttribute="top" secondItem="qO9-eS-trC" secondAttribute="bottom" constant="20" id="y9s-Hh-Pha"/>
+                            <constraint firstItem="zbj-0y-v2l" firstAttribute="top" secondItem="xKa-RD-4Cn" secondAttribute="bottom" constant="25" id="CKk-Sk-ymF"/>
+                            <constraint firstItem="qqh-kN-kRV" firstAttribute="top" secondItem="zbj-0y-v2l" secondAttribute="bottom" constant="8" symbolic="YES" id="QTu-ru-Bnp"/>
+                            <constraint firstItem="qqh-kN-kRV" firstAttribute="top" secondItem="zbj-0y-v2l" secondAttribute="bottom" constant="8" symbolic="YES" id="SNh-8U-mEP"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="zbj-0y-v2l" secondAttribute="trailing" id="Zpk-9y-EkG"/>
+                            <constraint firstItem="zbj-0y-v2l" firstAttribute="leading" secondItem="et3-hF-kUP" secondAttribute="leadingMargin" id="a0D-qG-aRy"/>
                         </constraints>
                         <variation key="default">
-                            <mask key="subviews">
-                                <exclude reference="lqT-Xr-Jir"/>
-                            </mask>
                             <mask key="constraints">
-                                <exclude reference="S6V-Jl-fef"/>
-                                <exclude reference="VK5-XS-64a"/>
-                                <exclude reference="Y3I-in-DhX"/>
-                                <exclude reference="Hce-YG-HOs"/>
-                                <exclude reference="NKH-Wg-b9Y"/>
-                                <exclude reference="Y7k-KB-xTo"/>
-                                <exclude reference="huO-Wr-kx2"/>
-                                <exclude reference="tiM-vy-B75"/>
+                                <exclude reference="SNh-8U-mEP"/>
                             </mask>
                         </variation>
                     </view>
@@ -265,7 +258,7 @@
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tJx-19-RLe" userLabel="Pace Input View">
                                                         <rect key="frame" x="0.0" y="0.0" width="295" height="50"/>
                                                         <subviews>
-                                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Planned pace" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="s6w-Ba-8ja" customClass="CustomDefaultTextField" customModule="Pacer" customModuleProvider="target">
+                                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Planned pace" textAlignment="center" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="s6w-Ba-8ja" customClass="CustomDefaultTextField" customModule="Pacer" customModuleProvider="target">
                                                                 <rect key="frame" x="0.0" y="3" width="295" height="45"/>
                                                                 <animations/>
                                                                 <color key="backgroundColor" red="0.99906483345036834" green="1" blue="0.98908701510107744" alpha="0.25" colorSpace="calibratedRGB"/>
@@ -273,7 +266,7 @@
                                                                     <constraint firstAttribute="height" constant="45" id="TPP-ZG-IyK"/>
                                                                 </constraints>
                                                                 <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
-                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                                                 <textInputTraits key="textInputTraits"/>
                                                             </textField>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="m9a-HH-gBI" customClass="CustomDefaultButton" customModule="Pacer" customModuleProvider="target">
@@ -314,7 +307,7 @@
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ztW-K2-fKT" userLabel="Distance Input View">
                                                         <rect key="frame" x="0.0" y="65" width="295" height="50"/>
                                                         <subviews>
-                                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Planned distance" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6hq-TK-led" userLabel="Planned distance" customClass="CustomDefaultTextField" customModule="Pacer" customModuleProvider="target">
+                                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Planned distance" textAlignment="center" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="6hq-TK-led" userLabel="Planned distance" customClass="CustomDefaultTextField" customModule="Pacer" customModuleProvider="target">
                                                                 <rect key="frame" x="0.0" y="3" width="295" height="45"/>
                                                                 <animations/>
                                                                 <color key="backgroundColor" red="0.99906483349999997" green="1" blue="0.98908701509999997" alpha="0.25" colorSpace="calibratedRGB"/>
@@ -322,7 +315,7 @@
                                                                     <constraint firstAttribute="height" constant="45" id="gvz-zC-fmD"/>
                                                                 </constraints>
                                                                 <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
-                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                                                 <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
                                                             </textField>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Sj-oH-Vcu" userLabel="mi" customClass="CustomDefaultButton" customModule="Pacer" customModuleProvider="target">
@@ -367,7 +360,7 @@
                                                     <view contentMode="scaleToFill" horizontalHuggingPriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="jDE-wa-yWG" userLabel="Duration Input View">
                                                         <rect key="frame" x="0.0" y="130" width="295" height="50"/>
                                                         <subviews>
-                                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Planned duration" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="2rx-zu-8qB" customClass="DurationTextField" customModule="Pacer" customModuleProvider="target">
+                                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Planned duration" textAlignment="center" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="2rx-zu-8qB" customClass="DurationTextField" customModule="Pacer" customModuleProvider="target">
                                                                 <rect key="frame" x="0.0" y="3" width="295" height="45"/>
                                                                 <animations/>
                                                                 <color key="backgroundColor" red="0.99906483349999997" green="1" blue="0.98908701509999997" alpha="0.25" colorSpace="calibratedRGB"/>
@@ -375,7 +368,7 @@
                                                                     <constraint firstAttribute="height" constant="45" id="YAS-uB-yPh"/>
                                                                 </constraints>
                                                                 <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
-                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                                                 <textInputTraits key="textInputTraits"/>
                                                             </textField>
                                                         </subviews>
@@ -452,7 +445,7 @@
                                     </mask>
                                 </variation>
                             </stackView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pace Wrangler" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A8l-5q-A8s">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pace Wrangler" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="20" translatesAutoresizingMaskIntoConstraints="NO" id="A8l-5q-A8s">
                                 <rect key="frame" x="16" y="592" width="343" height="55"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" name="AvenirNext-UltraLight" family="Avenir Next" pointSize="40"/>
@@ -629,7 +622,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="dsv-Rv-WEL">
-                            <rect key="frame" x="20" y="13" width="254" height="30"/>
+                            <rect key="frame" x="0.0" y="13" width="254" height="30"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KDm-44-1z9">
                                     <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
@@ -678,7 +671,7 @@
                     <animations/>
                     <constraints>
                         <constraint firstItem="dsv-Rv-WEL" firstAttribute="centerY" secondItem="Rr9-O2-F8f" secondAttribute="centerY" id="8z3-uu-tls"/>
-                        <constraint firstItem="dsv-Rv-WEL" firstAttribute="leading" secondItem="Rr9-O2-F8f" secondAttribute="leading" constant="20" symbolic="YES" id="eLq-Af-2aj"/>
+                        <constraint firstItem="dsv-Rv-WEL" firstAttribute="leading" secondItem="Rr9-O2-F8f" secondAttribute="leading" id="eLq-Af-2aj"/>
                         <constraint firstAttribute="trailing" secondItem="dsv-Rv-WEL" secondAttribute="trailing" id="sVu-VM-0l9"/>
                     </constraints>
                 </scrollView>
@@ -978,7 +971,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="SKx-oV-hw8"/>
+        <segue reference="Kdv-0d-sWt"/>
         <segue reference="eON-Eo-aFL"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.22352941179999999" green="0.58431372550000005" blue="0.58039215690000001" alpha="1" colorSpace="calibratedRGB"/>

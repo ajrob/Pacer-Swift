@@ -36,6 +36,7 @@ import UIKit
         self.backgroundColor = UIColor(red: 255, green: 255, blue: 255, alpha: 0.15)
         self.titleLabel?.numberOfLines = 1
         self.titleLabel?.adjustsFontSizeToFitWidth = true
+        self.titleLabel?.minimumScaleFactor = 0.5
     }
 
 

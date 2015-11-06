@@ -288,6 +288,7 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
             action: Selector("endEditingNow"))
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: self, action: nil)
         let toolbarButtons: [UIBarButtonItem]
+        doneButton.tintColor = Colors.Tint
         if textField.isEqual(distanceTextField) {
             let distanceEventsBarButtonItem = UIBarButtonItem(customView: distanceEvents)
             toolbarButtons = [distanceEventsBarButtonItem, flexibleSpace, doneButton]
