@@ -34,6 +34,8 @@ import UIKit
         self.borderWidth = 0
         self.radius = 4
         self.backgroundColor = UIColor(red: 255, green: 255, blue: 255, alpha: 0.15)
+        self.titleLabel?.numberOfLines = 1
+        self.titleLabel?.adjustsFontSizeToFitWidth = true
     }
 
 
@@ -61,6 +63,15 @@ import UIKit
         }
         set {
             layer.cornerRadius = newValue
+        }
+    }
+    
+    @IBInspectable var buttonBackgroundColor: UIColor {
+        get {
+            return UIColor(CGColor: layer.backgroundColor!) ?? UIColor.clearColor()
+        }
+        set {
+            layer.backgroundColor = newValue.CGColor
         }
     }
 

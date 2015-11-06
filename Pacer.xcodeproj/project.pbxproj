@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		FA1774731BC8B09C0002055E /* CustomDefaultTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1774721BC8B09C0002055E /* CustomDefaultTextField.swift */; settings = {ASSET_TAGS = (); }; };
+		FA1774731BC8B09C0002055E /* CustomDefaultTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1774721BC8B09C0002055E /* CustomDefaultTextField.swift */; };
 		FA3397961AEDF99700C9889C /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3397951AEDF99700C9889C /* SettingsTableViewController.swift */; };
 		FA33979C1AF3290800C9889C /* SelectRowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA33979B1AF3290800C9889C /* SelectRowButton.swift */; };
 		FA4AA04D1AF7247200F9D264 /* PaceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4AA04C1AF7247200F9D264 /* PaceTableViewCell.swift */; };
@@ -21,12 +21,15 @@
 		FA56383A1A96FE4400E9BB0A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA5638381A96FE4400E9BB0A /* LaunchScreen.xib */; };
 		FA5638461A96FE4400E9BB0A /* PacerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5638451A96FE4400E9BB0A /* PacerTests.swift */; };
 		FA5638501A97010400E9BB0A /* PacingCalculations.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA56384F1A97010400E9BB0A /* PacingCalculations.swift */; };
-		FA6DCEBD1BC83ECF00C09648 /* CustomDefaultButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6DCEBC1BC83ECF00C09648 /* CustomDefaultButton.swift */; settings = {ASSET_TAGS = (); }; };
-		FA6DCEBF1BC8556400C09648 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6DCEBE1BC8556400C09648 /* MainViewController.swift */; settings = {ASSET_TAGS = (); }; };
-		FA6DCEC11BC8567F00C09648 /* InputsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6DCEC01BC8567F00C09648 /* InputsViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		FA6DCEBD1BC83ECF00C09648 /* CustomDefaultButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6DCEBC1BC83ECF00C09648 /* CustomDefaultButton.swift */; };
+		FA6DCEBF1BC8556400C09648 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6DCEBE1BC8556400C09648 /* MainViewController.swift */; };
+		FA6DCEC11BC8567F00C09648 /* InputsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6DCEC01BC8567F00C09648 /* InputsViewController.swift */; };
 		FA79DC021A99A8580038EA8E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA79DC011A99A8580038EA8E /* Constants.swift */; };
-		FAD359F01BCAA5440006D1E2 /* DurationTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD359EF1BCAA5440006D1E2 /* DurationTextField.swift */; settings = {ASSET_TAGS = (); }; };
-		FAD3989E1BD09DFA008D3989 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD3989D1BD09DFA008D3989 /* Extensions.swift */; settings = {ASSET_TAGS = (); }; };
+		FA9070A31BE071EE0066C5B5 /* InstructionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9070A21BE071EE0066C5B5 /* InstructionViewController.swift */; };
+		FA9070A71BE1D4960066C5B5 /* InstructionContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9070A61BE1D4960066C5B5 /* InstructionContentViewController.swift */; };
+		FA98EB5E1BEB0DEE00DFE04E /* InfoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA98EB5D1BEB0DEE00DFE04E /* InfoTableViewController.swift */; };
+		FAD359F01BCAA5440006D1E2 /* DurationTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD359EF1BCAA5440006D1E2 /* DurationTextField.swift */; };
+		FAD3989E1BD09DFA008D3989 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD3989D1BD09DFA008D3989 /* Extensions.swift */; };
 		FAE112041B125C57004774D2 /* distanceEventsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAE112031B125C57004774D2 /* distanceEventsView.xib */; };
 /* End PBXBuildFile section */
 
@@ -63,6 +66,9 @@
 		FA6DCEBE1BC8556400C09648 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		FA6DCEC01BC8567F00C09648 /* InputsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputsViewController.swift; sourceTree = "<group>"; };
 		FA79DC011A99A8580038EA8E /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		FA9070A21BE071EE0066C5B5 /* InstructionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstructionViewController.swift; sourceTree = "<group>"; };
+		FA9070A61BE1D4960066C5B5 /* InstructionContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstructionContentViewController.swift; sourceTree = "<group>"; };
+		FA98EB5D1BEB0DEE00DFE04E /* InfoTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoTableViewController.swift; sourceTree = "<group>"; };
 		FAD359EF1BCAA5440006D1E2 /* DurationTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DurationTextField.swift; sourceTree = "<group>"; };
 		FAD3989D1BD09DFA008D3989 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		FAE112031B125C57004774D2 /* distanceEventsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = distanceEventsView.xib; sourceTree = "<group>"; };
@@ -131,6 +137,9 @@
 				FA6DCEBE1BC8556400C09648 /* MainViewController.swift */,
 				FA6DCEC01BC8567F00C09648 /* InputsViewController.swift */,
 				FAD3989D1BD09DFA008D3989 /* Extensions.swift */,
+				FA9070A21BE071EE0066C5B5 /* InstructionViewController.swift */,
+				FA9070A61BE1D4960066C5B5 /* InstructionContentViewController.swift */,
+				FA98EB5D1BEB0DEE00DFE04E /* InfoTableViewController.swift */,
 			);
 			path = Pacer;
 			sourceTree = "<group>";
@@ -285,14 +294,17 @@
 				FA5367F71AB29A5D000C5E0E /* MainTemplateTableViewController.swift in Sources */,
 				FA6DCEBD1BC83ECF00C09648 /* CustomDefaultButton.swift in Sources */,
 				FA1774731BC8B09C0002055E /* CustomDefaultTextField.swift in Sources */,
+				FA9070A31BE071EE0066C5B5 /* InstructionViewController.swift in Sources */,
 				FA6DCEC11BC8567F00C09648 /* InputsViewController.swift in Sources */,
 				FA4AA0511AF7248E00F9D264 /* DistanceTableViewCell.swift in Sources */,
+				FA98EB5E1BEB0DEE00DFE04E /* InfoTableViewController.swift in Sources */,
 				FA4AA0551AFE830400F9D264 /* CustomMainTableViewCell.swift in Sources */,
 				FAD3989E1BD09DFA008D3989 /* Extensions.swift in Sources */,
 				FA79DC021A99A8580038EA8E /* Constants.swift in Sources */,
 				FA5638501A97010400E9BB0A /* PacingCalculations.swift in Sources */,
 				FA4AA04D1AF7247200F9D264 /* PaceTableViewCell.swift in Sources */,
 				FA4AA04F1AF7248100F9D264 /* DurationTableViewCell.swift in Sources */,
+				FA9070A71BE1D4960066C5B5 /* InstructionContentViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

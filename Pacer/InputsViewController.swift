@@ -17,7 +17,7 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
     @IBOutlet var distanceEvents: UIScrollView!
     
     @IBOutlet weak var heroStackView: UIStackView!
-    @IBOutlet weak var resultLabel: UILabel!
+    @IBOutlet weak var resultTextView: UITextView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var startOver: UIButton!
 
@@ -117,8 +117,10 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        heroStackView.removeArrangedSubview(resultLabel)
+        heroStackView.removeArrangedSubview(resultTextView)
         startOver.hidden = true
+        
+        resultTextView.text = ""
 
         if willHideDistance {
             inputsStackView.removeArrangedSubview(distanceInputView)
@@ -163,8 +165,10 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
         paceTextField.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: Selector("incrementPaceByFiveMinutes:")))
         
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: Selector("dismissKeyboard")))
-        
+                
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardNotification:"), name:UIKeyboardWillChangeFrameNotification, object: nil);
+        
+        resultTextView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: Selector("switchLabelUnits")))
     }
     
     deinit {
@@ -191,6 +195,23 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
                 print("Inside")
                 self.view.frame.origin.y = self.view.frame.origin.y - (convertedPoint.y - endFrame.origin.y)
             }
+        }
+    }
+    
+    func switchLabelUnits() {
+        if willHideDistance {
+            isDistanceMetric = !isDistanceMetric
+            solveForDistance()
+//            let units = isDistanceMetric ? "km" : "mi"
+//            if isDistanceMetric {
+//                distanceValue = PacingCalculations.Conversion.Length().kilometersToMiles(distanceValue)
+//            } else {
+//                distanceValue = PacingCalculations.Conversion.Length().milesToKilometers(distanceValue)
+//            }
+//            resultTextView.text = "\(round(distanceValue * Storyboard.Distance.Rounding) / Storyboard.Distance.Rounding) \(units)"
+        } else if willHidePace {
+            isPaceMetric = !isPaceMetric
+            solveForPace()
         }
     }
     
@@ -458,9 +479,14 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
         } else {
             distanceValue = PacingCalculations().distanceFormula(1/Double(paceValue.TotalSeconds), time: Double(durationValue.TotalSeconds))
         }
+        if isPaceMetric && !isDistanceMetric {
+            distanceValue = PacingCalculations.Conversion.Length().kilometersToMiles(distanceValue)
+        } else if !isPaceMetric && isDistanceMetric {
+            distanceValue = PacingCalculations.Conversion.Length().milesToKilometers(distanceValue)
+        }
         
         let units = isDistanceMetric ? "km" : "mi"
-        resultLabel.text = "\(round(distanceValue * Storyboard.Distance.Rounding) / Storyboard.Distance.Rounding) \(units)"
+        resultTextView.text = "\(round(distanceValue * Storyboard.Distance.Rounding) / Storyboard.Distance.Rounding) \(units)"
         toggleResultLabel(distanceValue)
     }
     
@@ -477,13 +503,13 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
         } else {
             result = PacingCalculations().timeFormula(1/Double(paceValue.TotalSeconds), distance: Double(effectiveDistance))
         }
-        let formattedResult = PacingCalculations.Conversion.Time().secondsInHoursMinutesSeconds(Int(result))
+        let formattedResult = PacingCalculations.Conversion.Time().secondsInHoursMinutesSeconds(Int(round(result)))
         
         durationValue.Hours = formattedResult.hours
         durationValue.Minutes = formattedResult.minutes
         durationValue.Seconds = formattedResult.seconds
         
-        resultLabel.text = durationValue.description()
+        resultTextView.text = durationValue.description()
         toggleResultLabel(Double(durationValue.TotalSeconds))
     }
     
@@ -507,22 +533,26 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
         paceValue.Seconds = formattedResult.seconds
         
         let units = isPaceMetric ? "min/km" : "min/mi"
-        resultLabel.text = "\(paceValue.description()) \(units)"
+        resultTextView.text = "\(paceValue.description()) \(units)"
         toggleResultLabel(Double(paceValue.TotalSeconds))
     }
     
     private func toggleResultLabel(value:Double) {
         if value == 0 {
             UIView.animateWithDuration(0.25) { () -> Void in
-                self.resultLabel.hidden = true
-                self.heroStackView.removeArrangedSubview(self.resultLabel)
+                self.resultTextView.hidden = true
+                self.heroStackView.removeArrangedSubview(self.resultTextView)
             }
         } else {
             UIView.animateWithDuration(0.25) { () -> Void in
-                self.heroStackView.addArrangedSubview(self.resultLabel)
-                self.resultLabel.hidden = false
+                self.heroStackView.addArrangedSubview(self.resultTextView)
+                self.resultTextView.hidden = false
             }
         }
+    }
+    
+    @IBAction func restart(sender: UIButton) {
+        self.navigationController?.popViewControllerAnimated(true)
     }
     
     @IBAction func fiveKmEvent(sender: UIButton) {
