@@ -8,17 +8,26 @@
 
 import UIKit
 import MessageUI
+import Social
 
 class InfoTableViewController: UITableViewController, MFMailComposeViewControllerDelegate {
 
     @IBOutlet weak var footerView: UIView!
     
-    @IBAction func tweet(sender: UIButton) {
-    }
     @IBOutlet weak var contactTableCell: UITableViewCell!
+    @IBOutlet weak var rateTableCell: UITableViewCell!
     
     @IBAction func closeView(sender: UIBarButtonItem) {
         self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    @IBAction func tweet(sender: UIButton) {
+        if SLComposeViewController.isAvailableForServiceType(SLServiceTypeTwitter) {
+            let tweetSheet = SLComposeViewController(forServiceType: SLServiceTypeTwitter)
+            tweetSheet.setInitialText("@pacewrangler ")
+            
+            self.presentViewController(tweetSheet, animated: true, completion: nil)
+        }
     }
     
     override func viewDidLoad() {
@@ -54,6 +63,8 @@ class InfoTableViewController: UITableViewController, MFMailComposeViewControlle
         let selectedCell: UITableViewCell = self.tableView.cellForRowAtIndexPath(indexPath)!
         if selectedCell == contactTableCell {
             sendSupportEmail()
+        } else if selectedCell == rateTableCell {
+            rateApp()
         }
     }
     
@@ -62,12 +73,17 @@ class InfoTableViewController: UITableViewController, MFMailComposeViewControlle
         composer.mailComposeDelegate = self
         
         if MFMailComposeViewController.canSendMail() {
-            composer.setToRecipients(["example@example.com"])
-            composer.setSubject("The subject")
+            composer.setToRecipients(["pacewrangler@gmail.com"])
+            composer.setSubject("Feedback")
             composer.setMessageBody("This is the body", isHTML: false)
             composer.modalTransitionStyle = UIModalTransitionStyle.CoverVertical
             self.presentViewController(composer, animated: true, completion: nil)
         }
+    }
+    
+    private func rateApp() {
+        let appURL = "itms-apps://itunes.apple.com/app/id991569264"
+        UIApplication.sharedApplication().openURL(NSURL(string: appURL)!)
     }
     
     func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {

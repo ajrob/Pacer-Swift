@@ -13,7 +13,7 @@ class InstructionViewController: UIViewController, UIPageViewControllerDataSourc
     @IBOutlet weak var closeButton: UIButton!
     
     let instructions = [
-        (title: "", body: "Pacer will tell you how fast you need to run for that 5k goal time, how long it will take you to run that 10 miles, or how far you can go in that hour of spare time you have."),
+        (title: "", body: "Pace Wrangler will tell you how fast you need to run for that 5k goal time, how long it will take you to run that 10 miles, or how far you can go in that hour of spare time you have."),
         (title: "How fast will I run?", body: "Figure out your pace based on a specified time and distance."),
         (title: "How long will it take me?", body: "Figure out your running duration based on a specified pace and distance."),
         (title: "How far will I go?", body: "Figure out a distance based on a specific pace and running duration."),
