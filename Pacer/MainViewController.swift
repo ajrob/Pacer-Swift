@@ -46,7 +46,7 @@ class MainViewController: UIViewController {
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let inputsVC = segue.destinationViewController.contentViewController as? InputsViewController {
+        if let inputsVC = segue.destinationViewController as? InputsViewController {
             if segue.identifier == "durationSegue" {
                 
                 inputsVC.titleSaying = (self.durationButton.titleLabel?.text)!

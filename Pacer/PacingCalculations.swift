@@ -26,8 +26,6 @@ struct PacingCalculations
     }
     
     func calculateSplits(rate: Double, distance: Double, time: Double, lapType: LapType) -> [(lap: Int, lapType: LapType, cumulativeSeconds: Int)] {
-        var index = 0
-        var elapsedTime = 0
         var splits: [(lap: Int, lapType: LapType, cumulativeSeconds: Int)] = []
         var cumulativeSeconds = 0
         

@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -18,7 +19,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pace Wrangler" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="EHa-kI-Vn9" userLabel="Pace Wrangler">
-                    <rect key="frame" x="66" y="202" width="349" height="76"/>
+                    <rect key="frame" x="66" y="142" width="349" height="76"/>
                     <animations/>
                     <fontDescription key="fontDescription" name="AvenirNext-UltraLight" family="Avenir Next" pointSize="55"/>
                     <color key="textColor" red="0.96801238359999997" green="0.96801238359999997" blue="0.96801238359999997" alpha="1" colorSpace="calibratedRGB"/>
@@ -28,7 +29,7 @@
             <animations/>
             <color key="backgroundColor" red="0.22352941179999999" green="0.58431372550000005" blue="0.58039215690000001" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstItem="EHa-kI-Vn9" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="EUH-2h-gpY"/>
+                <constraint firstItem="EHa-kI-Vn9" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" multiplier="0.75" id="EUH-2h-gpY"/>
                 <constraint firstAttribute="bottom" secondItem="8ie-xW-0ye" secondAttribute="bottom" constant="20" id="Kzo-t9-V3l"/>
                 <constraint firstItem="8ie-xW-0ye" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" symbolic="YES" id="MfP-vx-nX0"/>
                 <constraint firstAttribute="centerX" secondItem="8ie-xW-0ye" secondAttribute="centerX" id="ZEH-qu-HZ9"/>
