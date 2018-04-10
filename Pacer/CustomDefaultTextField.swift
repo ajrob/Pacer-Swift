@@ -19,7 +19,7 @@ import UIKit
         self.backgroundColor = UIColor(red: 255, green: 255, blue: 255, alpha: 0.15)
         if let placeholderString = self.placeholder {
             self.attributedPlaceholder = NSAttributedString(string: placeholderString, attributes: [
-                NSForegroundColorAttributeName: UIColor.lightTextColor().colorWithAlphaComponent(0.25)
+                NSForegroundColorAttributeName: UIColor.lightText.withAlphaComponent(0.25)
                 ])
         }
     }
@@ -33,7 +33,7 @@ import UIKit
         self.backgroundColor = UIColor(red: 255, green: 255, blue: 255, alpha: 0.15)
         if let placeholderString = self.placeholder {
             self.attributedPlaceholder = NSAttributedString(string: placeholderString, attributes: [
-                NSForegroundColorAttributeName: UIColor.lightTextColor().colorWithAlphaComponent(0.25)
+                NSForegroundColorAttributeName: UIColor.lightText.withAlphaComponent(0.25)
                 ])
         }
     }

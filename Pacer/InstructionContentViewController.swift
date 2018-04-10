@@ -27,22 +27,22 @@ class InstructionContentViewController: UIViewController {
         self.bodyTextView.alpha = 0
     }
     
-    override func viewDidAppear(animated: Bool) {
-        UIView.animateWithDuration(0.5, animations: { () -> Void in
+    override func viewDidAppear(_ animated: Bool) {
+        UIView.animate(withDuration: 0.5, animations: { () -> Void in
             self.heading.alpha = 1.0
         })
         
-        UIView.animateWithDuration(0.75, delay: 0.25, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
+        UIView.animate(withDuration: 0.75, delay: 0.25, options: [UIViewAnimationOptions.curveEaseInOut], animations: {
             self.bodyTextView.alpha = 1.0
             }, completion: nil)
     }
     
-    override func viewDidDisappear(animated: Bool) {
-        UIView.animateWithDuration(1.0, animations: { () -> Void in
+    override func viewDidDisappear(_ animated: Bool) {
+        UIView.animate(withDuration: 1.0, animations: { () -> Void in
             self.heading.alpha = 0.0
         })
         
-        UIView.animateWithDuration(1, delay: 1, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
+        UIView.animate(withDuration: 1, delay: 1, options: [UIViewAnimationOptions.curveEaseInOut], animations: {
             self.bodyTextView.alpha = 0.0
             }, completion: nil)
     }

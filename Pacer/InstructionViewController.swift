@@ -23,16 +23,16 @@ class InstructionViewController: UIViewController, UIPageViewControllerDataSourc
     
     func reset() {
         /* Getting the page View controller */
-        self.pageViewController = self.storyboard?.instantiateViewControllerWithIdentifier("PageViewController") as! UIPageViewController
+        self.pageViewController = self.storyboard?.instantiateViewController(withIdentifier: "PageViewController") as! UIPageViewController
         self.pageViewController.dataSource = self
         self.pageViewController.delegate = self
         
-        let pageContentViewController = self.viewControllerAtIndex(0)
-        self.pageViewController.setViewControllers([pageContentViewController!], direction: UIPageViewControllerNavigationDirection.Forward, animated: true, completion: nil)
+        let pageContentViewController = self.viewControllerAtIndex(index: 0)
+        self.pageViewController.setViewControllers([pageContentViewController!], direction: UIPageViewControllerNavigationDirection.forward, animated: true, completion: nil)
         
         self.addChildViewController(pageViewController)
         self.view.addSubview(pageViewController.view)
-        self.pageViewController.didMoveToParentViewController(self)
+        self.pageViewController.didMove(toParentViewController: self)
     }
 
     override func viewDidLoad() {
@@ -48,30 +48,30 @@ class InstructionViewController: UIViewController, UIPageViewControllerDataSourc
     }
     
     @IBAction func closeView(sender: UIButton) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     @IBAction func close(sender: UIBarButtonItem) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
     // MARK: UIPageViewControllerDataSource
-    func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         var index = (viewController as! InstructionContentViewController).pageIndex!
         if(index <= 0){
             return nil
         }
-        index--
-        return self.viewControllerAtIndex(index)
+        index-=1
+        return self.viewControllerAtIndex(index: index)
     }
     
-    func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         
         var index = (viewController as! InstructionContentViewController).pageIndex!
-        index++
+        index+=1
         if(index >= self.instructions.count){
             return nil
         }
-        return self.viewControllerAtIndex(index)
+        return self.viewControllerAtIndex(index: index)
         
     }
     
@@ -79,7 +79,7 @@ class InstructionViewController: UIViewController, UIPageViewControllerDataSourc
         if((self.instructions.count == 0) || (index >= self.instructions.count)) {
             return nil
         }
-        let pageContentViewController = self.storyboard?.instantiateViewControllerWithIdentifier("InstructionContentViewController") as! InstructionContentViewController
+        let pageContentViewController = self.storyboard?.instantiateViewController(withIdentifier: "InstructionContentViewController") as! InstructionContentViewController
         
         pageContentViewController.titleText = self.instructions[index].title
         pageContentViewController.bodyText = self.instructions[index].body

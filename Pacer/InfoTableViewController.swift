@@ -18,15 +18,15 @@ class InfoTableViewController: UITableViewController, MFMailComposeViewControlle
     @IBOutlet weak var rateTableCell: UITableViewCell!
     
     @IBAction func closeView(sender: UIBarButtonItem) {
-        self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+        self.navigationController?.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func tweet(sender: UIButton) {
-        if SLComposeViewController.isAvailableForServiceType(SLServiceTypeTwitter) {
+        if SLComposeViewController.isAvailable(forServiceType: SLServiceTypeTwitter) {
             let tweetSheet = SLComposeViewController(forServiceType: SLServiceTypeTwitter)
-            tweetSheet.setInitialText("@pacewrangler ")
+            tweetSheet?.setInitialText("@pacewrangler ")
             
-            self.presentViewController(tweetSheet, animated: true, completion: nil)
+            self.present(tweetSheet!, animated: true, completion: nil)
         }
     }
     
@@ -60,10 +60,10 @@ class InfoTableViewController: UITableViewController, MFMailComposeViewControlle
         // Dispose of any resources that can be recreated.
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath as IndexPath, animated: true)
         
-        let selectedCell: UITableViewCell = self.tableView.cellForRowAtIndexPath(indexPath)!
+        let selectedCell: UITableViewCell = self.tableView.cellForRow(at: indexPath)!
         if selectedCell == contactTableCell {
             sendSupportEmail()
         } else if selectedCell == rateTableCell {
@@ -79,23 +79,23 @@ class InfoTableViewController: UITableViewController, MFMailComposeViewControlle
             composer.setToRecipients(["pacewrangler@gmail.com"])
             composer.setSubject("Feedback")
             composer.setMessageBody("This is the body", isHTML: false)
-            composer.modalTransitionStyle = UIModalTransitionStyle.CoverVertical
-            self.presentViewController(composer, animated: true, completion: nil)
+            composer.modalTransitionStyle = UIModalTransitionStyle.coverVertical
+            self.present(composer, animated: true, completion: nil)
         }
     }
     
     private func rateApp() {
         let appURL = "itms-apps://itunes.apple.com/app/id991569264"
-        UIApplication.sharedApplication().openURL(NSURL(string: appURL)!)
+        UIApplication.shared.openURL(NSURL(string: appURL)! as URL)
     }
-    
-    func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
+
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
         if (error != nil) {
-            let alert:UIAlertController = UIAlertController(title: "Error", message: NSString(format: "Oops: %@", (error?.description)!) as String, preferredStyle: UIAlertControllerStyle.Alert)
-            self.presentViewController(alert, animated: true, completion: nil)
-            self.dismissViewControllerAnimated(true, completion: nil)
+            let alert:UIAlertController = UIAlertController(title: "Error", message: "Oops: \(error!)", preferredStyle: UIAlertControllerStyle.alert)
+            self.present(alert, animated: true, completion: nil)
+            self.dismiss(animated: true, completion: nil)
         } else {
-            self.dismissViewControllerAnimated(true, completion: nil)            
+            self.dismiss(animated: true, completion: nil)
         }
     }
 

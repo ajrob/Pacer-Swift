@@ -42,10 +42,10 @@ import UIKit
 
     @IBInspectable var borderColor: UIColor {
         get {
-            return UIColor(CGColor: layer.borderColor!) ?? UIColor.clearColor()
+            return UIColor(cgColor: layer.borderColor!)
         }
         set {
-            layer.borderColor = newValue.CGColor            
+            layer.borderColor = newValue.cgColor
         }
     }
     
@@ -69,10 +69,10 @@ import UIKit
     
     @IBInspectable var buttonBackgroundColor: UIColor {
         get {
-            return UIColor(CGColor: layer.backgroundColor!) ?? UIColor.clearColor()
+            return UIColor(cgColor: layer.backgroundColor!)
         }
         set {
-            layer.backgroundColor = newValue.CGColor
+            layer.backgroundColor = newValue.cgColor
         }
     }
 

@@ -17,7 +17,7 @@ class MainViewController: UIViewController {
         self.view.backgroundColor = Colors.Tint
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         //TODO:
@@ -30,7 +30,7 @@ class MainViewController: UIViewController {
 //            NSUserDefaults.standardUserDefaults().setBool(true, forKey: kDidLaunchBeforeKey)
 //        }
         
-        navigationController?.navigationBar.tintColor = UIColor.blackColor().colorWithAlphaComponent(0.75)
+        navigationController?.navigationBar.tintColor = UIColor.black.withAlphaComponent(0.75)
     }
 
     override func didReceiveMemoryWarning() {
@@ -45,8 +45,8 @@ class MainViewController: UIViewController {
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let inputsVC = segue.destinationViewController as? InputsViewController {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let inputsVC = segue.destination as? InputsViewController {
             if segue.identifier == "durationSegue" {
                 
                 inputsVC.titleSaying = (self.durationButton.titleLabel?.text)!

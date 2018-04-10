@@ -29,12 +29,14 @@ struct PacingCalculations
         var splits: [(lap: Int, lapType: LapType, cumulativeSeconds: Int)] = []
         var cumulativeSeconds = 0
         
-        for (var i = 1; i <= Int(distance); i++){
+        for i in 1...Int(distance) {
+//        for (var i = 1; i <= Int(distance); i++){
             cumulativeSeconds += Int(rate)
             let split = (lap: i, lapType: lapType, cumulativeSeconds: cumulativeSeconds)
             splits.append(split)
         }
-        if distance % 1 != 0 {
+        if remainder(distance, 1) != 0 {
+//        if distance % 1 != 0 {
             //There was a fraction of a distance
             
         }
