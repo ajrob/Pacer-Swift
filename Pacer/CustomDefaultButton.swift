@@ -24,7 +24,8 @@ import UIKit
         // Defaults for the Storyboard render
         self.borderWidth = 0
         self.radius = 4
-        self.backgroundColor = UIColor(red: 255, green: 255, blue: 255, alpha: 0.15)
+//        self.backgroundColor = UIColor(red: 255, green: 255, blue: 255, alpha: 0.15)
+//        self.backgroundColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.15)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -33,7 +34,8 @@ import UIKit
         //Defaults for the build render
         self.borderWidth = 0
         self.radius = 4
-        self.backgroundColor = UIColor(red: 255, green: 255, blue: 255, alpha: 0.15)
+//        self.backgroundColor = UIColor(red: 255, green: 255, blue: 255, alpha: 0.15)
+//        self.backgroundColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.15)
         self.titleLabel?.numberOfLines = 1
         self.titleLabel?.adjustsFontSizeToFitWidth = true
         self.titleLabel?.minimumScaleFactor = 0.5

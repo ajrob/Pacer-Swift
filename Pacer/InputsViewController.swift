@@ -194,7 +194,7 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
         // Dispose of any resources that can be recreated.
     }
     
-    func keyboardNotification(notification:NSNotification) {
+    @objc func keyboardNotification(notification:NSNotification) {
         if let userInfo = notification.userInfo {
             guard let endFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
             
@@ -209,7 +209,7 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
         }
     }
     
-    func switchLabelUnits() {
+    @objc func switchLabelUnits() {
         if willHideDistance {
             isDistanceMetric = !isDistanceMetric
             solveForDistance()
@@ -265,10 +265,10 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
     }
     
     // MARK: - UITextFieldDelegate
-    func endEditingNow() {
+    @objc func endEditingNow() {
         self.view.endEditing(true)
     }
-    func textFieldChanged(textField: UITextField) {
+    @objc func textFieldChanged(textField: UITextField) {
         distanceValue = (textField.text! as NSString).doubleValue
     }
 
@@ -292,7 +292,7 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
         } else {
             toolbarButtons = [flexibleSpace, doneButton]
         }
-        
+
         keyboardDoneButtonBar.setItems(toolbarButtons, animated: true)
         
         textField.inputAccessoryView = keyboardDoneButtonBar
@@ -407,8 +407,8 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
         }
         let title = NSAttributedString(string: titleData, attributes:
             [
-                NSFontAttributeName:UIFont.systemFont(ofSize: CGFloat(17.0)),
-                NSForegroundColorAttributeName:UIColor.black,
+                NSAttributedStringKey.font:UIFont.systemFont(ofSize: CGFloat(17.0)),
+                NSAttributedStringKey.foregroundColor:UIColor.black,
             ])
         pickerLabel.attributedText = title
         pickerLabel.textAlignment = .right
@@ -474,7 +474,7 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
         pacePickerView.selectRow(paceValue.Seconds, inComponent: 1, animated: true)
     }
     
-    func dismissKeyboard() {
+    @objc func dismissKeyboard() {
         if durationTextField.isEditing {
             durationTextField.resignFirstResponder()
         }

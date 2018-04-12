@@ -10,7 +10,7 @@ import UIKit
 
 class InstructionViewController: UIViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     
-    @IBOutlet weak var closeButton: UIButton!
+    @IBOutlet weak var closeButton: UIBarButtonItem!
     
     let instructions = [
         (title: "", body: "Pace Wrangler will tell you how fast you need to run for that 5k goal time, how long it will take you to run that 10 miles, or how far you can go in that hour of spare time you have."),
