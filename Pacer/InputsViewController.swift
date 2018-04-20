@@ -170,14 +170,16 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
         durationTextField.inputView = durationPickerViewContainer
         arrayOfSixty = createSequentialIntArray(numberOfElements: 60)
         durationPickerData = [createSequentialIntArray(numberOfElements: 80), arrayOfSixty, arrayOfSixty]
-        durationTextField.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: Selector(("incrementDurationByFiveMinutes:"))))
-
+//        durationTextField.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: Selector(("incrementDurationByFiveMinutes:"))))
+        durationTextField.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(incrementDurationByFiveMinutes(panGesture:))))
+        
         // Pace Picker
         paceTextField.delegate = self
         paceTextField.inputView = pacePickerViewContainer
         pacePickerData = [arrayOfSixty, arrayOfSixty]
-        paceTextField.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: Selector(("incrementPaceByFiveMinutes:"))))
-        
+//        paceTextField.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: Selector(("incrementPaceByFiveMinutes:"))))
+        paceTextField.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(incrementPaceByFiveMinutes(panGesture:))))
+
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(InputsViewController.dismissKeyboard)))
                 
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardNotification(notification:)), name:NSNotification.Name.UIKeyboardWillChangeFrame, object: nil);
@@ -226,13 +228,13 @@ class InputsViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
         }
     }
     
-    func incrementDurationByFiveMinutes(panGesture:UIPanGestureRecognizer) {
+    @objc func incrementDurationByFiveMinutes(panGesture:UIPanGestureRecognizer) {
         durationValue.TotalSeconds = incrementByFiveMinutes(panGesture: panGesture, target: durationTextField, totalSeconds: durationValue.TotalSeconds)
         durationTextField.text = durationValue.Print
         updateDurationPicker()
     }
     
-    func incrementPaceByFiveMinutes(panGesture:UIPanGestureRecognizer) {
+    @objc func incrementPaceByFiveMinutes(panGesture:UIPanGestureRecognizer) {
         paceValue.TotalSeconds = incrementByFiveMinutes(panGesture: panGesture, target: paceTextField, totalSeconds: paceValue.TotalSeconds)
         if paceValue.TotalSeconds > 3599 {
             paceValue.TotalSeconds = 3599

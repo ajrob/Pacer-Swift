@@ -391,6 +391,30 @@
                                                     <action selector="restartWithSender:" destination="awf-al-8RH" eventType="touchUpInside" id="neC-g6-mpI"/>
                                                 </connections>
                                             </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vqs-3w-bKN" customClass="CustomDefaultButton" customModule="Pacer" customModuleProvider="target">
+                                                <rect key="frame" x="135.5" y="233" width="104" height="60"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="60" id="mGB-cS-ZqD"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                                <state key="normal" title="⊟ Splits">
+                                                    <color key="titleColor" red="0.99906483349999997" green="1" blue="0.98908701509999997" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                        <color key="value" red="0.99906483349999997" green="1" blue="0.98908701509999997" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                        <real key="value" value="0.0"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="radius">
+                                                        <real key="value" value="6"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="buttonBackgroundColor">
+                                                        <color key="value" red="1" green="1" blue="1" alpha="0.083216428029999998" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" red="0.22352941179999999" green="0.58431372550000005" blue="0.58039215690000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
@@ -399,7 +423,9 @@
                                             <constraint firstItem="HEy-3e-uad" firstAttribute="centerY" secondItem="lr2-UH-sA8" secondAttribute="centerY" constant="-2" id="ONd-zJ-17H"/>
                                             <constraint firstItem="lr2-UH-sA8" firstAttribute="centerX" secondItem="l9V-0V-yUA" secondAttribute="centerX" id="Saf-64-MLc"/>
                                             <constraint firstItem="qab-GB-LDa" firstAttribute="leading" secondItem="l9V-0V-yUA" secondAttribute="leading" constant="40" id="VlU-QP-Bvf"/>
+                                            <constraint firstItem="lr2-UH-sA8" firstAttribute="top" secondItem="vqs-3w-bKN" secondAttribute="bottom" constant="20" id="dlU-dv-phm"/>
                                             <constraint firstAttribute="trailing" secondItem="qab-GB-LDa" secondAttribute="trailing" constant="40" id="imz-84-dnJ"/>
+                                            <constraint firstItem="vqs-3w-bKN" firstAttribute="centerX" secondItem="l9V-0V-yUA" secondAttribute="centerX" id="ytM-q9-W2A"/>
                                         </constraints>
                                     </view>
                                 </subviews>
